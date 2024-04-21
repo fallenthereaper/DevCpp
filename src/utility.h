@@ -5,16 +5,100 @@
 #include <vector>
 #include <algorithm>
 #include <cmath>
+#include <functional>
 
 // Define constants
 constexpr auto PI = 3.14159;
 
+// Consumer: Represents an operation that accepts a single input argument and returns no result.
+template<typename T>
+using Consumer = std::function<void(const T&)>;
+
+// Function: Represents a function that accepts one argument and produces a result.
+template<typename T>
+using Predicate = std::function<bool(T)>;
+
+// Predicate: Represents a predicate (boolean-valued function) of one argument.
+template<typename T, typename R>
+using Function = std::function<R(T)>;
+
+// BiConsumer: Represents an operation that accepts two input arguments and returns no result.
+template<typename T, typename U>
+using BiConsumer = std::function<void(const T&, const U&)>;
+
+// BiFunction: Represents a function that accepts two arguments and produces a result.
+template<typename T, typename U, typename R>
+using BiFunction = std::function<R(const T&, const U&)>;
+
+// BiPredicate: Represents a predicate (boolean-valued function) of two arguments.
+template<typename T, typename U>
+using BiPredicate = std::function<bool(const T&, const U&)>;
 
 // Declare utility functions
 namespace Utility {
+
+
+    // forEach: Performs the given action for each element of the container.
+    template<typename T>
+    void forEach(const std::vector<T>& container, Consumer<T> action) {
+        for (const auto& element : container) {
+            action(element);
+        }
+    }
+
+    // map: Applies the given function to each element of the container and stores the results in another container.
+    template<typename T, typename R>
+    std::vector<R> map(const std::vector<T>& container, Function<T, R> function) {
+        std::vector<R> result;
+        result.reserve(container.size());
+        for (const auto& element : container) {
+            result.push_back(function(element));
+        }
+        return result;
+    }
+
+    // filter: Returns a new container containing only the elements that satisfy the given predicate.
+    template<typename T>
+    std::vector<T> filter(const std::vector<T>& container, Predicate<T> predicate) {
+        std::vector<T> result;
+        std::copy_if(container.begin(), container.end(), std::back_inserter(result), predicate);
+        return result;
+    }
+
+    // forEach: Performs the given action for each pair of elements from two containers.
+    template<typename T, typename U>
+    void forEach(const std::vector<T>& container1, const std::vector<U>& container2, BiConsumer<T, U> action) {
+        size_t minSize = std::min(container1.size(), container2.size());
+        for (size_t i = 0; i < minSize; ++i) {
+            action(container1[i], container2[i]);
+        }
+    }
+
+    // zipWith: Applies the given function to each pair of elements from two containers and stores the results in another container.
+    template<typename T, typename U, typename R>
+    std::vector<R> zipWith(const std::vector<T>& container1, const std::vector<U>& container2, BiFunction<T, U, R> function) {
+        size_t minSize = std::min(container1.size(), container2.size());
+        std::vector<R> result;
+        result.reserve(minSize);
+        for (size_t i = 0; i < minSize; ++i) {
+            result.push_back(function(container1[i], container2[i]));
+        }
+        return result;
+    }
+
+    // filter: Returns a new container containing only the pairs of elements that satisfy the given predicate.
+    template<typename T, typename U>
+    std::vector<std::pair<T, U>> filter(const std::vector<T>& container1, const std::vector<U>& container2, BiPredicate<T, U> predicate) {
+        size_t minSize = std::min(container1.size(), container2.size());
+        std::vector<std::pair<T, U>> result;
+        for (size_t i = 0; i < minSize; ++i) {
+            if (predicate(container1[i], container2[i])) {
+                result.emplace_back(container1[i], container2[i]);
+            }
+        }
+        return result;
+    }
  
-
-
     enum Day { SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY };
     // Function to print elements of a vector
     template<typename T>

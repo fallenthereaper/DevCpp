@@ -9,21 +9,27 @@
 using namespace std;
 using Day = Utility::Day;
 
-using Vec2 = Utility::Mth::Vec2;
-using Vec3 = Utility::Mth::Vec3;
+using namespace Utility::Mth;
+//using Vec3 = Utility::Mth::Vec3;
 
 ///int argc, char * argv[]
 int main()
 {
+	Consumer<int> consumer = [](int x) {
 
+		};
+
+	Predicate<int> predicate = [](int x) -> bool {
+		return false;
+		};
 
 	Practice::startUp();
 	//TicTacGame::startUp();
 
-	Vec2 mousePosition = Vec2(2, 0);
+	Vec2 mousePosition = Vec2(-37, 2.3);
 
 
-	std::cout << mousePosition * 100 << std::endl;
+	std::cout << mousePosition * 3 + mousePosition * 100 << std::endl;
 
 
 
