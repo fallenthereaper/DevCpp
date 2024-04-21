@@ -12,31 +12,31 @@ constexpr auto PI = 3.14159;
 
 // Supplier: Represents a function that produces a value without taking any input arguments.
 template<typename T>
-using Supplier = std::function<T()>;
+using supplier = std::function<T()>;
 
 // Consumer: Represents an operation that accepts a single input argument and returns no result.
 template<typename T>
-using Consumer = std::function<void(const T&)>;
+using consumer = std::function<void(const T&)>;
 
 // Function: Represents a function that accepts one argument and produces a result.
 template<typename T>
-using Predicate = std::function<bool(T)>;
+using predicate = std::function<bool(T)>;
 
 // Predicate: Represents a predicate (boolean-valued function) of one argument.
 template<typename T, typename R>
-using Function = std::function<R(T)>;
+using func = std::function<R(T)>;
 
 // BiConsumer: Represents an operation that accepts two input arguments and returns no result.
 template<typename T, typename U>
-using BiConsumer = std::function<void(const T&, const U&)>;
+using biConsumer = std::function<void(const T&, const U&)>;
 
 // BiFunction: Represents a function that accepts two arguments and produces a result.
 template<typename T, typename U, typename R>
-using BiFunction = std::function<R(const T&, const U&)>;
+using biFunction = std::function<R(const T&, const U&)>;
 
 // BiPredicate: Represents a predicate (boolean-valued function) of two arguments.
 template<typename T, typename U>
-using BiPredicate = std::function<bool(const T&, const U&)>;
+using biPredicate = std::function<bool(const T&, const U&)>;
 
 // Declare utility functions
 namespace Utility {
@@ -44,7 +44,7 @@ namespace Utility {
 
     // forEach: Performs the given action for each element of the container.
     template<typename T>
-    void forEach(const std::vector<T>& container, Consumer<T> action) {
+    void forEach(const std::vector<T>& container, consumer<T> action) {
         for (const auto& element : container) {
             action(element);
         }
@@ -52,7 +52,7 @@ namespace Utility {
 
     // map: Applies the given function to each element of the container and stores the results in another container.
     template<typename T, typename R>
-    std::vector<R> map(const std::vector<T>& container, Function<T, R> function) {
+    std::vector<R> map(const std::vector<T>& container, func<T, R> function) {
         std::vector<R> result;
         result.reserve(container.size());
         for (const auto& element : container) {
@@ -63,7 +63,7 @@ namespace Utility {
 
     // filter: Returns a new container containing only the elements that satisfy the given predicate.
     template<typename T>
-    std::vector<T> filter(const std::vector<T>& container, Predicate<T> predicate) {
+    std::vector<T> filter(const std::vector<T>& container, predicate<T> predicate) {
         std::vector<T> result;
         std::copy_if(container.begin(), container.end(), std::back_inserter(result), predicate);
         return result;
@@ -71,7 +71,7 @@ namespace Utility {
 
     // forEach: Performs the given action for each pair of elements from two containers.
     template<typename T, typename U>
-    void forEach(const std::vector<T>& container1, const std::vector<U>& container2, BiConsumer<T, U> action) {
+    void forEach(const std::vector<T>& container1, const std::vector<U>& container2, biConsumer<T, U> action) {
         size_t minSize = std::min(container1.size(), container2.size());
         for (size_t i = 0; i < minSize; ++i) {
             action(container1[i], container2[i]);
@@ -80,7 +80,7 @@ namespace Utility {
 
     // zipWith: Applies the given function to each pair of elements from two containers and stores the results in another container.
     template<typename T, typename U, typename R>
-    std::vector<R> zipWith(const std::vector<T>& container1, const std::vector<U>& container2, BiFunction<T, U, R> function) {
+    std::vector<R> zipWith(const std::vector<T>& container1, const std::vector<U>& container2, biFunction<T, U, R> function) {
         size_t minSize = std::min(container1.size(), container2.size());
         std::vector<R> result;
         result.reserve(minSize);
@@ -92,7 +92,7 @@ namespace Utility {
 
     // filter: Returns a new container containing only the pairs of elements that satisfy the given predicate.
     template<typename T, typename U>
-    std::vector<std::pair<T, U>> filter(const std::vector<T>& container1, const std::vector<U>& container2, BiPredicate<T, U> predicate) {
+    std::vector<std::pair<T, U>> filter(const std::vector<T>& container1, const std::vector<U>& container2, biPredicate<T, U> predicate) {
         size_t minSize = std::min(container1.size(), container2.size());
         std::vector<std::pair<T, U>> result;
         for (size_t i = 0; i < minSize; ++i) {
@@ -454,6 +454,151 @@ namespace Utility {
             }
         };
     }
+
+    template<typename T>
+    class Supplier {
+    public:
+        // Constructor taking a lambda as argument to initialize the supplier
+        Supplier(supplier<T> lambda) : m_lambda(lambda) {}
+
+        // Overloaded operator() to invoke the lambda and return the result
+        T operator()() const {
+            return m_lambda();
+        }
+
+        // Method to to invoke the lambda and return the result
+       T get() const {
+            return m_lambda();
+        }
+
+    private:
+        supplier<T> m_lambda;  // The lambda function held by the supplier
+    };
+
+    // Predicate: Represents a predicate(boolean - valued function) of one argument.
+        template<typename T>
+    class Predicate {
+    public:
+        // Constructor taking a lambda as argument to initialize the predicate
+        Predicate(predicate<T> lambda) : m_lambda(lambda) {}
+
+        // Overloaded operator() to invoke the predicate and return the result
+        bool operator()(const T& arg) const {
+            return m_lambda(arg);
+        }
+
+        // Method to test the predicate with an argument
+        bool test(const T& arg) const {
+            return m_lambda(arg);
+        }
+
+    private:
+        std::function<bool(const T&)> m_lambda;  // The lambda function held by the predicate
+    };
+
+    // BiPredicate: Represents a predicate (boolean-valued function) of two arguments.
+    template<typename T, typename U>
+    class BiPredicate {
+    public:
+        // Constructor taking a lambda as argument to initialize the predicate
+        BiPredicate(biPredicate<T, U> lambda) : m_lambda(lambda) {}
+
+        // Overloaded operator() to invoke the predicate and return the result
+        bool operator()(const T& arg1, const U& arg2) const {
+            return m_lambda(arg1, arg2);
+        }
+
+        // Method to test the predicate with two arguments
+        bool test(const T& arg1, const U& arg2) const {
+            return m_lambda(arg1, arg2);
+        }
+
+    private:
+        std::function<bool(const T&, const U&)> m_lambda;  // The lambda function held by the predicate
+    };
+
+    // Function: Represents a function that accepts one argument and produces a result.
+    template<typename T, typename R>
+    class Function {
+    public:
+        // Constructor taking a lambda as argument to initialize the function
+        Function(func<T, R> lambda) : m_lambda(lambda) {}
+
+        // Overloaded operator() to invoke the function and return the result
+        R operator()(const T& arg) const {
+            return m_lambda(arg);
+        }
+
+        // Method to apply the function to an argument
+        R apply(const T& arg) const {
+            return m_lambdafunc(arg);
+        }
+
+    private:
+        std::function<R(const T&)> m_lambda;  // The lambda function held by the function
+    };
+
+    // BiFunction: Represents a function that accepts two arguments and produces a result.
+    template<typename T, typename U, typename R>
+    class BiFunction {
+    public:
+        // Constructor taking a lambda as argument to initialize the function
+        BiFunction(std::function<R(const T&, const U&)> lambda) : m_lambda(lambda) {}
+
+        // Overloaded operator() to invoke the function and return the result
+        R operator()(const T& arg1, const U& arg2) const {
+            return m_lambda(arg1, arg2);
+        }
+
+        R apply(const T& arg1, const U& arg2) const {
+            return m_lambda(arg1, arg2);
+        }
+
+    private:
+        std::function<R(const T&, const U&)> m_lambda;  // The lambda function held by the function
+    };
+
+    // Consumer: Represents an operation that accepts a single input argument and returns no result.
+    template<typename T>
+    class Consumer {
+    public:
+        // Constructor taking a lambda as argument to initialize the consumer
+        Consumer(std::function<void(const T&)> lambda) : m_lambda(lambda) {}
+
+        // Overloaded operator() to invoke the consumer
+        void operator()(const T& arg) const {
+            m_lambda(arg);
+        }
+
+        // Method to accept and consume an argument
+        void accept(const T& arg) const {
+            m_lambda(arg);
+        }
+
+    private:
+        std::function<void(const T&)> m_lambda;  // The lambda function held by the consumer
+    };
+
+    // BiConsumer: Represents an operation that accepts two input arguments and returns no result.
+    template<typename T, typename U>
+    class BiConsumer {
+    public:
+        // Constructor taking a lambda as argument to initialize the bi-consumer
+        BiConsumer(std::function<void(const T&, const U&)> lambda) : m_lambda(lambda) {}
+
+        // Overloaded operator() to invoke the bi-consumer
+        void operator()(const T& arg1, const U& arg2) const {
+            m_lambda(arg1, arg2);
+        }
+
+        // Method to accept and consume two arguments
+        void accept(const T& arg1, const U& arg2) const {
+            m_lambda(arg1, arg2);
+        }
+
+    private:
+        std::function<void(const T&, const U&)> m_lambda;  // The lambda function held by the bi-consumer
+    };
 }
 
 #endif // UTILITY_H

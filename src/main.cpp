@@ -8,7 +8,7 @@
 #include "tictac_game.h"
 using namespace std;
 using Day = Utility::Day;
-
+using namespace Utility;
 using namespace Utility::Mth;
 //using Vec3 = Utility::Mth::Vec3;
 
@@ -17,11 +17,17 @@ int main()
 {
 	Consumer<int> consumer = [](int x) {
 
+		if (x == 2) {
+			std::cout << "CONSUMER" << std::endl;
+		}
+
 		};
 
 	Predicate<int> predicate = [](int x) -> bool {
 		return false;
 		};
+
+	consumer.accept(2);
 
 	Practice::startUp();
 	//TicTacGame::startUp();
