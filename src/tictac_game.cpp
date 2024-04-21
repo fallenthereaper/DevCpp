@@ -3,6 +3,7 @@
 #include <climits>
 #include "tictac_game.h";
 
+
 const int BOARD_SIZE = 9;
 char board[BOARD_SIZE][BOARD_SIZE];
 
@@ -210,49 +211,43 @@ namespace TicTacGame {
 
     void startUp() {
 
-
-        initializeBoard();
+        GameGrid gameGrid;
 
         // Game loop
-        while (evaluateBoard() == INT_MIN) {
+        while (gameGrid.evaluate() == INT_MIN) {
             // Display the board
-            drawBoard();
+            gameGrid.draw();
 
             // Human player's turn
             int row, col;
             std::cout << "Enter your move (row and column, e.g., 1 2): ";
             std::cin >> row >> col;
-           // row--; // Convert to zero-based index
-           // col--;
 
-            if (row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE || board[row][col] != ' ') {
+            if (row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE || !gameGrid.placeSymbol(row, col, 'X')) {
                 std::cout << "Invalid move! Try again.\n";
                 continue;
             }
 
-            board[row][col] = 'X';
-
             // Check if the game is over after human player's move
-            if (evaluateBoard() != INT_MIN) {
+            if (gameGrid.evaluate() != INT_MIN) {
                 break;
             }
 
-
             // AI's turn
             std::cout << "AI's turn...\n";
-         //   makeAIMove();
+           // gameGrid.makeAIMove();
 
             // Check if the game is over after AI's move
-            if (gameOver()) {
-           //     break;
-            }
+            //if (gameGrid.gameOver()) {
+            //    break;
+           // }
         }
 
         // Display the final board
-        drawBoard();
+        gameGrid.draw();
 
         // Evaluate the final game state
-        int gameResult = evaluateBoard();
+        int gameResult = gameGrid.evaluate();
         if (gameResult == 1) {
             std::cout << "AI wins!\n";
         }
@@ -262,6 +257,8 @@ namespace TicTacGame {
         else {
             std::cout << "It's a draw!\n";
         }
+    
+       
 
     }
 }
