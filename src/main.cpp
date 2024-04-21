@@ -10,7 +10,6 @@
 
 using namespace std;
 using namespace Utility;
-using namespace Utility;
 using namespace Utility::Mth;
 
 //using Vec3 = Utility::Mth::Vec3;
@@ -26,12 +25,12 @@ int main()
     }
 
     // Define a consumer function to print whether a number is even or odd
-    Function<int, string> numberEvaluator = [](int x) -> string {
+    Function<int, string> numberEvaluator = [&](int x) -> string {
         return (x % 2 == 0) ? "Even" : "Odd";
         };
 
     // Define a consumer function to print the number along with its evaluation
-    Consumer<int> consumer = [numberEvaluator](int x) {
+    Consumer<int> consumer = [&numberEvaluator](int x) {
         std::cout << numberEvaluator(x) << ": " << x << std::endl;
         };
 
