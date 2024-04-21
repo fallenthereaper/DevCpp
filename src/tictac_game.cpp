@@ -1,6 +1,8 @@
 
 #include "main.h";
+
 #include <climits>
+
 #include "tictac_game.h";
 
 
@@ -11,7 +13,7 @@ using namespace std;
 
 namespace TicTacGame {
 
-    string repeatString(const string& str, int count) {
+   const string repeatString(const string& str, int count) {
         string result;
         for (int i = 0; i < count; ++i) {
             result += str;
@@ -209,27 +211,29 @@ namespace TicTacGame {
 
 
 
-    void startUp() {
+    void TicTacGame::startUp() {
 
-        GameGrid gameGrid;
+        GameGrid* gameGrid = new GameGrid(3, 3);
+
+
 
         // Game loop
-        while (gameGrid.evaluate() == INT_MIN) {
+        while (gameGrid->evaluate() == INT_MIN) {
             // Display the board
-            gameGrid.draw();
+            gameGrid->draw();
 
             // Human player's turn
             int row, col;
             std::cout << "Enter your move (row and column, e.g., 1 2): ";
             std::cin >> row >> col;
 
-            if (row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE || !gameGrid.placeSymbol(row, col, 'X')) {
+            if (row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE || !gameGrid->placeSymbol(row, col, 'X')) {
                 std::cout << "Invalid move! Try again.\n";
                 continue;
             }
 
             // Check if the game is over after human player's move
-            if (gameGrid.evaluate() != INT_MIN) {
+            if (gameGrid->evaluate() != INT_MIN) {
                 break;
             }
 
@@ -244,10 +248,10 @@ namespace TicTacGame {
         }
 
         // Display the final board
-        gameGrid.draw();
+        gameGrid->draw();
 
         // Evaluate the final game state
-        int gameResult = gameGrid.evaluate();
+        int gameResult = gameGrid->evaluate();
         if (gameResult == 1) {
             std::cout << "AI wins!\n";
         }
@@ -257,6 +261,8 @@ namespace TicTacGame {
         else {
             std::cout << "It's a draw!\n";
         }
+
+        delete gameGrid;
     
        
 

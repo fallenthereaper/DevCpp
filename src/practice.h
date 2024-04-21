@@ -1,5 +1,6 @@
 #ifndef PRACTICE_H
 #define PRACTICE_H
+
 namespace Practice {
 
 	void startUp();

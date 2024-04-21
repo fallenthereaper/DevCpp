@@ -22,6 +22,8 @@ namespace Practice {
 
     void startUp() {
 
+       
+
         string questions[numQuestions] = {
         "What is the capital of France?",
         "Which planet is known as the Red Planet?",
