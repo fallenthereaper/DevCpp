@@ -10,6 +10,10 @@
 // Define constants
 constexpr auto PI = 3.14159;
 
+// Supplier: Represents a function that produces a value without taking any input arguments.
+template<typename T>
+using Supplier = std::function<T()>;
+
 // Consumer: Represents an operation that accepts a single input argument and returns no result.
 template<typename T>
 using Consumer = std::function<void(const T&)>;
