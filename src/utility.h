@@ -55,7 +55,7 @@ namespace Utility {
     // Define a function template to iterate over a generic container and apply a consumer
     template<typename T, typename Collection>
     void forEach(const Collection& collection, std::function<void(const T&)> action) {
-  
+
         // Use auto for the iterator type to allow type deduction
         for (auto it = collection.begin(); it != collection.end(); ++it) {
             action(*it); // Apply the action on each element of the collection
@@ -120,7 +120,7 @@ namespace Utility {
         }
         return result;
     }
- 
+
     enum Day { SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY };
     // Function to print elements of a vector
     template<typename T>
@@ -129,7 +129,7 @@ namespace Utility {
             std::cout << elem << " ";
         }
 
- 
+
         std::cout << std::endl;
     }
 
@@ -169,7 +169,7 @@ namespace Utility {
         return std::round(num * multiplier) / multiplier;
     }
 
- 
+
     // Shuffle elements of a vector
     template<typename T>
     void shuffleVector(std::vector<T>& vec) {
@@ -300,11 +300,41 @@ namespace Utility {
 
     // Function to generate a random number in a specified range
     int getRandomInRange(int min, int max) {
-    
+
         return min + (rand() % (max - min + 1));
     }
 
     namespace Mth {
+
+        struct Operator {
+            std::string symbol;
+            int precedence;
+            std::function<double(double, double)> operation;
+
+            // Constructor for MathOperator
+            Operator(const std::string& sym, int prec, const std::function<double(double, double)>& op) : symbol(sym), precedence(prec), operation(op) {}
+
+            // Function to calculate the result of the operator applied to two doubles
+            double calculate(double a, double b) const {
+                return operation(a, b);
+            }
+        };
+
+        // Define the MathCondition struct
+        struct Condition {
+            std::string symbol;
+            std::function<bool(double, double)> meet;
+
+
+            Condition(const std::string& sym, const std::function<bool(double, double)>& condition)
+                : symbol(sym), meet(condition) {}
+
+            // Function to evaluate the condition with two doubles
+            bool evaluate(double val1, double val2) const {
+                return meet(val1, val2);
+            }
+        };
+
         struct Vec3 {
             float x;
             float y;
@@ -471,6 +501,13 @@ namespace Utility {
                 return os;
             }
         };
+
+   
+
+
+        // Define a structure to represent MathOperator
+       
+
     }
 
     template<typename T>
@@ -485,7 +522,7 @@ namespace Utility {
         }
 
         // Method to to invoke the lambda and return the result
-       T get() const {
+        T get() const {
             return m_lambda();
         }
 
@@ -494,7 +531,7 @@ namespace Utility {
     };
 
     // Predicate: Represents a predicate(boolean - valued function) of one argument.
-        template<typename T>
+    template<typename T>
     class Predicate {
     public:
         // Constructor taking a lambda as argument to initialize the predicate
@@ -652,7 +689,7 @@ namespace Utility {
         ValueProcessor(std::function<R(const I&)> lambda) : m_lambda(lambda) {}
 
         // Override apply method to invoke the compute method
-        R apply(const I& input) const{
+        R apply(const I& input) const {
             return compute(input);
         }
 

@@ -339,23 +339,26 @@ namespace Container  {
         }
 
         // Operator overloading for element access using []
-        T& operator[](size_t index) {
-            if (index < 0 || index >= size) {
-                Utility::throwError("Index out of range");
-               // throw std::out_of_range("Index out of range");
-            }
-            return elements[index];
-        }
-
-        // Const version of element access using []
-        const T& operator[](size_t index) const {
+        T& operator[](size_t index) override {
             if (index < 0 || index >= size) {
                 throw std::out_of_range("Index out of range");
             }
             return elements[index];
         }
 
+        // Const version of element access using []
+        const T& operator[](size_t index) const override {
+            if (index < 0 || index >= size) {
+                throw std::out_of_range("Index out of range");
+            }
+            return elements[index];
+        }
 
+        // Operator overloading for appending an element
+        List<T>& operator+=(const T& element) override {
+            add(element);
+            return *this;
+        }
 
     protected:
         // Resize the dynamic array (double the capacity)

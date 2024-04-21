@@ -7,7 +7,6 @@ namespace Practice {
     const int numQuestions = 10;
     const int numOptions = 4;
 
-
     void displayQuestions(const string questions[], int questionsSize, const string options[][4], int optionsSize) {
         for (int i = 0; i < questionsSize; i++) {
             cout << questions[i] << endl;
@@ -19,11 +18,7 @@ namespace Practice {
     }
 
 
-
     void startUp() {
-
-       
-
         string questions[numQuestions] = {
         "What is the capital of France?",
         "Which planet is known as the Red Planet?",

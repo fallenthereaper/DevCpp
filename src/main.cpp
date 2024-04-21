@@ -7,10 +7,10 @@
 #include <vector>
 #include "practice.h"
 #include "tictac_game.h"
-using namespace std;
-using Day = Utility::Day;
-using namespace Utility;
 
+using namespace std;
+using namespace Utility;
+using namespace Utility;
 using namespace Utility::Mth;
 
 //using Vec3 = Utility::Mth::Vec3;
@@ -18,8 +18,7 @@ using namespace Utility::Mth;
 ///int argc, char * argv[]
 int main()
 {
-
-    Container::ArrayList<int> myList;
+    Container::ArrayList<int> myList; 
 
     
     for (int i = 1; i <= 20; ++i) {
@@ -36,13 +35,8 @@ int main()
         std::cout << numberEvaluator(x) << ": " << x << std::endl;
         };
 
-    // Use forEach with the List and the consumer function
-      //forEach<int>(myList, consumer);
 
       myList.forEach(consumer);
-
-    // Example of using forEach with a lambda directly
- 
 
 	Practice::startUp();
 	//TicTacGame::startUp();

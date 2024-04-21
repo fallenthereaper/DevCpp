@@ -85,6 +85,13 @@ public:
      */
     virtual const_iterator end() const = 0;
 
+    virtual T& operator[](size_t index) = 0; // Pure virtual operator[] for access
+
+    virtual const T& operator[](size_t index) const = 0; // Pure virtual const operator[] for access
+
+    virtual Collection<T>& operator+=(const T& element) = 0; // Pure virtual operator+= for appending
+
+
     /**
      * @brief Virtual destructor for the Collection class.
      */
