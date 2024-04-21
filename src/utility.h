@@ -11,36 +11,37 @@
 // Define constants
 constexpr auto PI = 3.14159;
 
-// Supplier: Represents a function that produces a value without taking any input arguments.
-template<typename T>
-using supplier = std::function<T()>;
-
-// Consumer: Represents an operation that accepts a single input argument and returns no result.
-template<typename T>
-using consumer = std::function<void(const T&)>;
-
-// Function: Represents a function that accepts one argument and produces a result.
-template<typename T>
-using predicate = std::function<bool(T)>;
-
-// Predicate: Represents a predicate (boolean-valued function) of one argument.
-template<typename T, typename R>
-using func = std::function<R(T)>;
-
-// BiConsumer: Represents an operation that accepts two input arguments and returns no result.
-template<typename T, typename U>
-using biConsumer = std::function<void(const T&, const U&)>;
-
-// BiFunction: Represents a function that accepts two arguments and produces a result.
-template<typename T, typename U, typename R>
-using biFunction = std::function<R(const T&, const U&)>;
-
-// BiPredicate: Represents a predicate (boolean-valued function) of two arguments.
-template<typename T, typename U>
-using biPredicate = std::function<bool(const T&, const U&)>;
 
 // Declare utility functions
 namespace Utility {
+
+    // Supplier: Represents a function that produces a value without taking any input arguments.
+    template<typename T>
+    using supplier = std::function<T()>;
+
+    // Consumer: Represents an operation that accepts a single input argument and returns no result.
+    template<typename T>
+    using consumer = std::function<void(const T&)>;
+
+    // Function: Represents a function that accepts one argument and produces a result.
+    template<typename T>
+    using predicate = std::function<bool(T)>;
+
+    // Predicate: Represents a predicate (boolean-valued function) of one argument.
+    template<typename T, typename R>
+    using func = std::function<R(T)>;
+
+    // BiConsumer: Represents an operation that accepts two input arguments and returns no result.
+    template<typename T, typename U>
+    using biConsumer = std::function<void(const T&, const U&)>;
+
+    // BiFunction: Represents a function that accepts two arguments and produces a result.
+    template<typename T, typename U, typename R>
+    using biFunction = std::function<R(const T&, const U&)>;
+
+    // BiPredicate: Represents a predicate (boolean-valued function) of two arguments.
+    template<typename T, typename U>
+    using biPredicate = std::function<bool(const T&, const U&)>;
 
 
     // forEach: Performs the given action for each element of the container.
@@ -50,6 +51,17 @@ namespace Utility {
             action(element);
         }
     }
+
+    // Define a function template to iterate over a generic container and apply a consumer
+    template<typename T, typename Collection>
+    void forEach(const Collection& collection, std::function<void(const T&)> action) {
+  
+        // Use auto for the iterator type to allow type deduction
+        for (auto it = collection.begin(); it != collection.end(); ++it) {
+            action(*it); // Apply the action on each element of the collection
+        }
+    }
+
 
     // map: Applies the given function to each element of the container and stores the results in another container.
     template<typename T, typename R>
@@ -77,6 +89,11 @@ namespace Utility {
         for (size_t i = 0; i < minSize; ++i) {
             action(container1[i], container2[i]);
         }
+    }
+
+    // Function to throw an exception with a message
+    void throwError(const std::string& message) {
+        throw std::runtime_error(message);
     }
 
     // zipWith: Applies the given function to each pair of elements from two containers and stores the results in another container.
@@ -532,7 +549,7 @@ namespace Utility {
 
         // Method to apply the function to an argument
         R apply(const T& arg) const {
-            return m_lambdafunc(arg);
+            return m_lambda(arg);
         }
 
     private:
