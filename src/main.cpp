@@ -10,6 +10,7 @@ using namespace std;
 using Day = Utility::Day;
 using namespace Utility;
 using namespace Utility::Mth;
+
 //using Vec3 = Utility::Mth::Vec3;
 
 ///int argc, char * argv[]
@@ -17,17 +18,24 @@ int main()
 {
 	Consumer<int> consumer = [](int x) {
 
-		if (x == 2) {
-			std::cout << "CONSUMER" << std::endl;
-		}
-
+			std::cout << "n called: " << x << std::endl;
+		
 		};
 
-	Predicate<int> predicate = [](int x) -> bool {
-		return false;
-		};
+	
 
-	consumer.accept(2);
+	Predicate<int> predicate([](int x) -> bool { return false;});
+
+	Predicate<int> predicate2 = [](int x) -> bool { return false; };
+
+	Optional<string> optional();
+
+
+
+
+	std::vector<int> nums = std::vector<int>{ 1, 2, 3, 4, 5, 7, 8 };
+
+std:for_each(nums.begin(), nums.end(), consumer);
 
 	Practice::startUp();
 	//TicTacGame::startUp();

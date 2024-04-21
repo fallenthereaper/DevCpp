@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <cmath>
 #include <functional>
+#include <optional>
 
 // Define constants
 constexpr auto PI = 3.14159;
@@ -598,6 +599,190 @@ namespace Utility {
 
     private:
         std::function<void(const T&, const U&)> m_lambda;  // The lambda function held by the bi-consumer
+    };
+
+    // Initializer: Represents an interface for initializing an object of type T.
+    template<class T>
+    class Initializer : public Consumer<T> {
+    public:
+        // Constructor taking a lambda as argument to initialize the initializer
+        Initializer(std::function<void(T&)> lambda) : m_lambda(lambda) {}
+
+        // Override accept method to invoke the init method
+        void accept(T& input) const {
+            init(input);
+        }
+
+        /**
+         * Initializes the given object of type T.
+         * Implementations of this method specify how the object should be set up or configured.
+         *
+         * @param input The object to be initialized.
+         */
+        void init(T& input) const {
+            m_lambda(input);
+        }
+
+    private:
+        std::function<void(T&)> m_lambda;  // The lambda function held by the initializer
+    };
+
+    // ValueProcessor: Represents a functional interface for processing values from type I to type R.
+    template<typename I, typename R>
+    class ValueProcessor : public Function<I, R> {
+    public:
+        // Constructor taking a lambda as argument to initialize the value processor
+        ValueProcessor(std::function<R(const I&)> lambda) : m_lambda(lambda) {}
+
+        // Override apply method to invoke the compute method
+        R apply(const I& input) const{
+            return compute(input);
+        }
+
+        /**
+         * Maps a value based on the provided input.
+         *
+         * @param input The input used for value processing.
+         * @return The processed value of type R.
+         */
+        R compute(const I& input) const {
+            return m_lambda(input);
+        }
+
+        /**
+         * Returns a composed ValueProcessor that first applies this function to its input,
+         * and then applies the 'after' function to the result.
+         *
+         * @param after The function to apply after this function.
+         * @return A composed function that first applies this function and then applies the 'after' function.
+         */
+        template<typename V>
+        ValueProcessor<I, V> andThen(const ValueProcessor<R, V>& after) const {
+            return ValueProcessor<I, V>[&](const I& i) {
+                return after.compute(this->compute(i));
+                };
+        }
+
+        /**
+         * Returns a composed ValueProcessor that first applies the 'before' function to its input,
+         * and then applies this function to the result.
+         *
+         * @param before The function to apply before this function is applied.
+         * @return A composed function that first applies the 'before' function and then applies this function.
+         */
+        template<typename V>
+        ValueProcessor<V, R> compose(const ValueProcessor<V, I>& before) const {
+            return ValueProcessor<V, R>([&](const V& v) {
+                return compute(before.compute(v));
+                });
+        }
+
+        /**
+         * Returns a ValueProcessor that always returns its input argument.
+         *
+         * @return A ValueProcessor that always returns its input argument.
+         */
+        static ValueProcessor<I, I> identity() {
+            return ValueProcessor<I, I>([](const I& t) {
+                return t;
+                });
+        }
+
+    private:
+        std::function<R(const I&)> m_lambda;  // The lambda function held by the value processor
+    };
+
+    // Factory: Represents a functional interface for creating objects of type R from type T.
+    template<typename T, typename R>
+    class Factory : public Function<T, R> {
+    public:
+        // Constructor taking a lambda as argument to initialize the factory
+        Factory(std::function<R(const T&)> lambda) : m_lambda(lambda) {}
+
+        // Override apply method to invoke the create method
+        R apply(const T& t) const {
+            return create(t);
+        }
+
+        /**
+         * Creates an object of type R based on the provided input of type T.
+         *
+         * @param input The input used for object creation.
+         * @return An object of type R.
+         */
+        R create(const T& input) const {
+            return m_lambda(input);
+        }
+
+    private:
+        std::function<R(const T&)> m_lambda;  // The lambda function held by the factory
+    };
+
+    template<typename T>
+    class Optional {
+    private:
+        bool hasValue;
+        T value;
+
+    public:
+        // Default constructor creates an empty Optional
+        Optional() : hasValue(false) {}
+
+        // Constructor to create an Optional with a value
+        explicit Optional(const T& val) : hasValue(true), value(val) {}
+
+        // Check if the Optional has a value
+        bool isPresent() const {
+            return hasValue;
+        }
+
+        // Get the value if present, otherwise throw an exception
+        const T& get() const {
+            if (!hasValue) {
+                throw std::logic_error("No value present in Optional");
+            }
+            return value;
+        }
+
+        // Get the value if present, or a default value if absent
+        T getOrElse(const T& defaultValue) const {
+            return hasValue ? value : defaultValue;
+        }
+
+        // Get the value if present, or throw a specific exception if absent
+        template<typename E>
+        T orElseThrow(const E& ex) const {
+            if (!hasValue) {
+                throw ex;
+            }
+            return value;
+        }
+    };
+
+    template<typename T>
+    class ValueHolder {
+    private:
+        T defaultValue;
+        T value;
+
+    public:
+        // Constructor to initialize the ValueHolder with an initial value
+        ValueHolder(const T& initialValue) : defaultValue(initialValue), value(initialValue) {}
+
+        // Retrieve the currently held value
+        const T& get() const {
+            return value;
+        }
+
+        // Set a new value for the ValueHolder
+        void set(const T& newValue) {
+            value = newValue;
+        }
+
+        // Get the immutable default value held by this ValueHolder
+        const T& getDefaultValue() const {
+            return defaultValue;
+        }
     };
 }
 
