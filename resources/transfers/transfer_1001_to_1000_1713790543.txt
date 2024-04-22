@@ -1,0 +1,5 @@
+Transfer Details
+From Account (ID: 1001) - Owner: Jane Smith
+To Account (ID: 1000) - Owner: John Paul
+Amount Transferred: $4
+Transfer successful.

@@ -6,6 +6,8 @@
 #include "containers.h"
 #include <vector>
 #include "practice.h"
+#include "bank.h"
+#include "bank_account.h"
 #include "tictac_game.h"
 
 using namespace std;
@@ -15,32 +17,30 @@ using namespace Utility::Mth;
 //using Vec3 = Utility::Mth::Vec3;
 
 ///int argc, char * argv[]
+
+Bank myBank = Bank("Standard");
+
+
 int main()
 {
-    Container::ArrayList<int> myList; 
 
-    
-    for (int i = 1; i <= 20; ++i) {
-        myList.add(i);
-    }
+    myBank.addAccount("John Paul", 10.0);
+    myBank.addAccount("Jane Smith", 12.0);
+    myBank.addAccount("Alice Johnson", 20.0);
 
-    // Define a consumer function to print whether a number is even or odd
-    Function<int, string> numberEvaluator = [&](int x) -> string {
-        return (x % 2 == 0) ? "Even" : "Odd";
-        };
-
-    // Define a consumer function to print the number along with its evaluation
-    Consumer<int> consumer = [&numberEvaluator](int x) {
-        std::cout << numberEvaluator(x) << ": " << x << std::endl;
-        };
+    BankAccount& account = myBank.getAccount(1000);
+    BankAccount& account2 = myBank.getAccount(1001);
+    BankAccount& account3 = myBank.getAccount(1002);
 
 
-      myList.forEach(consumer);
+    myBank.transfer(1001, 1000, 4);
+    myBank.transfer(1001, 1002, 460);
 
-	Practice::startUp();
-	//TicTacGame::startUp();
+ 
+ 
+    myBank.generateReport();
 
-	Vec2 mousePosition = Vec2(-37, 2.3);
+  
 
 	return 0;
 }

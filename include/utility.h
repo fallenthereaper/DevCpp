@@ -109,6 +109,14 @@ namespace Utility {
         std::cout << std::endl;
     }
 
+   const void endl(const int n = 1) {
+       int temp = 0;
+       while (temp < n) {
+           std::cout << std::endl;
+           temp++;
+       }
+    }
+
     // Check if a number is even
     bool isEven(int num) {
         return num % 2 == 0;
@@ -187,8 +195,8 @@ namespace Utility {
         b = temp;
     }
 
-    const string repeatString(const string& str, int count) {
-        string result;
+    const std::string repeatString(const std::string& str, int count) {
+        std::string result;
         for (int i = 0; i < count; ++i) {
             result += str;
         }

@@ -3,7 +3,7 @@
 
 GameGrid::GameGrid(int size) : GameGrid(size, size) {
     // Delegates to the previous constructor with width = height = size
-}
+} 
 
 GameGrid::GameGrid(int width = 3, int height = 3) : width(width), height(height) {
     // Initialize the board

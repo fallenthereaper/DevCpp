@@ -1,0 +1,5 @@
+Transfer Details
+From Account (ID: 1001) - Owner: Jane Smith
+To Account (ID: 1002) - Owner: Alice Johnson
+Amount Transferred: $560
+Transfer successful.
