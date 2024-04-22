@@ -1,9 +1,6 @@
 #include "bank.h"
-#include "bank_account.h"
-#include <iostream>
-#include <iomanip>
-#include <fstream>
-#include <ctime>    // For getting current time
+
+ // For getting current time
 class Bank;
 
 int Bank::nextAccountNumber = 1000; // Initialize static member
@@ -14,7 +11,7 @@ Bank::Bank(const std::string& name) : bankName(name) {}
 // Destructor definition
 Bank::~Bank() {
     std::cout << "Bank " << bankName << " is closing\n";
-    std::cout << std::endl;
+    Utility::endl();
 }
 
 // Member function to add a new bank account
@@ -22,16 +19,20 @@ void Bank::addAccount(const std::string& ownerName, double initialBalance = 0) {
     int accountNumber = nextAccountNumber++;
     auto newAccount = std::make_shared<BankAccount>(ownerName, initialBalance, accountNumber);
     accounts.push_back(newAccount);
-    std::cout << "New account created for " << ownerName << " with account number " << accountNumber << "\n";
-    std::cout << std::endl;
+   // std::cout << "New account created for " << ownerName << " with account number " << accountNumber << "\n";
+  //  std::cout << std::endl;
 }
 
 void Bank::addAccount(const BankAccount& bankAccount) {
     this->addAccount(bankAccount.getOwnerName(), bankAccount.getBalance());
 }
 
+const bool Bank::transfer(const BankAccount& srcBankAccount, const BankAccount& toBankAccount, double amount) {
+    return transfer(srcBankAccount.getAccountId(), toBankAccount.getAccountId(), amount);
+}
+
 // Member function to perform a transfer between two accounts
-bool Bank::transfer(int fromAccountNumber, int toAccountNumber, double amount) {
+const bool Bank::transfer(int fromAccountNumber, int toAccountNumber, double amount) {
     auto fromAccount = findAccount(fromAccountNumber);
     auto toAccount = findAccount(toAccountNumber);
 
@@ -98,7 +99,7 @@ void Bank::displayAllAccounts() const {
 
 // Member function to generate a report of all accounts
 void Bank::generateReport() const {
-    std::cout << std::endl;
+    Utility::endl();
     std::cout << "Bank Report for " << bankName << ":\n";
 
     // Display total number of accounts and total balance in the bank
@@ -122,7 +123,7 @@ void Bank::generateReport() const {
 
     // Optional: Display additional information or breakdowns (e.g., by account type or balance range)
 
-    std::cout << std::endl;
+    Utility::endl();
 }
 const std::string& Bank::getBankName()  {
 

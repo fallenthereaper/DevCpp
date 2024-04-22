@@ -3,6 +3,11 @@
 
 #include <string>
 #include <vector>
+#include <iostream>
+#include <iomanip>
+#include <fstream>
+#include <ctime>   
+#include "bank_account.h"
 
 #include <memory> // For smart pointers
 
@@ -22,7 +27,9 @@ public:
     void addAccount(const BankAccount& bankAccount);
 
     // Member function to perform a transfer between two accounts
-    bool transfer(int fromAccountNumber, int toAccountNumber, double amount);
+    const bool transfer(int fromAccountNumber, int toAccountNumber, double amount);
+
+    const bool transfer(const BankAccount& srcBankAccount, const BankAccount& toBankAccount, double amount);
 
     // Member function to display all accounts and their balances
     void displayAllAccounts() const;

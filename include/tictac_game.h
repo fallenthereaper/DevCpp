@@ -6,7 +6,6 @@
 
 namespace TicTacGame {
 	
-
-	void startUp();
+	const void startUp();
 }
 #endif // TICTAC_GAME_H

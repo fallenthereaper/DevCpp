@@ -2,6 +2,7 @@
 #include <iostream>
 #include <iomanip>
 
+class BankAccount;
 
 // Constructor definition
 BankAccount::BankAccount(const std::string& ownerName, double initialBalance, int accountId)
@@ -26,6 +27,7 @@ BankAccount BankAccount::deposit(double amount) {
 
 // Member function to withdraw money from the account
 bool BankAccount::withdraw(double amount) {
+    Utility::endl();
     if (amount > 0 && balance >= amount) {
         balance -= amount;
         // Add withdrawal transaction to history
@@ -40,6 +42,8 @@ bool BankAccount::withdraw(double amount) {
             });
         return false;
     }
+
+
 }
 
 // Member function to apply interest to the account balance

@@ -211,7 +211,7 @@ namespace TicTacGame {
 
 
 
-    void TicTacGame::startUp() {
+   const void TicTacGame::startUp() {
 
         GameGrid* gameGrid = new GameGrid(3, 3);
 

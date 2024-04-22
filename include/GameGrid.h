@@ -18,12 +18,11 @@ public:
     // Destructor
     ~GameGrid();
 
-
     void draw() const;
 
     bool placeSymbol(int row, int col, char symbol);
 
-    bool checkWin(char symbol) const;
+    bool matchesPattern(char symbol) const;
 
     int evaluate() const;
 

@@ -1,6 +1,8 @@
 #include "GameGrid.h"
 
 
+class GameGrid;
+
 GameGrid::GameGrid(int size) : GameGrid(size, size) {
     // Delegates to the previous constructor with width = height = size
 } 
@@ -50,7 +52,15 @@ bool GameGrid::placeSymbol(int row, int col, char symbol) {
 }
 
 
-bool GameGrid::checkWin(char symbol) const {
+bool GameGrid::matchesPattern(char symbol) const {
+
+    /*
+   int grid[][] = {0, 0, 0}
+                  {0, 0, 0}
+                  {0, 0, 0} 
+    */
+    
+
     // Check rows and columns
     for (int i = 0; i < height; ++i) {
         bool rowWin = true;
@@ -58,7 +68,7 @@ bool GameGrid::checkWin(char symbol) const {
 
         for (int j = 0; j < width; ++j) {
             if (grid[i][j] != symbol) {
-                rowWin = false;
+                rowWin = false; //ROWS
             }
             if (grid[j][i] != symbol) {
                 colWin = false;
@@ -86,10 +96,10 @@ bool GameGrid::checkWin(char symbol) const {
 }
 
 int GameGrid::evaluate() const {
-    if (checkWin('O')) {
+    if (matchesPattern('O')) {
         return 1; // AI wins
     }
-    else if (checkWin('X')) {
+    else if (matchesPattern('X')) {
         return -1; // Human wins
     }
     else if (isGridFull()) {
