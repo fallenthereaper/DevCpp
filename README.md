@@ -1,1 +1,1 @@
-Started April 2024 with the porpuse pf learning C++
+Project i started in April 2024 with the porpuse of learning C++.
