@@ -1,20 +1,23 @@
-#include "src/core/shop/registry/ItemRegistry.h"
+#pragma once
+
+#include "src/core/shop/registry/Items.h"
 #include "src/core/shop/Item.h"
 
-// Register item types during static initialization
-namespace {
-    struct ItemRegistrar {
-        ItemRegistrar() {
-            ShopGame::ItemRegistry::registerItem("iron_sword", []() -> ShopGame::Item* { return new ShopGame::Item("Iron Sword", 30.0f); });
-            ShopGame::ItemRegistry::registerItem("apple", []() -> ShopGame::Item* { return new ShopGame::Item("Apple", 5.0f); });
-            ShopGame::ItemRegistry::registerItem("potion_health", []() -> ShopGame::Item* { return new ShopGame::Item("Health Potion", 20.0f, "Heals the user"); });
-            ShopGame::ItemRegistry::registerItem("pickaxe", []() -> ShopGame::Item* { return new ShopGame::Item("Pickaxe", 10.0f); });
-            ShopGame::ItemRegistry::registerItem("torch", []() -> ShopGame::Item* { return new ShopGame::Item("Torch", 10.0f); });
-            ShopGame::ItemRegistry::registerItem("bow", []() -> ShopGame::Item* { return new ShopGame::Item("Bow", 20.0f); });
-            ShopGame::ItemRegistry::registerItem("shield", []() -> ShopGame::Item* { return new ShopGame::Item("Shield", 15.0f); });
-            ShopGame::ItemRegistry::registerItem("diamond", []() -> ShopGame::Item* { return new ShopGame::Item("Diamond", 100.0f); });
-            ShopGame::ItemRegistry::registerItem("bread", []() -> ShopGame::Item* { return new ShopGame::Item("Bread", 2.0f); });
-            ShopGame::ItemRegistry::registerItem("armor_set", []() -> ShopGame::Item* { return new ShopGame::Item("Armor Set", 40.0f); });
-        }
-    } itemRegistrar; // Static instance of ItemRegistrar
-}
+namespace ShopGame {
+
+    
+    void ShopGame::registerItems() {
+        auto registry = ItemRegistry::getInstance();
+        registry->registerItem("iron_sword", []() -> Item* { return new Item("Iron Sword", 30.0f); });
+        registry->registerItem("apple", []() -> Item* { return new Item("Apple", 5.0f); });
+        registry->registerItem("potion_health", []() -> Item* { return new Item("Health Potion", 20.0f, "Heals the user"); });
+        registry->registerItem("pickaxe", []() -> Item* { return new Item("Pickaxe", 10.0f); });
+        registry->registerItem("torch", []() -> Item* { return new Item("Torch", 10.0f); });
+        registry->registerItem("bow", []() -> Item* { return new Item("Bow", 20.0f); });
+        registry->registerItem("shield", []() -> Item* { return new Item("Shield", 15.0f); });
+        registry->registerItem("diamond", []() -> Item* { return new Item("Diamond", 100.0f); });
+        registry->registerItem("bread", []() -> Item* { return new Item("Bread", 2.0f); });
+        registry->registerItem("armor_set", []() -> Item* { return new Item("Armor Set", 40.0f); });
+    }
+
+} // namespace ShopGame

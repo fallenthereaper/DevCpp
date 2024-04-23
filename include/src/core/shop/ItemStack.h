@@ -1,29 +1,25 @@
 #pragma once
-#include <iostream>
+#include "src/core/shop/Item.h"  // Include the definition of Item
 
-class Item;
+namespace ShopGame {
 
- namespace ShopGame {
+    class ItemStack {
+    public:
+        ItemStack(Item* item, std::byte quantity);
 
-        class ItemStack {
-        public:
-            ItemStack(Item* item, std::byte quantity) : item(item), count(quantity) {}
+        Item* getItem() const;
 
-            Item* getItem() const;
+        std::byte getCount() const;
 
-            std::byte getCount() const;
+        void setCount(int newQuantity);
 
-            void setCount(int newQuantity);
+        void increaseCount(int amount);
 
-            void increaseCount(int amount);
+        void decreaseCount(int amount);
 
-            void decreaseCount(int amount);
+    private:
+        Item* item;   // Pointer to the item type
+        std::byte count; // Quantity of this item in the stack
+    };
 
-        private:
-            Item* item;   // Pointer to the item type
-            std::byte count; // Quantity of this item in the stack
-
-        };
-
- } // namespace ShopGame
-
+} // namespace ShopGame

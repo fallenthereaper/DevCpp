@@ -217,6 +217,7 @@ namespace Utility {
         };
 
         struct Vec2 {
+        public:
             float x;
             float y;
 

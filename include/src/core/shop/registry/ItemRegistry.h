@@ -16,26 +16,29 @@ namespace ShopGame {
     public:
         using ItemFactory = std::function<Item*()>;
 
+         static ItemRegistry* getInstance();
+
         // Register an item type with a unique identifier
-        static void registerItem(const std::string& itemId, ItemFactory creator) {
-            getItemRegistry()[itemId] = creator;
-        }
+         void registerItem(const std::string& itemId, std::function<Item* ()> factory);
 
         // Create an instance of the item based on its identifier
-        static Item* createItem(const std::string& itemId) {
-            auto it = getItemRegistry().find(itemId);
-            if (it != getItemRegistry().end()) {
-                return it->second();
-            }
-            return nullptr;
-        }
+         Item* getItem(const std::string& itemId) const;
+
+         ItemRegistry(const ItemRegistry&) = delete;
+         ItemRegistry& operator=(const ItemRegistry&) = delete;
+
+         const std::unordered_map<std::string, ItemFactory>& getItemMap() const;
+
+     
+         void listAllItems() const;
 
     private:
-        // Static function to access the item registry map
-        static std::unordered_map<std::string, ItemFactory>& getItemRegistry() {
-            static std::unordered_map<std::string, ItemFactory> itemRegistry;
-            return itemRegistry;
-        }
+        static std::unordered_map<std::string, ItemFactory> items;
+        static ItemRegistry* instance;
+        ItemRegistry() {} // Private constructor for singleton
+
+        
+
     };
 
 } // namespace ShopGame

@@ -12,7 +12,9 @@
 #include <sstream>
 #include <iomanip>
 #include "src/core/shop/registry/ItemRegistry.h"
-
+#include "src/core/shop/registry/Items.h";
+#include "src/core/shop/Game.h";
+#include "src/core/GameRenderer.h";
 using namespace std;
 using namespace Utility;
 using namespace Utility::Mth;
@@ -42,20 +44,42 @@ unsigned long long hexToDecimal(const std::string& hexString) {
     return ss.str();
 }
 
+  ShopGame::Game* game = nullptr;
 
-  using  Item = ShopGame::Item;
+
+  void clearScreen() {
+      system("cls");
+  }
 
 
-    int main()
+  using Game = ShopGame::Game;
+
+    int main(int argc, const char * argv[])
     {
+      
+        ShopGame::registerItems();
 
-        ShopGame::Item* item = ShopGame::ItemRegistry::createItem("sword");
+        game = new Game(50, 50);
 
-        std::cout << (*item).getName();
+   
+        game->start();
 
-     
+ 
 
+        while (game->isRunning()) {
+        
+        
+          
+            game->update();
 
+            GameRenderer::render(game);
+        }
+
+        GameRenderer::clearScreen();
+
+        game->clean();
+
+    
         return 0;
     }
 
