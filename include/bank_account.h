@@ -17,7 +17,7 @@ public:
 
     // Member function to withdraw a specified amount from the account
     // Returns true if withdrawal is successful, false otherwise (insufficient funds)
-    bool withdraw(double amount);
+    const bool withdraw(double amount);
 
     // Member function to apply interest to the account balance
     void applyInterest(double rate);

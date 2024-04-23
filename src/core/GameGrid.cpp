@@ -1,8 +1,5 @@
 #include "GameGrid.h"
 
-
-class GameGrid;
-
 GameGrid::GameGrid(int size) : GameGrid(size, size) {
     // Delegates to the previous constructor with width = height = size
 } 

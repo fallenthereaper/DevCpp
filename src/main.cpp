@@ -9,6 +9,8 @@
 #include "bank.h"
 #include "bank_account.h"
 #include "tictac_game.h"
+#include <sstream>
+#include <iomanip>
 
 using namespace std;
 using namespace Utility;
@@ -18,6 +20,20 @@ using namespace Utility::Mth;
 
 ///int argc, char * argv[]
 
+unsigned long long hexToDecimal(const std::string& hexString) {
+    unsigned long long decimalValue;
+    std::stringstream ss;
+    ss << std::hex << hexString;
+    ss >> decimalValue;
+    return decimalValue;
+}
+
+// Function to convert a decimal integer to a hexadecimal string
+std::string decimalToHex(unsigned long long decimalValue) {
+    std::stringstream ss;
+    ss << std::hex << std::uppercase << decimalValue;
+    return ss.str();
+}
 
 
     Bank myBank = Bank("Standard");
@@ -28,25 +44,34 @@ using namespace Utility::Mth;
 
         Vec2 mousePosition = Vec2(2, 2);
 
-        std::cout << mousePosition.getX();
+
 
         myBank.addAccount("John Paul", 10.0);
-        myBank.addAccount("Jane Smith", 12.0);
-        myBank.addAccount("Alice Johnson", 20.0);
+        myBank.addAccount("Jane Smith", 10.0);
+        myBank.addAccount("Alice Johnson", 10.0);
 
-        BankAccount& account = myBank.getAccount(1000);
-        BankAccount& account2 = myBank.getAccount(1001);
-        BankAccount& account3 = myBank.getAccount(1002);
+        BankAccount account = myBank.getAccount(1000);
+        BankAccount account2 = myBank.getAccount(1001);
+        BankAccount account3 = myBank.getAccount(1002);
 
 
-        myBank.transfer(account, account2, 4);
-        myBank.transfer(account2, account3, 460);
+
+        std::cout << "Pointer of account 1:  " << &account << '\n';
+        std::cout << "Pointer of account 2:  " << &account2 << '\n';
+        std::cout << "Pointer of account 3:  " << &account3 << '\n';
+
+        std::cout << "Size of account:  " << sizeof(BankAccount) << '\n';
+
+  
+
+      //  myBank.transfer(account, account2, 4);
+       // myBank.transfer(account2, account3, 460);
 
         account.withdraw(2);
 
 
 
-        myBank.generateReport();
+      ///  myBank.generateReport();
 
 
 

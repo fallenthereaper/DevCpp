@@ -27,9 +27,9 @@ public:
     void addAccount(const BankAccount& bankAccount);
 
     // Member function to perform a transfer between two accounts
-    const bool transfer(int fromAccountNumber, int toAccountNumber, double amount);
+    const bool transfer(int, int, double);
 
-    const bool transfer(const BankAccount& srcBankAccount, const BankAccount& toBankAccount, double amount);
+    const bool transfer(const BankAccount&, const BankAccount&, double);
 
     // Member function to display all accounts and their balances
     void displayAllAccounts() const;
@@ -39,7 +39,7 @@ public:
 
     const std::string& getBankName();
 
-    BankAccount& getAccount(int accountNumber) ;
+    BankAccount& getAccount(int);
 
 protected:
     std::string bankName;

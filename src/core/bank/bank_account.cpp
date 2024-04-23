@@ -26,7 +26,7 @@ BankAccount BankAccount::deposit(double amount) {
 }
 
 // Member function to withdraw money from the account
-bool BankAccount::withdraw(double amount) {
+const bool BankAccount::withdraw(double amount) {
     Utility::endl();
     if (amount > 0 && balance >= amount) {
         balance -= amount;

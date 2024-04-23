@@ -1,7 +1,5 @@
 #include "bank.h"
 
- // For getting current time
-class Bank;
 
 int Bank::nextAccountNumber = 1000; // Initialize static member
 
