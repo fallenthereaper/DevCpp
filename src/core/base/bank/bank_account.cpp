@@ -1,15 +1,14 @@
-#include "bank_account.h"
+#include "src/core/bank/bank_account.h"
 #include <iostream>
 #include <iomanip>
 
-class BankAccount;
 
 // Constructor definition
 BankAccount::BankAccount(const std::string& ownerName, double initialBalance, int accountId)
     : ownerName(ownerName), balance(initialBalance), accountId(accountId) {}
 
 // Member function to deposit money into the account
-BankAccount BankAccount::deposit(double amount) {
+BankAccount BankAccount::deposit(const double amount) {
     if (amount > 0) {
         balance += amount;
         // Add deposit transaction to history
@@ -22,6 +21,8 @@ BankAccount BankAccount::deposit(double amount) {
             std::cerr << "Invalid deposit amount. Amount must be positive.\n";
             });
     }
+
+
     return *this;
 }
 

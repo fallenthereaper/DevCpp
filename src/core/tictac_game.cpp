@@ -1,9 +1,9 @@
 
-#include "main.h";
+#include "src/core/main.h";
 
 #include <climits>
 
-#include "tictac_game.h";
+#include "src/core/tictac_game.h";
 
 
 const int BOARD_SIZE = 9;
@@ -213,7 +213,7 @@ namespace TicTacGame {
 
    const void TicTacGame::startUp() {
 
-        GameGrid* gameGrid = new GameGrid(3, 3);
+       GameGrid* gameGrid = new GameGrid(3, 3);
 
 
 

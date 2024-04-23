@@ -1,1 +1,1 @@
-Project i started in April 2024 with the porpuse of learning C++.
+Project i started in April 2024 with the purpose of learning C++.

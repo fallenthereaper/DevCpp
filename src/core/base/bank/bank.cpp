@@ -1,5 +1,6 @@
-#include "bank.h"
+#include "src/core/bank/bank.h"
 
+class BankAccount;
 
 int Bank::nextAccountNumber = 1000; // Initialize static member
 
@@ -27,6 +28,10 @@ void Bank::addAccount(const BankAccount& bankAccount) {
 
 const bool Bank::transfer(const BankAccount& srcBankAccount, const BankAccount& toBankAccount, double amount) {
     return transfer(srcBankAccount.getAccountId(), toBankAccount.getAccountId(), amount);
+}
+
+const bool Bank::transfer(const BankAccount& srcBankAccount, const BankAccount& toBankAccount) {
+    return transfer(srcBankAccount.getAccountId(), toBankAccount.getAccountId(), toBankAccount.getBalance());
 }
 
 // Member function to perform a transfer between two accounts
@@ -62,11 +67,14 @@ const bool Bank::transfer(int fromAccountNumber, int toAccountNumber, double amo
             }
             else {
                 // Amount is not above $1000, print transfer details to console only
+       
                 std::cout << "Transfer Details\n";
+                std::cout << "---------------------------\n";
                 std::cout << "From Account (ID: " << fromAccountNumber << ") - Owner: " << fromAccount->getOwnerName() << "\n";
                 std::cout << "To Account (ID: " << toAccountNumber << ") - Owner: " << toAccount->getOwnerName() << "\n";
                 std::cout << "Amount Transferred: $" << std::fixed << std::setprecision(2) << amount << "\n";
                 std::cout << "Transfer successful.\n";
+                std::cout << "---------------------------\n";
             }
 
             return true;

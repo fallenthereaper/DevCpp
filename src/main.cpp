@@ -1,16 +1,17 @@
 ﻿// main.cpp : Defines the entry point for the application.
 //
 
-#include "main.h"
-#include "utility.h"
-#include "containers.h"
+#include "src/core/main.h"
+#include "src/core/utils/utility.h"
+#include "src/core/utils/containers.h"
 #include <vector>
-#include "practice.h"
-#include "bank.h"
-#include "bank_account.h"
-#include "tictac_game.h"
+#include "src/core/practice.h"
+#include "src/core/bank/bank.h"
+#include "src/core/bank/bank_account.h"
+#include "src/core//tictac_game.h"
 #include <sstream>
 #include <iomanip>
+#include "src/core/shop/registry/ItemRegistry.h"
 
 using namespace std;
 using namespace Utility;
@@ -19,6 +20,12 @@ using namespace Utility::Mth;
 //using Vec3 = Utility::Mth::Vec3;
 
 ///int argc, char * argv[]
+
+static const std::vector<std::string> BELOW_TWENTY = {
+       "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+       "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen",
+       "seventeen", "eighteen", "nineteen"
+};
 
 unsigned long long hexToDecimal(const std::string& hexString) {
     unsigned long long decimalValue;
@@ -29,50 +36,24 @@ unsigned long long hexToDecimal(const std::string& hexString) {
 }
 
 // Function to convert a decimal integer to a hexadecimal string
-std::string decimalToHex(unsigned long long decimalValue) {
+  std::string decimalToHex(unsigned long long decimalValue) {
     std::stringstream ss;
     ss << std::hex << std::uppercase << decimalValue;
     return ss.str();
 }
 
 
-    Bank myBank = Bank("Standard");
+  using  Item = ShopGame::Item;
 
 
     int main()
     {
 
-        Vec2 mousePosition = Vec2(2, 2);
+        ShopGame::Item* item = ShopGame::ItemRegistry::createItem("sword");
 
+        std::cout << (*item).getName();
 
-
-        myBank.addAccount("John Paul", 10.0);
-        myBank.addAccount("Jane Smith", 10.0);
-        myBank.addAccount("Alice Johnson", 10.0);
-
-        BankAccount account = myBank.getAccount(1000);
-        BankAccount account2 = myBank.getAccount(1001);
-        BankAccount account3 = myBank.getAccount(1002);
-
-
-
-        std::cout << "Pointer of account 1:  " << &account << '\n';
-        std::cout << "Pointer of account 2:  " << &account2 << '\n';
-        std::cout << "Pointer of account 3:  " << &account3 << '\n';
-
-        std::cout << "Size of account:  " << sizeof(BankAccount) << '\n';
-
-  
-
-      //  myBank.transfer(account, account2, 4);
-       // myBank.transfer(account2, account3, 460);
-
-        account.withdraw(2);
-
-
-
-      ///  myBank.generateReport();
-
+     
 
 
         return 0;

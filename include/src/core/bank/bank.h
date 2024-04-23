@@ -27,9 +27,12 @@ public:
     void addAccount(const BankAccount& bankAccount);
 
     // Member function to perform a transfer between two accounts
-    const bool transfer(int, int, double);
+    const bool transfer(int src, int to, double val);
 
-    const bool transfer(const BankAccount&, const BankAccount&, double);
+    const bool transfer(const BankAccount&, const BankAccount&, double val);
+
+
+    const bool transfer(const BankAccount& src, const BankAccount& to);
 
     // Member function to display all accounts and their balances
     void displayAllAccounts() const;

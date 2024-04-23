@@ -1,5 +1,5 @@
-#include "practice.h";
-#include "main.h";
+#include "src/core/practice.h";
+#include "src/core/main.h";
 
 using namespace std;
 

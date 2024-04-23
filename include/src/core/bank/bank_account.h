@@ -4,8 +4,8 @@
 #include <string>
 #include <vector>
 #include <functional>
-#include "functional.h"
-#include "utility.h"
+#include "src/core/utils/functional.h"
+#include "src/core/utils/utility.h"
 
 class BankAccount {
 public:
@@ -13,7 +13,7 @@ public:
     BankAccount(const std::string& ownerName, double initialBalance, int accountId);
 
     // Member function to deposit a specified amount into the account
-    BankAccount deposit(double amount);
+    BankAccount deposit(const double amount);
 
     // Member function to withdraw a specified amount from the account
     // Returns true if withdrawal is successful, false otherwise (insufficient funds)

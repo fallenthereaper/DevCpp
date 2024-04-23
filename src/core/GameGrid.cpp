@@ -1,4 +1,4 @@
-#include "GameGrid.h"
+#include "src/core/GameGrid.h";
 
 GameGrid::GameGrid(int size) : GameGrid(size, size) {
     // Delegates to the previous constructor with width = height = size
