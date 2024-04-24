@@ -31,7 +31,25 @@ namespace GameRenderer {
 
         void drawText(const Vec2& pos, const std::string& text);
 
+        // Set a character at a specified position on the canvas
+        void setChar(int x, int y, char ch);
+
+        // Draw a line on the canvas from start to end with specified character
+        void drawLine(int startX, int startY, int endX, int endY, char ch);
+
+        void drawSquare(int x, int y, int width, int height, char ch, const std::string& buttonText = "", bool hollow = false);
+
+        void drawCircle(int centerX, int centerY, int radius, char ch, bool hollow = false);
+
+        void drawText(int x, int y, const std::string& text);
+
         void render() const;
+
+        int getWidth() const;
+
+        int getHeight() const;
+
+        const char** getData() const;
 
     private:
         // Check if a given position is within the canvas bounds

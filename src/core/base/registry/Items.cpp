@@ -4,20 +4,32 @@
 #include "src/core/shop/Item.h"
 
 namespace ShopGame {
+    using ItemSupplier = std::function<Item* ()>;
+
+   const auto registry = ItemRegistry::getInstance();
+
+
+   static ItemSupplier APPLE = registerItemBuilder("apple", 5.0f);
+   static ItemSupplier IRON_SWORD = registerItemBuilder("iron_sword", 30.0f);
+   static ItemSupplier POTION_HEALTH = registerItemBuilder("potion_health", 20.0f, "Heals the user");
+   static ItemSupplier PICKAXE = registerItemBuilder("pickaxe", 10.0f);
+   static ItemSupplier TORCH = registerItemBuilder("torch", 10.0f);
+   static ItemSupplier BOW = registerItemBuilder("bow", 20.0f);
+   static ItemSupplier SHIELD = registerItemBuilder("shield", 15.0f);
+   static ItemSupplier DIAMOND = registerItemBuilder("diamond", 100.0f);
+   static ItemSupplier BREAD = registerItemBuilder("bread", 2.0f);
+   static ItemSupplier ARMOR_SET = registerItemBuilder("armor_set", 40.0f);
+
+   
+   static ItemSupplier ShopGame::registerItemBuilder(const std::string& name, float price, const std::string& description) {
+       auto registry = ItemRegistry::getInstance();
+       return registry->registerItem(name, [name, price, description]() -> Item* { return new Item(name, price, description); });
+   }
+
+   void ShopGame::registerItems() {
+    
+   }
 
     
-    void ShopGame::registerItems() {
-        auto registry = ItemRegistry::getInstance();
-        registry->registerItem("iron_sword", []() -> Item* { return new Item("Iron Sword", 30.0f); });
-        registry->registerItem("apple", []() -> Item* { return new Item("Apple", 5.0f); });
-        registry->registerItem("potion_health", []() -> Item* { return new Item("Health Potion", 20.0f, "Heals the user"); });
-        registry->registerItem("pickaxe", []() -> Item* { return new Item("Pickaxe", 10.0f); });
-        registry->registerItem("torch", []() -> Item* { return new Item("Torch", 10.0f); });
-        registry->registerItem("bow", []() -> Item* { return new Item("Bow", 20.0f); });
-        registry->registerItem("shield", []() -> Item* { return new Item("Shield", 15.0f); });
-        registry->registerItem("diamond", []() -> Item* { return new Item("Diamond", 100.0f); });
-        registry->registerItem("bread", []() -> Item* { return new Item("Bread", 2.0f); });
-        registry->registerItem("armor_set", []() -> Item* { return new Item("Armor Set", 40.0f); });
-    }
 
 } // namespace ShopGame

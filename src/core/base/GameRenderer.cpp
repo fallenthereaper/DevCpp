@@ -2,6 +2,7 @@
 
 
 #include "src/core/GameRenderer.h";
+#include "src/core/shop/registry/ItemRegistry.h"
 
 namespace GameRenderer {
 
@@ -10,7 +11,7 @@ namespace GameRenderer {
     }
 
     // Function to render the game state
-    void GameRenderer::render( ShopGame::Game* game) {
+    void GameRenderer::render(ShopGame::Game* game) {
          clearScreen();
 
           // Calculate FPS
@@ -26,16 +27,17 @@ namespace GameRenderer {
 
         smoothedFps = (smoothingFactor * fps) + ((1.0 - smoothingFactor) * smoothedFps);
 
+      //  ShopGame::ItemRegistry::getInstance()->listAllItems();
+     //   std::cout << std::endl;
+        game->getCanvas()->drawText(Vec2( 0, 0), "FPS: " + std::to_string(static_cast<int>(smoothedFps)));
+
+
         game->render();
+        game->getCanvas()->clear();
+       
 
-        // std::cout << "FPS: " << static_cast<int>(smoothedFps) << std::endl;
-        // 
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(10000)); 
-        // Clear screen
-       // std::system("cls");
-        // Render the game state
-    //    std::cout << game.getGameState() << std::endl;
+        std::this_thread::sleep_for(std::chrono::milliseconds(16)); 
+  
     }
 
 } // namespace GameRenderer

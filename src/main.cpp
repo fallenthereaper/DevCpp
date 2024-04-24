@@ -47,8 +47,43 @@ unsigned long long hexToDecimal(const std::string& hexString) {
   ShopGame::Game* game = nullptr;
 
 
-  void clearScreen() {
-      system("cls");
+
+  void coreInit() {
+
+      ShopGame::registerItems();
+  }
+
+  // Function to compare two canvas data arrays
+  bool compareCanvases(const char** canvas1, const char** canvas2, int width, int height) {
+      for (int y = 0; y < height; ++y) {
+          for (int x = 0; x < width; ++x) {
+              if (canvas1[y][x] != canvas2[y][x]) {
+                  return false; // Found a difference in the canvas content
+              }
+          }
+      }
+      return true; // Canvases are identical
+  }
+
+  // Function to copy canvas data
+  const char** copyCanvas(const char** canvas, int width, int height) {
+      char** copiedCanvas = new char* [height];
+      for (int y = 0; y < height; ++y) {
+          copiedCanvas[y] = new char[width];
+          for (int x = 0; x < width; ++x) {
+              copiedCanvas[y][x] = canvas[y][x];
+          }
+      }
+      return const_cast<const char**>(copiedCanvas);
+  }
+
+  void deleteCanvas(const char** canvas, int height) {
+      if (canvas != nullptr) {
+          for (int y = 0; y < height; ++y) {
+              delete[] canvas[y]; // Free each row of the canvas
+          }
+          delete[] canvas; // Free the array of rows
+      }
   }
 
 
@@ -56,30 +91,49 @@ unsigned long long hexToDecimal(const std::string& hexString) {
 
     int main(int argc, const char * argv[])
     {
-      
-        ShopGame::registerItems();
+        coreInit();
+
+
+   
 
         game = new Game(100, 28);
 
    
         game->start();
 
- 
+        const char** prevCanvas = nullptr;
+  
+        GameRenderer::TextCanvas* canvas = game->getCanvas();
 
         while (game->isRunning()) {
-        
-        
-          
+            // Get the current canvas data
+         
+
+            // Update game logic
             game->update();
 
-            GameRenderer::render(game);
+            const char** currentCanvas = canvas->getData();
+
+            // Check if the canvas content has changed
+            if (prevCanvas == nullptr || !compareCanvases(prevCanvas, currentCanvas, canvas->getWidth(), canvas->getHeight())) {
+                // Render the game only if the canvas content has changed
+             //   GameRenderer::render(game);
+
+                // Update the previous canvas to match the current canvas
+                if (prevCanvas != nullptr) {
+                    delete[] prevCanvas; // Free the previously allocated memory
+                }
+                prevCanvas = copyCanvas(currentCanvas, canvas->getWidth(), canvas->getHeight());
+            }
+             GameRenderer::render(game);
+
+            
         }
 
-    // GameRenderer::clearScreen();
-
-        game->clean();
-
-        delete game;
+        // Clean up allocated memory for the last recorded canvas
+        if (prevCanvas != nullptr) {
+            delete[] prevCanvas;
+        }
 
     
         return 0;

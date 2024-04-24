@@ -8,7 +8,7 @@ namespace GameRenderer {
 
     TextCanvas::TextCanvas(int width, int height) : width(width), height(height) {
         // Allocate memory for the canvas
-        canvas = new char* [height];
+        canvas = new char* [height ];
         for (int i = 0; i < height; ++i) {
             canvas[i] = new char[width];
             // Initialize canvas with spaces
@@ -17,6 +17,18 @@ namespace GameRenderer {
             }
         }
     }
+
+    const char** TextCanvas::getData() const {
+        return const_cast<const char**>(canvas);
+    }
+
+    int TextCanvas::getWidth() const {
+        return width;
+    };
+
+    int TextCanvas::getHeight() const {
+        return height;
+    };
 
     TextCanvas::~TextCanvas() {
         // Deallocate memory for the canvas

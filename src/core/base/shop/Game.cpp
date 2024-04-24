@@ -19,18 +19,45 @@ namespace ShopGame {
 
         canvas->drawSquare(Vec2(25 + 9, 1), 24, 5, '*', "Item Shop", true);
 
+        //FIRST ROW
         canvas->drawSquare(Vec2(25, 7), 14, 3, '*', "Item 1", true);
         canvas->drawSquare(Vec2(25 + 14 + 2, 7), 14, 3, '*', "Item 2", true);
         canvas->drawSquare(Vec2(25 + 14 + 14 + 4, 7), 14, 3, '*', "Item 3", true);
-
+        //SECOND ROW
         canvas->drawSquare(Vec2(25, 10), 14, 3, '*', "Item 4", true);
         canvas->drawSquare(Vec2(25 + 14 + 2, 10), 14, 3, '*', "Item 5", true);
         canvas->drawSquare(Vec2(25 + 14 + 14 + 4, 10), 14, 3, '*', "Item 6", true);
   
-      //  std::cin >> input;
+      std::cin >> input;
         if (input == "q" || input == "exit") {
             getCanvas()->drawSquare(Vec2(5, 5), 9, 5, '*', "Game Update", true);
-            running = false;
+           
+            //running = false;
+        } else if (input == "0" ) {
+            getCanvas()->drawSquare(Vec2(5, 5), 9, 5, '*', "Frame 0", true);
+
+            //running = false;
+        }
+        else if (input == "1") {
+            getCanvas()->drawSquare(Vec2(5, 5), 9, 5, '*', "Frame 1", true);
+
+            //running = false;
+        }
+
+        else if (input == "2") {
+            getCanvas()->drawSquare(Vec2(5, 5), 9, 5, '*', "Frame 2", true);
+
+            //running = false;
+        }
+        else if (input == "3") {
+            getCanvas()->drawSquare(Vec2(5, 5), 9, 5, '*', "Frame 3", true);
+
+            //running = false;
+        } 
+        else if (input == "4") {
+            getCanvas()->drawSquare(Vec2(5, 5), 9, 5, '*', "Frame 4", true);
+
+            //running = false;
         }
     }
 

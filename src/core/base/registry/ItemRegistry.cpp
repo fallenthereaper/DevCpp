@@ -14,8 +14,9 @@ namespace ShopGame {
         return instance;
     }
 
-    void ItemRegistry::registerItem(const std::string& name, std::function<Item* ()> factory) {
+    std::function<Item* ()> ItemRegistry::registerItem(const std::string& name, std::function<Item* ()> factory) {
         items.emplace(name, factory);
+        return factory;
     }
 
 

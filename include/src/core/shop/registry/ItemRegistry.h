@@ -19,7 +19,7 @@ namespace ShopGame {
          static ItemRegistry* getInstance();
 
         // Register an item type with a unique identifier
-         void registerItem(const std::string& itemId, std::function<Item* ()> factory);
+         std::function<Item* ()> registerItem(const std::string& itemId, std::function<Item* ()> factory);
 
         // Create an instance of the item based on its identifier
          Item* getItem(const std::string& itemId) const;
