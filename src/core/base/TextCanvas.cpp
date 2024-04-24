@@ -81,8 +81,8 @@ namespace GameRenderer {
         }
 
         if (!buttonText.empty()) {
-            int textPosX = topLeft.x + (width - buttonText.length()) / 2;
-            int textPosY = topLeft.y + height / 2;
+            int textPosX = ((int)topLeft.x) + (width - buttonText.length()) / 2;
+            int textPosY = ((int)topLeft.y) + height / 2;
 
             drawText(Vec2(textPosX, textPosY), buttonText);
         }
@@ -99,9 +99,7 @@ namespace GameRenderer {
     }
 
     void TextCanvas::render() const {
-       
-        std::system("cls"); 
-
+      
         // Render canvas content
         for (int i = 0; i < height; ++i) {
             for (int j = 0; j < width; ++j) {

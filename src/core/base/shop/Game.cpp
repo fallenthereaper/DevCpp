@@ -9,14 +9,15 @@ namespace ShopGame {
 
     // Destructor
     Game::~Game() {
-        clean();
+       
     }
 
     void Game::update() { 
         std::string input;
-        std::cout << "User input: ";
-        std::cin >> input;
+  
+       // std::cin >> input;
         if (input == "q" || input == "exit") {
+            getCanvas()->drawSquare(Vec2(5, 5), 10, 10, '*', "Game Ended", true);
             running = false;
         }
     }
@@ -25,7 +26,7 @@ namespace ShopGame {
 
         getCanvas()->drawSquare(Vec2(0, 0), 10, 10, '*', "Game Ended", true);
     
-        delete this;
+  
     }
 
     void Game::render() {
@@ -45,10 +46,11 @@ namespace ShopGame {
 
     // Method to start the game
     void Game::start() {
-        std::cout << "Shop Game" << std::endl;
-        std::cout << "Type 'exit' to quit the game." << std::endl;
-        getCanvas()->drawSquare(Vec2(2, 2), 5, 5, '*', "Game Started", true);
+       // std::cout << "Shop Game" << std::endl;
+       // std::cout << "Type 'exit' to quit the game." << std::endl;
 
+        getCanvas()->drawSquare(Vec2(14, 14), 8, 5, '*', "Game Started", true);
+        getCanvas()->drawCircle(Vec2(6, 6), 3, '*');
         
     }
 

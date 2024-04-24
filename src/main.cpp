@@ -59,7 +59,7 @@ unsigned long long hexToDecimal(const std::string& hexString) {
       
         ShopGame::registerItems();
 
-        game = new Game(50, 50);
+        game = new Game(28, 28);
 
    
         game->start();
@@ -75,9 +75,11 @@ unsigned long long hexToDecimal(const std::string& hexString) {
             GameRenderer::render(game);
         }
 
-        GameRenderer::clearScreen();
+    // GameRenderer::clearScreen();
 
         game->clean();
+
+        delete game;
 
     
         return 0;
