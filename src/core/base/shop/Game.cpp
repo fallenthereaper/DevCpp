@@ -12,12 +12,24 @@ namespace ShopGame {
        
     }
 
-    void Game::update() { 
+    void Game::update() {  //TODO: move these to be able to be represented by a GameState interface so we can have more control what gets renderered
         std::string input;
+
+        GameRenderer::TextCanvas* canvas = this->getCanvas();
+
+        canvas->drawSquare(Vec2(25 + 9, 1), 24, 5, '*', "Item Shop", true);
+
+        canvas->drawSquare(Vec2(25, 7), 14, 3, '*', "Item 1", true);
+        canvas->drawSquare(Vec2(25 + 14 + 2, 7), 14, 3, '*', "Item 2", true);
+        canvas->drawSquare(Vec2(25 + 14 + 14 + 4, 7), 14, 3, '*', "Item 3", true);
+
+        canvas->drawSquare(Vec2(25, 10), 14, 3, '*', "Item 4", true);
+        canvas->drawSquare(Vec2(25 + 14 + 2, 10), 14, 3, '*', "Item 5", true);
+        canvas->drawSquare(Vec2(25 + 14 + 14 + 4, 10), 14, 3, '*', "Item 6", true);
   
-       // std::cin >> input;
+      //  std::cin >> input;
         if (input == "q" || input == "exit") {
-            getCanvas()->drawSquare(Vec2(5, 5), 10, 10, '*', "Game Ended", true);
+            getCanvas()->drawSquare(Vec2(5, 5), 9, 5, '*', "Game Update", true);
             running = false;
         }
     }
@@ -49,9 +61,7 @@ namespace ShopGame {
        // std::cout << "Shop Game" << std::endl;
        // std::cout << "Type 'exit' to quit the game." << std::endl;
 
-        getCanvas()->drawSquare(Vec2(14, 14), 8, 5, '*', "Game Started", true);
-        getCanvas()->drawCircle(Vec2(6, 6), 3, '*');
-        
+    
     }
 
     // Helper method for handling user input
