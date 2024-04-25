@@ -2,8 +2,8 @@
 #include "src/core/shop/game_state.h"
 #include "src/core/shop/game.h"
 	//GAME STATE
-	ShopGame::GameState::GameState(Game* game) {
-		init(game);
+	ShopGame::GameState::GameState(Game* pgame) : game(pgame) {
+	//	init(pgame);
 	}
 
 	void ShopGame::GameState::handleInput(ShopGame::Game* game, const std::string& input) {
@@ -39,7 +39,7 @@
         addCommand("menu", [this](Game* g) {
              GameState* menu = new MenuState(g);
 
-            g->setGameState(menu);
+               g->setGameState(menu);
             });
 	}
 
@@ -52,28 +52,20 @@
 
 	//MENU STATE
 
+    ShopGame::MenuState::MenuState(Game* game) : ShopGame::GameState(game) {
+        // Update logic for the menu state
+    }
 	void ShopGame::MenuState::update(Game* game) {
 		// Update logic for the menu state
 	}
-
 	void ShopGame::MenuState::registerCommands()  {
         GameState::registerCommands();
 
         GameRenderer::TextCanvas* canvas = getGame()->getCanvas();
 
         addCommand("shop", [canvas](Game* g) {
-            std::cout << "Opening shop..." << std::endl;
-
-            const auto& itemMap = ItemRegistry::getInstance()->getItemMap();
-
-            // Define the dimensions and layout of the item shop display
-            Vec2 shopTopLeft(16, 3);
-            int maxWidth = 6; // Maximum items per row
-            int itemWidth = 18;
-            int itemHeight = 3;
-            int maxItemCount = 30; // Maximum items to display
-
-            displayItemList(canvas, itemMap, "Item Shop", shopTopLeft, maxWidth, itemWidth, itemHeight, maxItemCount);
+            g->setGameState(new ShopState(g));
+         
             });
 
         addCommand("exit", [canvas](Game* g) {
@@ -129,4 +121,51 @@
 	void ShopGame::MenuState::render(GameRenderer::TextCanvas* canvas) {
 		// Render the menu state on the canvas
 	}
+
+
+
+    //SHOP STATE
+
+    ShopGame::ShopState::ShopState(Game* game) : ShopGame::GameState(game) {
+        // Update logic for the menu state
+    }
+
+    void ShopGame::ShopState::update(Game* game) {
+        // Implement update logic for the shop state
+    }
+
+    void ShopGame::ShopState::render(GameRenderer::TextCanvas* canvas) {
+        // Implement rendering logic for the shop state
+    }
+
+    void ShopGame::ShopState::registerCommands()  {
+        GameState::registerCommands();
+
+        GameRenderer::TextCanvas* canvas = getGame()->getCanvas();
+
+        addCommand("buy", [canvas](Game* g) {
+            canvas->drawSquare(Vec2(46, 10), 20, 5, '*', "Buy Item", true);
+            });
+
+        addCommand("sell", [canvas](Game* g) {
+            canvas->drawSquare(Vec2(46, 10), 20, 5, '*', "Sell Item", true);
+            });
+        addCommand("show", [canvas](Game* g) {
+            std::cout << "Opening shop..." << std::endl;
+
+            const auto& itemMap = ItemRegistry::getInstance()->getItemMap();
+
+            // Define the dimensions and layout of the item shop display
+            Vec2 shopTopLeft(16, 3);
+            int maxWidth = 6; // Maximum items per row
+            int itemWidth = 18;
+            int itemHeight = 3;
+            int maxItemCount = 30; // Maximum items to display
+
+            displayItemList(canvas, itemMap, "Item Shop", shopTopLeft, maxWidth, itemWidth, itemHeight, maxItemCount);
+            });
+
+
+    }
+  
 
