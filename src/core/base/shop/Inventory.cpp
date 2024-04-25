@@ -2,8 +2,6 @@
 
 
 namespace ShopGame {
-
-
     Inventory::~Inventory() {
         clear(); // Cleanup resources in destructor
     }

@@ -1,33 +1,29 @@
 #include "src/core/shop/game.h"
 
-
-namespace ShopGame {
-
-
-    Game::Game() : running(true), gameName("Default"), canvas(new GameRenderer::TextCanvas(0, 0)), currentState(nullptr), prevState(nullptr) {
+   ShopGame::Game::Game() : running(true), gameName("Default"), canvas(new GameRenderer::TextCanvas(0, 0)), currentState(nullptr), prevState(nullptr) {
         registerCommands();
     }
 
-    Game::Game(int canvasWidth, int canvasHeight, std::string name) : canvas(new GameRenderer::TextCanvas(canvasWidth, canvasHeight)), running(true), gameName(name), currentState(nullptr),  prevState(nullptr) {
+    ShopGame::Game::Game(int canvasWidth, int canvasHeight, std::string name) : canvas(new GameRenderer::TextCanvas(canvasWidth, canvasHeight)), running(true), gameName(name), currentState(nullptr),  prevState(nullptr) {
     
         registerCommands();
     }
 
     // Destructor
-    Game::~Game() {
+    ShopGame::Game::~Game() {
         registerCommands();
     }
 
-    void Game::addCommand(const std::string& command, const std::function<void(Game*)> consumer) {
+    void ShopGame::Game::addCommand(const std::string& command, const std::function<void(Game*)> consumer) {
      //   commandMap[command] = (consumer);
         commandMap.emplace(command, consumer);
     }
 
-    std::string Game::getName() {
+    std::string ShopGame::Game::getName() {
         return gameName;
     }
 
-    void displayItemList(GameRenderer::TextCanvas* canvas, const std::unordered_map<std::string, ItemRegistry::ItemFactory>& itemList, const std::string& displayTitle, const Vec2& topLeft, int maxWidth, int itemWidth, int itemHeight, int maxItemCount) {
+    void ShopGame::displayItemList(GameRenderer::TextCanvas* canvas, const std::unordered_map<std::string, ItemRegistry::ItemFactory>& itemList, const std::string& displayTitle, const Vec2& topLeft, int maxWidth, int itemWidth, int itemHeight, int maxItemCount) {
         int itemCount = std::min(static_cast<int>(itemList.size()), maxItemCount);
 
         // Calculate the number of rows needed based on the item count
@@ -65,7 +61,7 @@ namespace ShopGame {
         }
     }
 
-    void Game::registerCommands() {
+    void ShopGame::Game::registerCommands() {
         GameRenderer::TextCanvas* canvas = this->getCanvas();
 
         addCommand("shop", [canvas](Game* g) {
@@ -135,21 +131,22 @@ namespace ShopGame {
     }
 
     // Method to process input and trigger associated consumers
-    void Game::processInput(const std::string& input) {
+    void ShopGame::Game::processInput(const std::string& input) {
         auto it = commandMap.find(input);
         if (it != commandMap.end()) {
-            // Execute the consumer associated with the input command
-            it->second(this); // Pass 'this' pointer to the Game object
+            it->second(this);
         }
         else {
-            canvas->drawSquare(Vec2(38, 10), 38, 5, '*', "Command not recognized. Try again.", true);
-          
+            if (currentState) {
+                currentState->handleInput(this, input);
+            }
+            else {
+                std::cout << "Command not recognized. Try again." << std::endl;
+            }
         }
     }
 
-   
-
-    void Game::update(GameRenderer::TextCanvas* canvas) {
+    void ShopGame::Game::update(GameRenderer::TextCanvas* canvas) {
         canvas->drawSquare(Vec2(0, 0), 112, 28, '*', "", true);
         std::string input;
         std::cout << "Enter a command: ";
@@ -159,59 +156,63 @@ namespace ShopGame {
     }
 
 
-    void Game::clean() {
-
-     
-   
+    void ShopGame::Game::clean() {
     }
 
-    void Game::render() {
-
+    void ShopGame::Game::render() {
+        if (currentState) {
        
-
-        (*getCanvas()).render();
+            //currentState->render(canvas);
+            canvas->render(); // Render the canvas after updating its content
+        }
     }
 
-    const bool Game::Game::isRunning() {
+    const bool ShopGame::Game::isRunning() {
 
         return this->running;
     }
 
-    GameRenderer::TextCanvas* Game::getCanvas() {
+     void ShopGame::Game::setRunning(bool val) {
+      
+        this->running = val;
+        
+    }
+
+    GameRenderer::TextCanvas* ShopGame::Game::getCanvas() {
 
         return canvas;
     }
 
-    void Game::setGameState(GameState* state) {
+    void ShopGame::Game::setGameState(GameState* state) {
         prevState = currentState;
 
         if (currentState != nullptr) {
             delete currentState; // Clean up the previous state
         }
+
+        std::cout << "Switching GameState..";
         currentState = state;
     }
 
-    GameState* Game::getGameState() {
+    ShopGame::GameState* ShopGame::Game::getGameState() {
         return currentState;
     }
 
-    GameState* Game::getPreviousState() {
+    ShopGame::GameState* ShopGame::Game::getPreviousState() {
         return prevState;
     }
 
     // Method to start the game
-    void Game::start() {
+    void ShopGame::Game::start() {
        std::cout << "[Game Started]" << std::endl;
       std::cout << "Type 'exit' to quit the game." << std::endl;
     }
 
 
     // Helper method for handling user input
-    void Game::handleInput(const std::string& input) {
+    void ShopGame::Game::handleInput(const std::string& input) {
 
 
        
       std::cout << "Command not recognized. Try again." << std::endl;
     }
-
-} // namespace ShopGame

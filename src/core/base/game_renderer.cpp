@@ -9,7 +9,7 @@ namespace GameRenderer {
         system("CLS");
     }
 
-    // Function to render the game state
+    // Renders the game state
     void GameRenderer::render(ShopGame::Game* game) {
          clearScreen();
 
