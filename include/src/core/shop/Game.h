@@ -6,7 +6,7 @@
 #include <iostream>
 #include <vector>
 #include "src/core/text_canvas.h"
-
+#include "src/core/utils/utility.h"
 
 namespace ShopGame {
 
@@ -34,18 +34,18 @@ namespace ShopGame {
 
         GameRenderer::TextCanvas* getCanvas();
 
-        std::vector<Utility::Consumer<Game*>> getGameStates() const;
+        void addCommand(const std::string& command, const std::function<void(Game*)> function);
 
-        Utility::Consumer<Game*> getGameState();
+        void processInput(const std::string& input);
 
 
     private:
          bool running;
          GameRenderer::TextCanvas* canvas;
-         Utility::Consumer<Game*> currentFrame = [](Game* g) {};
-         std::vector <Utility::Consumer<Game*>> gameFrames;
+         std::unordered_map<std::string, std::function<void(Game*)>> commandMap;
         // Helper method for handling user input
         void handleInput(const std::string& input);
+        void registerCommands();
 
     };
 
