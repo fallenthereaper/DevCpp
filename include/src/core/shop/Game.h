@@ -5,7 +5,7 @@
 
 #include <iostream>
 #include <vector>
-#include "src/core/TextCanvas.h"
+#include "src/core/text_canvas.h"
 
 
 namespace ShopGame {
@@ -24,7 +24,7 @@ namespace ShopGame {
         // Method to start the game
         void start();
 
-        void update();
+        void update(GameRenderer::TextCanvas* canvas);
 
         void clean();
 
@@ -34,11 +34,16 @@ namespace ShopGame {
 
         GameRenderer::TextCanvas* getCanvas();
 
+        std::vector<Utility::Consumer<Game*>> getGameStates() const;
+
+        Utility::Consumer<Game*> getGameState();
 
 
     private:
-        bool running;
-        GameRenderer::TextCanvas* canvas;
+         bool running;
+         GameRenderer::TextCanvas* canvas;
+         Utility::Consumer<Game*> currentFrame = [](Game* g) {};
+         std::vector <Utility::Consumer<Game*>> gameFrames;
         // Helper method for handling user input
         void handleInput(const std::string& input);
 

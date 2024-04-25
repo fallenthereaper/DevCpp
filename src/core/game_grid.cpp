@@ -1,10 +1,10 @@
-#include "src/core/GameGrid.h";
+#include "src/core/game_grid.h";
 
 GameGrid::GameGrid(int size) : GameGrid(size, size) {
     // Delegates to the previous constructor with width = height = size
 } 
 
-GameGrid::GameGrid(int width = 3, int height = 3) : width(width), height(height) {
+GameGrid::GameGrid(int width , int height) : width(width), height(height) {
     // Initialize the board
     grid = new char* [height];
     for (int i = 0; i < height; ++i) {

@@ -1,4 +1,4 @@
-#include "src/core/shop/ItemStack.h"
+#include "src/core/shop/item_stack.h"
 #include <iostream>
 #include <cstddef>  // Include for std::byte
 

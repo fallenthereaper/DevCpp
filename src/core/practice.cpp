@@ -1,4 +1,4 @@
-#include "src/core/practice.h";
+#include "practice.h";
 #include "src/core/main.h";
 
 using namespace std;

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "src/core/shop/registry/ItemRegistry.h"
-#include "src/core/shop/Item.h"
+#include "src/core/shop/registry/item_registry.h"
+#include "src/core/shop/item.h"
 
 namespace ShopGame {
 

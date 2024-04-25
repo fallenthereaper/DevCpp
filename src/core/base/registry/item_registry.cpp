@@ -1,4 +1,4 @@
-#include "src/core/shop/registry/ItemRegistry.h"
+#include "src/core/shop/registry/item_registry.h"
 #include <stdexcept>  // Include this for std::runtime_error
 
 namespace ShopGame {

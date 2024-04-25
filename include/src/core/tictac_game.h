@@ -1,6 +1,6 @@
 #ifndef TICTAC_GAME_H
 #define TICTAC_GAME_H
-#include "GameGrid.h";
+#include "game_grid.h";
 
 #include <string>
 

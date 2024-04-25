@@ -1,5 +1,5 @@
 #pragma once
-#include "src/core/shop/Item.h"  // Include the definition of Item
+#include "src/core/shop/item.h"  // Include the definition of Item
 
 namespace ShopGame {
 

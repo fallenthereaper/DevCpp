@@ -1,6 +1,6 @@
 #pragma once
 
-#include "src/core/TextCanvas.h"
+#include "src/core/text_canvas.h"
 
 
 
@@ -8,7 +8,7 @@ namespace GameRenderer {
 
     TextCanvas::TextCanvas(int width, int height) : width(width), height(height) {
         // Allocate memory for the canvas
-        canvas = new char* [height ];
+        canvas = new char* [height * width ];
         for (int i = 0; i < height; ++i) {
             canvas[i] = new char[width];
             // Initialize canvas with spaces

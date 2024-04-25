@@ -14,6 +14,31 @@
         }
     }
 
+   static bool const Utility::validParenthesis(const std::string& input) {
+        int openedCount = 0;
+
+        for (std::size_t i = 0; i < input.length(); i++) {
+            char c = input.at(i);
+
+            if (c == '(') {
+                openedCount++;
+            }
+            else if (c == ')') {
+                if (openedCount > 0) {
+                    openedCount--;
+                }
+                else {
+                    // If there's no matching opening parenthesis for this closing one, return false
+                    return false;
+                }
+            }
+        }
+
+        // After looping through all characters,
+        // the count should be zero for balanced parenthesis
+        return openedCount == 0;
+    }
+
     // Define a function template to iterate over a generic container and apply a consumer
     template<typename T, typename Collection>
     void Utility::forEach(const Collection& collection, std::function<void(const T&)> action) {

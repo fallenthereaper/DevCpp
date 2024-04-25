@@ -1,20 +1,23 @@
 ﻿// main.cpp : Defines the entry point for the application.
 //
 
+#define MAX_CANVAS_WIDTH 112
+#define MAX_CANVAS_HEIGHT 28
+
+
 #include "src/core/main.h"
 #include "src/core/utils/utility.h"
 #include "src/core/utils/containers.h"
 #include <vector>
-#include "src/core/practice.h"
 #include "src/core/bank/bank.h"
 #include "src/core/bank/bank_account.h"
 #include "src/core//tictac_game.h"
 #include <sstream>
 #include <iomanip>
-#include "src/core/shop/registry/ItemRegistry.h"
-#include "src/core/shop/registry/Items.h";
-#include "src/core/shop/Game.h";
-#include "src/core/GameRenderer.h";
+#include "src/core/shop/registry/item_registry.h"
+#include "src/core/shop/registry/items.h";
+#include "src/core/shop/game.h";
+#include "src/core/Game_renderer.h";
 using namespace std;
 using namespace Utility;
 using namespace Utility::Mth;
@@ -44,9 +47,8 @@ unsigned long long hexToDecimal(const std::string& hexString) {
     return ss.str();
 }
 
+
   ShopGame::Game* game = nullptr;
-
-
 
   void coreInit() {
 
@@ -54,7 +56,7 @@ unsigned long long hexToDecimal(const std::string& hexString) {
   }
 
   // Function to compare two canvas data arrays
-  bool compareCanvases(const char** canvas1, const char** canvas2, int width, int height) {
+  bool compareData(const char** canvas1, const char** canvas2, int width, int height) {
       for (int y = 0; y < height; ++y) {
           for (int x = 0; x < width; ++x) {
               if (canvas1[y][x] != canvas2[y][x]) {
@@ -66,7 +68,7 @@ unsigned long long hexToDecimal(const std::string& hexString) {
   }
 
   // Function to copy canvas data
-  const char** copyCanvas(const char** canvas, int width, int height) {
+  const char** copyData(const char** canvas, int width, int height) {
       char** copiedCanvas = new char* [height];
       for (int y = 0; y < height; ++y) {
           copiedCanvas[y] = new char[width];
@@ -77,7 +79,7 @@ unsigned long long hexToDecimal(const std::string& hexString) {
       return const_cast<const char**>(copiedCanvas);
   }
 
-  void deleteCanvas(const char** canvas, int height) {
+  void deleteData(const char** canvas, int height) {
       if (canvas != nullptr) {
           for (int y = 0; y < height; ++y) {
               delete[] canvas[y]; // Free each row of the canvas
@@ -89,14 +91,11 @@ unsigned long long hexToDecimal(const std::string& hexString) {
 
   using Game = ShopGame::Game;
 
-    int main(int argc, const char * argv[])
-    {
+    int main(int argc, const char * argv[]) {
         coreInit();
 
 
-   
-
-        game = new Game(100, 28);
+        game = new Game(MAX_CANVAS_WIDTH, MAX_CANVAS_HEIGHT);
 
    
         game->start();
@@ -106,36 +105,30 @@ unsigned long long hexToDecimal(const std::string& hexString) {
         GameRenderer::TextCanvas* canvas = game->getCanvas();
 
         while (game->isRunning()) {
-            // Get the current canvas data
-         
 
-            // Update game logic
-            game->update();
+         
+            game->update(canvas);
 
             const char** currentCanvas = canvas->getData();
 
             // Check if the canvas content has changed
-            if (prevCanvas == nullptr || !compareCanvases(prevCanvas, currentCanvas, canvas->getWidth(), canvas->getHeight())) {
+            if (prevCanvas == nullptr || !compareData(prevCanvas, currentCanvas, canvas->getWidth(), canvas->getHeight())) {
                 // Render the game only if the canvas content has changed
-             //   GameRenderer::render(game);
+             //  GameRenderer::render(game);
 
                 // Update the previous canvas to match the current canvas
                 if (prevCanvas != nullptr) {
                     delete[] prevCanvas; // Free the previously allocated memory
                 }
-                prevCanvas = copyCanvas(currentCanvas, canvas->getWidth(), canvas->getHeight());
+                prevCanvas = copyData(currentCanvas, canvas->getWidth(), canvas->getHeight());
             }
-             GameRenderer::render(game);
-
-            
+            GameRenderer::render(game);
         }
 
         // Clean up allocated memory for the last recorded canvas
         if (prevCanvas != nullptr) {
             delete[] prevCanvas;
         }
-
-    
         return 0;
     }
 

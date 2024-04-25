@@ -1,4 +1,4 @@
-#include "src/core/shop/Inventory.h"
+#include "src/core/shop/inventory.h"
 
 
 namespace ShopGame {
@@ -9,21 +9,21 @@ namespace ShopGame {
     }
 
     void Inventory::insertItem(ItemStack* itemStack) {
-        itemStacks.push_back(itemStack);
+        slots.push_back(itemStack);
         notifyListeners(); // Notify listeners upon change
     }
 
     void Inventory::extractItem(ItemStack* itemStack) {
-        auto it = std::find(itemStacks.begin(), itemStacks.end(), itemStack);
-        if (it != itemStacks.end()) {
-            itemStacks.erase(it);
+        auto it = std::find(slots.begin(), slots.end(), itemStack);
+        if (it != slots.end()) {
+            slots.erase(it);
             delete itemStack; // Delete the removed item stack
             notifyListeners(); // Notify listeners upon change
         }
     }
 
     int Inventory::getItemCount() const {
-        return itemStacks.size();
+        return slots.size();
     }
     
 
@@ -32,17 +32,17 @@ namespace ShopGame {
       }
 
     ItemStack* Inventory::getItem(int slot) const {
-        if (slot >= 0 && slot < itemStacks.size()) {
-            return itemStacks[slot];
+        if (slot >= 0 && slot < slots.size()) {
+            return slots[slot];
         }
         return nullptr;
     }
 
     void Inventory::clear() {
-        for (auto itemStack : itemStacks) {
+        for (auto itemStack : slots) {
             delete itemStack;
         }
-        itemStacks.clear();
+        slots.clear();
         notifyListeners(); // Notify listeners upon change
     }
 

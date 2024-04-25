@@ -1,13 +1,13 @@
 #pragma once
 
 
-#include "src/core/GameRenderer.h";
-#include "src/core/shop/registry/ItemRegistry.h"
+#include "src/core/game_renderer.h";
+#include "src/core/shop/registry/item_registry.h"
 
 namespace GameRenderer {
 
     void GameRenderer::clearScreen() {
-        system("cls");
+        system("CLS");
     }
 
     // Function to render the game state
@@ -27,9 +27,9 @@ namespace GameRenderer {
 
         smoothedFps = (smoothingFactor * fps) + ((1.0 - smoothingFactor) * smoothedFps);
 
-      //  ShopGame::ItemRegistry::getInstance()->listAllItems();
-     //   std::cout << std::endl;
-        game->getCanvas()->drawText(Vec2( 0, 0), "FPS: " + std::to_string(static_cast<int>(smoothedFps)));
+    //    ShopGame::ItemRegistry::getInstance()->listAllItems();
+        std::cout << std::endl;
+      //  game->getCanvas()->drawText(Vec2( 1, 1), "FPS: " + std::to_string(static_cast<int>(smoothedFps)));
 
 
         game->render();

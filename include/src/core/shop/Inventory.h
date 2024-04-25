@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "ItemStack.h"
+#include "item_stack.h"
 #include <iostream>
 #include "src/core/utils/containers.h"
 
@@ -39,7 +39,7 @@ namespace ShopGame {
 
     private:
         int size;
-        std::vector<ItemStack*> itemStacks; 
+        std::vector<ItemStack*> slots; 
         std::vector<std::function<void(Inventory*)>> changeListeners; 
     };
 

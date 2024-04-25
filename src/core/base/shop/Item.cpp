@@ -1,4 +1,4 @@
-#include "src/core/shop/Item.h"
+#include "src/core/shop/item.h"
 
 namespace ShopGame {
 

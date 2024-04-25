@@ -62,6 +62,8 @@ namespace Utility {
     // Check if a number is even
     bool isEven(int num);
 
+  static const bool validParenthesis(const std::string& input);
+
     // Check if a number is odd
     bool isOdd(int num);
 
