@@ -6,28 +6,32 @@
 #include <string>
 #include <unordered_map>
 #include <functional>
-#include "game.h"  // Include the necessary header
-class Game;
+#include "src/core/utils/utility.h"
+#include "src/core/text_canvas.h"
+
+
 
 namespace ShopGame {
+
+    class Game;
 
     class GameState {
    
 
     public:
-        GameState(Game* game);
+        GameState(ShopGame::Game* game);
         virtual ~GameState() = default;
         void handleInput(Game* game, const std::string& input);
-        virtual void update(Game* game) = 0;
+        virtual void update(ShopGame::Game* game) = 0;
         virtual void registerCommands() = 0;
-        void init(Game* game);
-        void addCommand(const std::string& command, const std::function<void(Game*)> function);
-        Game* getGame();
+        void init(ShopGame::Game* game);
+        void addCommand(const std::string& command, const std::function<void(ShopGame::Game*)> function);
+        ShopGame::Game* getGame();
         virtual void render(GameRenderer::TextCanvas* canvas) = 0;
 
         private:
-        Game* game;
-        std::unordered_map<std::string, std::function<void(Game*)>> commandMap;
+         ShopGame::Game* game;
+        std::unordered_map<std::string, std::function<void(ShopGame::Game*)>> commandMap;
     };
 
     class MenuState : public GameState {

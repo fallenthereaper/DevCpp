@@ -1,4 +1,6 @@
 #include "src/core/shop/game.h"
+#include "src/core/shop/game_state.h"
+
 
    ShopGame::Game::Game() : running(true), gameName("Default"), canvas(new GameRenderer::TextCanvas(0, 0)), currentState(nullptr), prevState(nullptr) {
         registerCommands();
@@ -138,7 +140,7 @@
         }
         else {
             if (currentState) {
-//                currentState->handleInput(this, input);
+               currentState->handleInput(this, input);
             }
             else {
                 std::cout << "Command not recognized. Try again." << std::endl;
@@ -162,7 +164,7 @@
     void ShopGame::Game::render() {
         if (currentState) {
        
-            //currentState->render(canvas);
+            currentState->render(canvas);
             canvas->render(); // Render the canvas after updating its content
         }
     }
@@ -187,7 +189,7 @@
         prevState = currentState;
 
         if (currentState != nullptr) {
-            delete currentState; // Clean up the previous state
+    //        delete currentState; // Clean up the previous state
         }
 
         std::cout << "Switching GameState..";

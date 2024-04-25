@@ -1,12 +1,12 @@
 
 #include "src/core/shop/game_state.h"
-
+#include "src/core/shop/game.h"
 	//GAME STATE
 	ShopGame::GameState::GameState(Game* game) {
 		init(game);
 	}
 
-	void ShopGame::GameState::handleInput(Game* game, const std::string& input) {
+	void ShopGame::GameState::handleInput(ShopGame::Game* game, const std::string& input) {
 		auto it = commandMap.find(input);
 		if (it != commandMap.end()) {
 			// Execute the consumer associated with the input command
@@ -39,7 +39,7 @@
         addCommand("menu", [this](Game* g) {
              GameState* menu = new MenuState(g);
 
-           //  g->setGameState(menu);
+            g->setGameState(menu);
             });
 	}
 
