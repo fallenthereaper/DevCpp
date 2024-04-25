@@ -1,4 +1,5 @@
 #include "src/core/shop/game.h"
+class ItemRegistry;
 
 namespace ShopGame {
 
@@ -22,23 +23,64 @@ namespace ShopGame {
         commandMap.emplace(command, consumer);
     }
 
+    void displayItemList(GameRenderer::TextCanvas* canvas, const std::unordered_map<std::string, ItemRegistry::ItemFactory>& itemList, const std::string& displayTitle, const Vec2& topLeft, int maxWidth, int itemWidth, int itemHeight, int maxItemCount) {
+        int itemCount = std::min(static_cast<int>(itemList.size()), maxItemCount);
+
+        // Calculate the number of rows needed based on the item count
+        int numRows = (itemCount + (maxWidth - 1)) / maxWidth;
+        int numCols = (itemCount + numRows - 1) / numRows;
+
+        // Draw the title of the item list
+        canvas->drawSquare(topLeft + Vec2{0, - 1}, numCols * itemWidth, itemHeight, '*', displayTitle, true);
+
+        int row = topLeft.y + 2; // Start rendering items below the title
+        int col = topLeft.x + 2;
+
+        int itemIndex = 0;
+        for (const auto& itemPair : itemList) {
+            if (itemIndex >= maxItemCount) {
+                break; // Stop rendering if maximum item count is reached
+            }
+
+            // Check if we need to move to the next row
+            if (col + itemWidth > topLeft.x + numCols * itemWidth) {
+                col = topLeft.x + 2; // Reset column position to start a new row
+                row += itemHeight + 1; // Move to the next row
+            }
+
+            // Get the item name from the item pair
+            std::string itemName = itemPair.first;
+
+            // Render the item at the current position
+            canvas->drawSquare(Vec2(col, row), itemWidth, itemHeight, '*', itemName, true);
+
+            // Move to the next column position
+            col += itemWidth + 1;
+
+            ++itemIndex;
+        }
+    }
+
     void Game::registerCommands() {
         GameRenderer::TextCanvas* canvas = this->getCanvas();
 
-        addCommand("shop", [canvas](ShopGame::Game* g) {
-         
-         
-            canvas->drawSquare(Vec2(25 + 9, 1), 24, 5, '*', "Item Shop", true);
+        addCommand("shop", [canvas](Game* g) {
+            std::cout << "Opening shop..." << std::endl;
 
-            //FIRST ROW
-            g->getCanvas()->drawSquare(Vec2(25, 7), 14, 3, '*', "Item 1", true);
-            g->getCanvas()->drawSquare(Vec2(25 + 14 + 2, 7), 14, 3, '*', "Item 2", true);
-            g->getCanvas()->drawSquare(Vec2(25 + 14 + 14 + 4, 7), 14, 3, '*', "Item 3", true);
-            //SECOND ROW
-            g->getCanvas()->drawSquare(Vec2(25, 10), 14, 3, '*', "Item 4", true);
-            g->getCanvas()->drawSquare(Vec2(25 + 14 + 2, 10), 14, 3, '*', "Item 5", true);
-            g->getCanvas()->drawSquare(Vec2(25 + 14 + 14 + 4, 10), 14, 3, '*', "Item 6", true);
+            const auto& itemMap = ItemRegistry::getInstance()->getItemMap();
+
+            // Define the dimensions and layout of the item shop display
+            Vec2 shopTopLeft(6 , 3);
+            int maxWidth = 6; // Maximum items per row
+            int itemWidth = 18;
+            int itemHeight = 3;
+            int maxItemCount = 30; // Maximum items to display
+
+        
+            displayItemList(canvas, itemMap, "Item Shop", shopTopLeft, maxWidth, itemWidth, itemHeight, maxItemCount);
+            
             });
+    
 
         addCommand("exit", [canvas](Game* g) {
             canvas->drawSquare(Vec2(46, 10), 20, 5, '*', "Game Closed", true);

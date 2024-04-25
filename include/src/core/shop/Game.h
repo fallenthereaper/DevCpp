@@ -7,6 +7,7 @@
 #include <vector>
 #include "src/core/text_canvas.h"
 #include "src/core/utils/utility.h"
+#include "src/core/shop/registry/item_registry.h"
 
 namespace ShopGame {
 
