@@ -138,7 +138,7 @@
         }
         else {
             if (currentState) {
-                currentState->handleInput(this, input);
+//                currentState->handleInput(this, input);
             }
             else {
                 std::cout << "Command not recognized. Try again." << std::endl;

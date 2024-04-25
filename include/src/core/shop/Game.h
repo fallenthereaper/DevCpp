@@ -7,9 +7,10 @@
 #include <functional>
 #include "src/core/text_canvas.h"
 #include "src/core/shop/registry/item_registry.h"
-#include "src/core/shop/game_state.h"
-
-
+#include "game_state.h"
+#include "src/core/utils/utility.h"
+#include <vector>
+class GameState;
 
 namespace ShopGame {
 

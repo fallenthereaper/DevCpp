@@ -6,7 +6,8 @@
 #include <string>
 #include <unordered_map>
 #include <functional>
-#include "src/core/shop/game.h"  // Include the necessary header
+#include "game.h"  // Include the necessary header
+class Game;
 
 namespace ShopGame {
 
@@ -14,26 +15,26 @@ namespace ShopGame {
    
 
     public:
-        GameState(ShopGame::Game* game);
+        GameState(Game* game);
         virtual ~GameState() = default;
-        void handleInput(ShopGame::Game* game, const std::string& input);
-        virtual void update(ShopGame::Game* game) = 0;
+        void handleInput(Game* game, const std::string& input);
+        virtual void update(Game* game) = 0;
         virtual void registerCommands() = 0;
-        void init(ShopGame::Game* game);
-        void addCommand(const std::string& command, const std::function<void(ShopGame::Game*)> function);
-        ShopGame::Game* getGame();
+        void init(Game* game);
+        void addCommand(const std::string& command, const std::function<void(Game*)> function);
+        Game* getGame();
         virtual void render(GameRenderer::TextCanvas* canvas) = 0;
 
         private:
-        ShopGame::Game* game;
-        std::unordered_map<std::string, std::function<void(ShopGame::Game*)>> commandMap;
+        Game* game;
+        std::unordered_map<std::string, std::function<void(Game*)>> commandMap;
     };
 
     class MenuState : public GameState {
     public:
-        MenuState(ShopGame::Game* game) : GameState(game) {}
+        MenuState(Game* game) : GameState(game) {}
         void registerCommands() override;
-        void update(ShopGame::Game* game) override;
+        void update(Game* game) override;
         void render(GameRenderer::TextCanvas* canvas) override;
     };
 

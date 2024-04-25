@@ -52,7 +52,7 @@
 
 	//MENU STATE
 
-	void ShopGame::MenuState::update(ShopGame::Game* game) {
+	void ShopGame::MenuState::update(Game* game) {
 		// Update logic for the menu state
 	}
 

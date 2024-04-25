@@ -89,13 +89,13 @@ unsigned long long hexToDecimal(const std::string& hexString) {
   }
 
 
-  using Game = ShopGame::Game;
+
 
     int main(int argc, const char * argv[]) {
         coreInit();
 
 
-        game = new Game(MAX_CANVAS_WIDTH, MAX_CANVAS_HEIGHT, "Exolor");
+        game = new ShopGame::Game(MAX_CANVAS_WIDTH, MAX_CANVAS_HEIGHT, "Exolor");
 
    
         game->start();
