@@ -32,10 +32,11 @@ namespace ShopGame {
    static const ItemSupplier GOLD_HOE = registerItemBuilder("gold_hoe", 15.0f);
    static const ItemSupplier GOLD_AXE = registerItemBuilder("gold_axe", 15.0f);
 
-   static const ItemSupplier DIAMOND_PICKAXE = registerItemBuilder("diamond_pickaxe", 20.0f);
-   static const ItemSupplier DIAMOND_SWORD = registerItemBuilder("diamond_sword", 30.0f);
-   static const ItemSupplier DIAMOND_HOE = registerItemBuilder("diamond_hoe", 15.0f);
-   static const ItemSupplier DIAMOND_AXE = registerItemBuilder("diamond_axe", 15.0f);
+  // static const ItemSupplier DIAMOND_PICKAXE = registerItemBuilder("diamond_pickaxe", 20.0f);
+  // static const ItemSupplier DIAMOND_SWORD = registerItemBuilder("diamond_sword", 30.0f);
+  
+  // static const ItemSupplier DIAMOND_HOE = registerItemBuilder("diamond_hoe", 15.0f);
+  // static const ItemSupplier DIAMOND_AXE = registerItemBuilder("diamond_axe", 15.0f);
 
 
    

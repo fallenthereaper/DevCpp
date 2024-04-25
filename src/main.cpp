@@ -95,7 +95,7 @@ unsigned long long hexToDecimal(const std::string& hexString) {
         coreInit();
 
 
-        game = new Game(MAX_CANVAS_WIDTH, MAX_CANVAS_HEIGHT);
+        game = new Game(MAX_CANVAS_WIDTH, MAX_CANVAS_HEIGHT, "Exolor");
 
    
         game->start();
@@ -114,7 +114,7 @@ unsigned long long hexToDecimal(const std::string& hexString) {
             // Check if the canvas content has changed
             if (prevCanvas == nullptr || !compareData(prevCanvas, currentCanvas, canvas->getWidth(), canvas->getHeight())) {
                 // Render the game only if the canvas content has changed
-             //  GameRenderer::render(game);
+               GameRenderer::render(game);
 
                 // Update the previous canvas to match the current canvas
                 if (prevCanvas != nullptr) {
@@ -122,7 +122,8 @@ unsigned long long hexToDecimal(const std::string& hexString) {
                 }
                 prevCanvas = copyData(currentCanvas, canvas->getWidth(), canvas->getHeight());
             }
-            GameRenderer::render(game);
+
+          //  GameRenderer::render(game);
         }
 
         // Clean up allocated memory for the last recorded canvas

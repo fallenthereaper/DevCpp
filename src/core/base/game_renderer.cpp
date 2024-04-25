@@ -2,7 +2,6 @@
 
 
 #include "src/core/game_renderer.h";
-#include "src/core/shop/registry/item_registry.h"
 
 namespace GameRenderer {
 
@@ -27,17 +26,16 @@ namespace GameRenderer {
 
         smoothedFps = (smoothingFactor * fps) + ((1.0 - smoothingFactor) * smoothedFps);
 
-    //    ShopGame::ItemRegistry::getInstance()->listAllItems();
-        std::cout << std::endl;
+ 
+     
       //  game->getCanvas()->drawText(Vec2( 1, 1), "FPS: " + std::to_string(static_cast<int>(smoothedFps)));
 
 
         game->render();
-        game->getCanvas()->clear();
+        game->getCanvas()->clear(); //Clear the buffer after rendering the current canvas
        
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(16)); 
-  
+        std::this_thread::sleep_for(std::chrono::milliseconds(1)); 
     }
 
 } // namespace GameRenderer
