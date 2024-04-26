@@ -2,6 +2,7 @@
 
 
 #include "src/core/game_renderer.h";
+#include <SDL.h>
 
 namespace GameRenderer {
 
@@ -16,7 +17,7 @@ namespace GameRenderer {
 
     // Renders the game state
     void GameRenderer::render(ExolorGame::Game* game) {
-       //  clearScreen();
+          clearScreen();
 
           // Calculate FPS
         static auto lastTime = std::chrono::high_resolution_clock::now();

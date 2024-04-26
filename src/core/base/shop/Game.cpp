@@ -80,8 +80,17 @@ class MenuState;
         
     }
 
+
+
+   
+
     // Method to process input and trigger associated consumers
     void ExolorGame::Game::processInput(const std::string& input) {
+    
+
+      
+
+
         auto it = commandMap.find(input);
         if (it != commandMap.end()) {
             it->second(this);
@@ -97,12 +106,33 @@ class MenuState;
     }
 
     void ExolorGame::Game::update(GameRenderer::TextCanvas* canvas) {
-        canvas->drawSquare(Vec2(0, 0), 112, 28, '*', "", true);
-        std::string input;
-        std::cout << "Enter a command: ";
-        std::cin >> input;
+        if (_kbhit()) {
+            // Get the pressed key
+            char keyPressed = _getch();
+
+            // Handle the key press
+            switch (keyPressed) {
+            case 'a':
+                std::cout << "Left key pressed" << std::endl;
+                break;
+            case 'd':
+                std::cout << "Right key pressed" << std::endl;
+                break;
+            case 'w':
+                std::cout << "Up key pressed" << std::endl;
+                break;
+            case 's':
+                std::cout << "Down key pressed" << std::endl;
+                break;
+            case 'x':
+
+                break;
+            default:
+                break;
+            }
+        }
+
        
-        processInput(input);
     }
 
 

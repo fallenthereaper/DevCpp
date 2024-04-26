@@ -2,7 +2,7 @@
 #include <chrono>
 #include "src/core/shop/Game.h";
 #include <thread>
-#include <windows.h>
+
 class ExolorGame::ItemRegistry;
 
 namespace GameRenderer {

@@ -106,6 +106,8 @@ unsigned long long hexToDecimal(const std::string& hexString) {
 
         while (game->isRunning()) {
 
+        
+
          
             game->update(canvas);
 

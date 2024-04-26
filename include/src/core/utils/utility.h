@@ -10,7 +10,7 @@
 #include <functional>
 #include <optional>
 #include "functional.h"
-
+#include < conio.h >
 // Define constants
 constexpr auto PI = 3.14159;
 
