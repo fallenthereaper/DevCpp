@@ -2,7 +2,7 @@
 
 #ifndef UTILITY_H
 #define UTILITY_H
-
+#include <sstream>
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -149,6 +149,8 @@ namespace Utility {
 
     // Function to generate a random number in a specified range
     int getRandomInRange(int min, int max);
+
+    std::pair<std::string, std::vector<std::string>> parseCommand(const std::string& input);
 
     namespace Mth {
 

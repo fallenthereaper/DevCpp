@@ -11,7 +11,7 @@ namespace GameRenderer {
 
     // Renders the game state
     void GameRenderer::render(ShopGame::Game* game) {
-         clearScreen();
+     //    clearScreen();
 
           // Calculate FPS
         static auto lastTime = std::chrono::high_resolution_clock::now();

@@ -16,6 +16,12 @@ namespace ShopGame {
     class Game;
     class Inventory;
 
+    using InputParameter = std::vector<std::string>&;
+
+    using InputFunction = std::function<void(Game*, const InputParameter&)>;
+
+    using InputMap = std::unordered_map<std::string, InputFunction>;
+
     class GameState {
    
 
@@ -24,9 +30,9 @@ namespace ShopGame {
         ~GameState() = default;
         void handleInput(Game* game, const std::string& input);
         virtual void update(ShopGame::Game* game) = 0;
-        virtual void registerCommands() = 0;
+        virtual void initCommands() = 0;
         void init(ShopGame::Game* game);
-        void addCommand(const std::string& command, const std::function<void(ShopGame::Game*)> function);
+        void addCommand(const std::string& command, const InputFunction function);
         ShopGame::Game* getGame();
         std::string getName();
         virtual void render(GameRenderer::TextCanvas* canvas) = 0;
@@ -34,13 +40,13 @@ namespace ShopGame {
         private:
          std::string stateName;
          ShopGame::Game* game;
-         std::unordered_map<std::string, std::function<void(ShopGame::Game*)>> commandMap;
+         InputMap commandMap; //FOR PARAMETERS
     };
 
     class MenuState : public GameState {
     public:
         MenuState(Game* game);
-        void registerCommands() override;
+        void initCommands() override;
         void update(Game* game) override;
         void init(Game* game);
         void render(GameRenderer::TextCanvas* canvas) override;
@@ -49,7 +55,7 @@ namespace ShopGame {
     class ShopState : public GameState {
     public:
         ShopState(Game* game);
-        void registerCommands() override;
+        void initCommands() override;
         void update(Game* game) override;
         void init(Game* game);
         void render(GameRenderer::TextCanvas* canvas) override;
@@ -60,7 +66,7 @@ namespace ShopGame {
         Inventory* inventory;
     public:
         InventoryState(Game* game);
-        void registerCommands() override;
+        void initCommands() override;
         void update(Game* game) override;
         void init(Game* game);
         void render(GameRenderer::TextCanvas* canvas) override;

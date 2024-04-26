@@ -136,14 +136,12 @@ class MenuState;
     void ShopGame::Game::setGameState(GameState* state) {
         prevState = currentState;
 
-        if (currentState != nullptr) {
-          //  delete currentState; // Clean up the previous state
-        }
-
-        std::cout << "Switching GameState.. " << std::endl;
+       
+        std::cout << "Switching GameState.. " << state->getName() << std::endl;
         currentState = state;
+
         if (currentState != nullptr) {
-            currentState->registerCommands(); // Register commands for the new state
+            currentState->initCommands(); // Register commands for the new state
             currentState->init(this); // Initialize the new state
            
         }

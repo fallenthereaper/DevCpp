@@ -297,6 +297,72 @@
         return min + (rand() % (max - min + 1));
     }
 
+
+
+    std::pair<std::string, std::vector<std::string>> Utility::parseCommand(const std::string& input) {
+        std::pair<std::string, std::vector<std::string>> result;
+
+        std::string commandWord;
+        std::vector<std::string> parameters;
+
+        // State variables for parsing
+        bool inWord = false;
+        bool inQuotes = false;
+        std::string currentToken;
+
+      
+        size_t pos = 0;
+
+        while (pos < input.length()) {
+            char ch = input[pos];
+
+            if (ch == ' ' && !inQuotes) {
+                if (inWord) {
+                    if (!currentToken.empty()) {
+                        if (commandWord.empty()) {
+                            commandWord = currentToken;
+                        }
+                        else {
+                            parameters.push_back(currentToken);
+                        }
+                        currentToken.clear();
+                    }
+                    inWord = false;
+                }
+            }
+            else if (ch == '"') {
+                if (!inWord) {
+                    inQuotes = !inQuotes;
+                }
+                else {
+                    currentToken += ch;
+                }
+            }
+            else {
+                inWord = true;
+                currentToken += ch;
+            }
+
+            // Move to the next character position
+            ++pos;
+        }
+
+        // Add the last token if not empty
+        if (!currentToken.empty()) {
+            if (commandWord.empty()) {
+                commandWord = currentToken;
+            }
+            else {
+                parameters.push_back(currentToken);
+            }
+        }
+
+        result.first = commandWord;
+        result.second = parameters;
+
+        return result;
+    }
+
     using Vec2 = Utility::Mth::Vec2;
     using Vec3 = Utility::Mth::Vec3;
     using Operator = Utility::Mth::Operator;
