@@ -1,33 +1,43 @@
 #include "src/core/shop/item_stack.h"
 #include <iostream>
 #include <cstddef>  // Include for std::byte
+#include <cmath>
+namespace ExolorGame {
 
-namespace ShopGame {
-
-    ItemStack::ItemStack(Item* item, std::byte quantity) : item(item), count(quantity) {}
+    ItemStack::ItemStack(Item* item, int quantity) : item(item), count(quantity) {}
 
     Item* ItemStack::getItem() const {
         return item;
     }
 
-    std::byte ItemStack::getCount() const {
+    int ItemStack::getCount() const {
         return count;
     }
 
     void ItemStack::setCount(int newQuantity) {
-        count = static_cast<std::byte>(newQuantity);
+        count = std::min(std::max(newQuantity, 0), getMaxStackSize());
     }
 
     void ItemStack::increaseCount(int amount) {
-        // Cast std::byte to unsigned char, perform arithmetic, cast back
-        auto current_count = static_cast<unsigned char>(count);
-        count = static_cast<std::byte>(current_count + amount);
+        if (amount > 0) {
+            int maxStackSize = getMaxStackSize();
+            int newCount = std::min(count + amount, maxStackSize);
+            setCount(newCount);
+        }
     }
 
     void ItemStack::decreaseCount(int amount) {
-        // Cast std::byte to unsigned char, perform arithmetic, cast back
-        auto current_count = static_cast<unsigned char>(count);
-        count = static_cast<std::byte>(current_count - amount);
+        if (amount > 0) {
+            int newCount = std::max(count - amount, 0);
+            setCount(newCount);
+        }
     }
+
+    int ItemStack::getMaxStackSize() const {
+       
+        return 16;
+    }
+
+
 
 } // namespace ShopGame

@@ -9,7 +9,7 @@
 #include "src/core/shop/Item.h"
 
 
-namespace ShopGame {
+namespace ExolorGame {
 
     // ItemRegistry class to manage registered item types
     class ItemRegistry {

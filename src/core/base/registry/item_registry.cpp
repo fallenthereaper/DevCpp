@@ -1,10 +1,10 @@
 #include "src/core/shop/registry/item_registry.h"
 #include <stdexcept>  // Include this for std::runtime_error
 
-namespace ShopGame {
-    using Registry = std::unordered_map<std::string, std::function<ShopGame::Item* ()>>;
+namespace ExolorGame {
+    using Registry = std::unordered_map<std::string, std::function<ExolorGame::Item* ()>>;
 
-    Registry ShopGame::ItemRegistry::items;
+    Registry ExolorGame::ItemRegistry::items;
     ItemRegistry* ItemRegistry::instance = nullptr;
 
     ItemRegistry* ItemRegistry::getInstance() {

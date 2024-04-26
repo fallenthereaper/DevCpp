@@ -11,7 +11,7 @@
 
 
 
-namespace ShopGame {
+namespace ExolorGame {
 
     class Game;
     class Inventory;
@@ -26,20 +26,20 @@ namespace ShopGame {
    
 
     public:
-        GameState(ShopGame::Game* game, std::string name);
+        GameState(ExolorGame::Game* game, std::string name);
         ~GameState() = default;
         void handleInput(Game* game, const std::string& input);
-        virtual void update(ShopGame::Game* game) = 0;
+        virtual void update(ExolorGame::Game* game) = 0;
         virtual void initCommands() = 0;
-        void init(ShopGame::Game* game);
+        void init(ExolorGame::Game* game);
         void addCommand(const std::string& command, const InputFunction function);
-        ShopGame::Game* getGame();
+        ExolorGame::Game* getGame();
         std::string getName();
         virtual void render(GameRenderer::TextCanvas* canvas) = 0;
 
         private:
          std::string stateName;
-         ShopGame::Game* game;
+         ExolorGame::Game* game;
          InputMap commandMap; //FOR PARAMETERS
     };
 

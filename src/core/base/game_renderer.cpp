@@ -9,9 +9,14 @@ namespace GameRenderer {
         system("CLS");
     }
 
+	void GameRenderer::cls()
+	{
+	
+	}
+
     // Renders the game state
-    void GameRenderer::render(ShopGame::Game* game) {
-     //    clearScreen();
+    void GameRenderer::render(ExolorGame::Game* game) {
+       //  clearScreen();
 
           // Calculate FPS
         static auto lastTime = std::chrono::high_resolution_clock::now();
@@ -23,19 +28,13 @@ namespace GameRenderer {
         // Smooth the FPS display by updating less frequently
         static double smoothedFps = 0.1;
         const double smoothingFactor = 0.1; // Adjust smoothing factor as needed
-
         smoothedFps = (smoothingFactor * fps) + ((1.0 - smoothingFactor) * smoothedFps);
-
- 
-     
-      //  game->getCanvas()->drawText(Vec2( 1, 1), "FPS: " + std::to_string(static_cast<int>(smoothedFps)));
-
 
         game->render();
         game->getCanvas()->clear(); //Clear the buffer after rendering the current canvas
        
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(1)); 
+        std::this_thread::sleep_for(std::chrono::milliseconds(30)); 
     }
 
 } // namespace GameRenderer

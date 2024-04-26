@@ -3,30 +3,30 @@
 class MenuState;
 
 
-   ShopGame::Game::Game() : running(true), gameName("Default"), canvas(new GameRenderer::TextCanvas(0, 0)), currentState(nullptr), prevState(nullptr) {
+   ExolorGame::Game::Game() : running(true), gameName("Default"), canvas(new GameRenderer::TextCanvas(0, 0)), currentState(nullptr), prevState(nullptr) {
         registerCommands();
     }
 
-    ShopGame::Game::Game(int canvasWidth, int canvasHeight, std::string name) : canvas(new GameRenderer::TextCanvas(canvasWidth, canvasHeight)), running(true), gameName(name), currentState(nullptr),  prevState(nullptr) {
+    ExolorGame::Game::Game(int canvasWidth, int canvasHeight, std::string name) : canvas(new GameRenderer::TextCanvas(canvasWidth, canvasHeight)), running(true), gameName(name), currentState(nullptr),  prevState(nullptr) {
     
         registerCommands();
     }
 
     // Destructor
-    ShopGame::Game::~Game() {
+    ExolorGame::Game::~Game() {
         registerCommands();
     }
 
-    void ShopGame::Game::addCommand(const std::string& command, const std::function<void(Game*)> consumer) {
+    void ExolorGame::Game::addCommand(const std::string& command, const std::function<void(Game*)> consumer) {
      //   commandMap[command] = (consumer);
         commandMap.emplace(command, consumer);
     }
 
-    std::string ShopGame::Game::getName() {
+    std::string ExolorGame::Game::getName() {
         return gameName;
     }
 
-    void ShopGame::displayItemList(GameRenderer::TextCanvas* canvas, const std::unordered_map<std::string, ItemRegistry::ItemFactory>& itemList, const std::string& displayTitle, const Vec2& topLeft, int maxWidth, int itemWidth, int itemHeight, int maxItemCount) {
+    void ExolorGame::displayItemList(GameRenderer::TextCanvas* canvas, const std::unordered_map<std::string, ItemRegistry::ItemFactory>& itemList, const std::string& displayTitle, const Vec2& topLeft, int maxWidth, int itemWidth, int itemHeight, int maxItemCount) {
         int itemCount = std::min(static_cast<int>(itemList.size()), maxItemCount);
 
         // Calculate the number of rows needed based on the item count
@@ -64,7 +64,7 @@ class MenuState;
         }
     }
 
-    void ShopGame::Game::registerCommands() {
+    void ExolorGame::Game::registerCommands() {
         GameRenderer::TextCanvas* canvas = this->getCanvas();
 
       
@@ -81,7 +81,7 @@ class MenuState;
     }
 
     // Method to process input and trigger associated consumers
-    void ShopGame::Game::processInput(const std::string& input) {
+    void ExolorGame::Game::processInput(const std::string& input) {
         auto it = commandMap.find(input);
         if (it != commandMap.end()) {
             it->second(this);
@@ -96,7 +96,7 @@ class MenuState;
         }
     }
 
-    void ShopGame::Game::update(GameRenderer::TextCanvas* canvas) {
+    void ExolorGame::Game::update(GameRenderer::TextCanvas* canvas) {
         canvas->drawSquare(Vec2(0, 0), 112, 28, '*', "", true);
         std::string input;
         std::cout << "Enter a command: ";
@@ -106,57 +106,65 @@ class MenuState;
     }
 
 
-    void ShopGame::Game::clean() {
+    void ExolorGame::Game::clean() {
     }
 
-    void ShopGame::Game::render() {
+    void ExolorGame::Game::render() {
         if (currentState) {
        
             currentState->render(canvas);
-            canvas->render(); // Render the canvas after updating its content
+           // Render the canvas after updating its content
         }
+        canvas->render();
     }
 
-    const bool ShopGame::Game::isRunning() {
+    const bool ExolorGame::Game::isRunning() {
 
         return this->running;
     }
 
-     void ShopGame::Game::setRunning(bool val) {
+     void ExolorGame::Game::setRunning(bool val) {
       
         this->running = val;
         
     }
 
-    GameRenderer::TextCanvas* ShopGame::Game::getCanvas() {
+    GameRenderer::TextCanvas* ExolorGame::Game::getCanvas() {
 
         return canvas;
     }
 
-    void ShopGame::Game::setGameState(GameState* state) {
+    void ExolorGame::Game::setGameState(GameState* state) {
         prevState = currentState;
 
        
-        std::cout << "Switching GameState.. " << state->getName() << std::endl;
-        currentState = state;
+  
+     
 
-        if (currentState != nullptr) {
-            currentState->initCommands(); // Register commands for the new state
-            currentState->init(this); // Initialize the new state
-           
+        if (state != nullptr) {
+
+
+
+            if (currentState != state) {
+                currentState = state;
+                std::cout << "Switching GameState.. " << state->getName() << std::endl;
+                currentState->initCommands(); // Register commands for the new state
+                currentState->init(this); // Initialize the new state
+            }
         }
+       
     }
 
-    ShopGame::GameState* ShopGame::Game::getGameState() {
+    ExolorGame::GameState* ExolorGame::Game::getGameState() {
         return currentState;
     }
 
-    ShopGame::GameState* ShopGame::Game::getPreviousState() {
+    ExolorGame::GameState* ExolorGame::Game::getPreviousState() {
         return prevState;
     }
 
     // Method to start the game
-    void ShopGame::Game::start() {
+    void ExolorGame::Game::start() {
     //   std::cout << "[Game Started]" << std::endl;
         std::cout << "Type 'start' to start the game." << std::endl;
         //  std::cout << "Type 'exit' to quit the game." << std::endl;
@@ -164,7 +172,7 @@ class MenuState;
 
 
     // Helper method for handling user input
-    void ShopGame::Game::handleInput(const std::string& input) {
+    void ExolorGame::Game::handleInput(const std::string& input) {
 
 
        

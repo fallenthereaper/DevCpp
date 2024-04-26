@@ -4,27 +4,27 @@
 #include "src/core/shop/inventory.h"
 #include "src/core/utils/utility.h" // Include utility for parsing commands
 
-ShopGame::InventoryState::InventoryState(Game* game) : ShopGame::GameState(game, "Inventory Menu"), inventory(new ShopGame::Inventory(18)) {
+ExolorGame::InventoryState::InventoryState(Game* game) : ExolorGame::GameState(game, "Inventory Menu"), inventory(new ExolorGame::Inventory(18)) {
     
 }
 
-void ShopGame::InventoryState::update(Game* game) {
+void ExolorGame::InventoryState::update(Game* game) {
    
 }
 
-void ShopGame::InventoryState::init(Game* game) {
+void ExolorGame::InventoryState::init(Game* game) {
     GameState::init(game);
 }
 
-void ShopGame::InventoryState::render(GameRenderer::TextCanvas* canvas) {
+void ExolorGame::InventoryState::render(GameRenderer::TextCanvas* canvas) {
    
 }
 
-ShopGame::Inventory* ShopGame::InventoryState::getInventory() {
+ExolorGame::Inventory* ExolorGame::InventoryState::getInventory() {
     return inventory;
 }
 
-void ShopGame::InventoryState::initCommands() {
+void ExolorGame::InventoryState::initCommands() {
     GameState::initCommands();
 
     GameRenderer::TextCanvas* canvas = getGame()->getCanvas();
@@ -57,18 +57,28 @@ void ShopGame::InventoryState::initCommands() {
             std::string itemName = param[0];
             Item* selectedItem = nullptr;
 
-            // Try to find the item by name first
+            // Try to find the item by name
             selectedItem = ItemRegistry::getInstance()->getItem(itemName);
 
-
-            std::cout << selectedItem->getName();
             if (selectedItem != nullptr) {
-                std::cout << selectedItem->getName();
-                //g->getCanvas()->drawText({ 2, 2 }, selectedItem->getName());
+                GameRenderer::TextCanvas* canvas = g->getCanvas();
+                std::string itemName = selectedItem->getName();
 
+                // Calculate the required dimensions for the square
+                int width = itemName.length() + 4; // Width of the square (item name + padding)
+                int height = 5; // Height of the square
+
+                // Draw a square with item information
+                canvas->drawSquare({ 8, 2 }, width, height, '*', "Selected Item", true);
+                canvas->drawText({ 8, 8 }, itemName); // Display item name within the square
             }
-          }
+            else {
+                std::cout << "Item not found." << std::endl;
+            }
+        }
+       
         });
+     }
 
 
-}
+

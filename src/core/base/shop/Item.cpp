@@ -1,6 +1,6 @@
 #include "src/core/shop/item.h"
 
-namespace ShopGame {
+namespace ExolorGame {
 
 	Item::Item(const std::string& pName, double pPrice, const std::string& pDescription) : name(pName), price(pPrice), description(pDescription) { }
 

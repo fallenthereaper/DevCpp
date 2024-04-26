@@ -1,15 +1,15 @@
 #pragma once
 #include "src/core/shop/item.h"  // Include the definition of Item
 
-namespace ShopGame {
+namespace ExolorGame {
 
     class ItemStack {
     public:
-        ItemStack(Item* item, std::byte quantity);
+        ItemStack(Item* item, int quantity);
 
         Item* getItem() const;
 
-        std::byte getCount() const;
+        int getCount() const;
 
         void setCount(int newQuantity);
 
@@ -17,9 +17,11 @@ namespace ShopGame {
 
         void decreaseCount(int amount);
 
+       int getMaxStackSize() const;
+
     private:
         Item* item;   // Pointer to the item type
-        std::byte count; // Quantity of this item in the stack
+        int count; // Quantity of this item in the stack
     };
 
 } // namespace ShopGame

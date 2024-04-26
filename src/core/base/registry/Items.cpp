@@ -3,7 +3,7 @@
 #include "src/core/shop/registry/items.h"
 #include "src/core/shop/item.h"
 
-namespace ShopGame {
+namespace ExolorGame {
     using ItemSupplier = std::function<Item* ()>;
 
    const auto registry = ItemRegistry::getInstance();
@@ -40,12 +40,12 @@ namespace ShopGame {
 
 
    
-   static ItemSupplier ShopGame::registerItemBuilder(const std::string& name, float price, const std::string& description) {
+   static ItemSupplier ExolorGame::registerItemBuilder(const std::string& name, float price, const std::string& description) {
        auto registry = ItemRegistry::getInstance();
        return registry->registerItem(name, [name, price, description]() -> Item* { return new Item(name, price, description); });
    }
 
-   void ShopGame::registerItems() {
+   void ExolorGame::registerItems() {
     
    }
 

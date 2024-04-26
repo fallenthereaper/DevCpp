@@ -299,66 +299,32 @@
 
 
 
+    //Thanks ChatGPT for this algorithm
     std::pair<std::string, std::vector<std::string>> Utility::parseCommand(const std::string& input) {
         std::pair<std::string, std::vector<std::string>> result;
 
-        std::string commandWord;
-        std::vector<std::string> parameters;
+        std::istringstream iss(input);
 
-        // State variables for parsing
-        bool inWord = false;
-        bool inQuotes = false;
-        std::string currentToken;
-
-      
-        size_t pos = 0;
-
-        while (pos < input.length()) {
-            char ch = input[pos];
-
-            if (ch == ' ' && !inQuotes) {
-                if (inWord) {
-                    if (!currentToken.empty()) {
-                        if (commandWord.empty()) {
-                            commandWord = currentToken;
-                        }
-                        else {
-                            parameters.push_back(currentToken);
-                        }
-                        currentToken.clear();
-                    }
-                    inWord = false;
-                }
-            }
-            else if (ch == '"') {
-                if (!inWord) {
-                    inQuotes = !inQuotes;
-                }
-                else {
-                    currentToken += ch;
-                }
-            }
-            else {
-                inWord = true;
-                currentToken += ch;
-            }
-
-            // Move to the next character position
-            ++pos;
+        // Extract the command word (first token before any commas)
+        std::string token;
+        if (std::getline(iss, token, ';')) {
+            result.first = token; // This is the command word
+        }
+        else {
+            return result; // Return empty result if no command word found
         }
 
-        // Add the last token if not empty
-        if (!currentToken.empty()) {
-            if (commandWord.empty()) {
-                commandWord = currentToken;
-            }
-            else {
-                parameters.push_back(currentToken);
+        // Extract the remaining tokens as parameters
+        std::string remaining;
+        if (std::getline(iss, remaining)) {
+            std::istringstream paramStream(remaining);
+            std::string parameter;
+            while (std::getline(paramStream, parameter, ',')) {
+                if (!parameter.empty()) {
+                    result.second.push_back(parameter); // Add parameter to vector
+                }
             }
         }
-
-        result.first = commandWord;
-        result.second = parameters;
 
         return result;
     }

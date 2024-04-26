@@ -10,7 +10,7 @@
 #include "src/core/utils/utility.h"
 #include <vector>
 
-namespace ShopGame {
+namespace ExolorGame {
     class GameState;
     class Game {
     public:

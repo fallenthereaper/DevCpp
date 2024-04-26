@@ -3,7 +3,7 @@
 #include "src/core/shop/registry/item_registry.h"
 #include "src/core/shop/item.h"
 
-namespace ShopGame {
+namespace ExolorGame {
 
     // Function to register predefined items with the ItemRegistry
     void registerItems();

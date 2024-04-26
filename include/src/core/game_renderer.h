@@ -2,13 +2,14 @@
 #include <chrono>
 #include "src/core/shop/Game.h";
 #include <thread>
-class ShopGame::ItemRegistry;
+#include <windows.h>
+class ExolorGame::ItemRegistry;
 
 namespace GameRenderer {
 
     void clearScreen();
-
+    void cls();
   
-    void render(ShopGame::Game* game);
+    void render(ExolorGame::Game* game);
 
 } // namespace GameRenderer

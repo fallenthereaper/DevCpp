@@ -48,11 +48,11 @@ unsigned long long hexToDecimal(const std::string& hexString) {
 }
 
 
-  ShopGame::Game* game = nullptr;
+  ExolorGame::Game* game = nullptr;
 
   void coreInit() {
 
-      ShopGame::registerItems();
+      ExolorGame::registerItems();
   }
 
   // Function to compare two canvas data arrays
@@ -95,7 +95,7 @@ unsigned long long hexToDecimal(const std::string& hexString) {
         coreInit();
 
 
-        game = new ShopGame::Game(MAX_CANVAS_WIDTH, MAX_CANVAS_HEIGHT, "Exolor");
+        game = new ExolorGame::Game(MAX_CANVAS_WIDTH, MAX_CANVAS_HEIGHT, "Exolor");
 
    
         game->start();

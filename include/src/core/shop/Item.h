@@ -8,7 +8,7 @@
 
 class ItemStack;
 
-namespace ShopGame {
+namespace ExolorGame {
   class Item {
 
   private:

@@ -2,12 +2,12 @@
 #include "src/core/bank/bank_account.h";
 #include "inventory.h";
 
-namespace ShopGame {
+namespace ExolorGame {
 
     class Character {
 
     private:
-        std::string name;
+        std::string& name;
         BankAccount* bank;
         std::shared_ptr<Inventory> inventory;
 
