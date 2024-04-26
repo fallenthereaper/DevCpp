@@ -68,9 +68,14 @@ class MenuState;
         GameRenderer::TextCanvas* canvas = this->getCanvas();
 
       
-        this->setGameState(new MenuState(this));
+   
        
-         
+        addCommand("start", [canvas](Game* g) {
+       //     std::cout << "Starting game..." << std::endl;
+           canvas->drawSquare(Vec2(0, 0), 112, 28, '*', "", true);
+            g->setGameState(new MenuState(g));
+            std::cout << "[Game Started]" << std::endl;
+            });
 
         
     }
@@ -132,12 +137,16 @@ class MenuState;
         prevState = currentState;
 
         if (currentState != nullptr) {
-            delete currentState; // Clean up the previous state
+          //  delete currentState; // Clean up the previous state
         }
 
-        std::cout << "Switching GameState.. ";
+        std::cout << "Switching GameState.. " << std::endl;
         currentState = state;
-        currentState->registerCommands();
+        if (currentState != nullptr) {
+            currentState->registerCommands(); // Register commands for the new state
+            currentState->init(this); // Initialize the new state
+           
+        }
     }
 
     ShopGame::GameState* ShopGame::Game::getGameState() {
@@ -150,8 +159,9 @@ class MenuState;
 
     // Method to start the game
     void ShopGame::Game::start() {
-       std::cout << "[Game Started]" << std::endl;
-      std::cout << "Type 'exit' to quit the game." << std::endl;
+    //   std::cout << "[Game Started]" << std::endl;
+        std::cout << "Type 'start' to start the game." << std::endl;
+        //  std::cout << "Type 'exit' to quit the game." << std::endl;
     }
 
 

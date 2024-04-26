@@ -1,8 +1,10 @@
 
 #include "src/core/shop/game_state.h"
 #include "src/core/shop/game.h"
+
+class InventoryState;
 	//GAME STATE
-	ShopGame::GameState::GameState(Game* pgame) : game(pgame) {
+	ShopGame::GameState::GameState(Game* pgame, std::string name) : game(pgame), stateName(name) {
 	//	init(pgame);
 	}
 
@@ -22,7 +24,42 @@
 	};
 
 	void ShopGame::GameState::init(Game* game) {
-		registerCommands();
+        GameRenderer::TextCanvas* canvas = game->getCanvas();
+
+
+        game->getCanvas()->drawSquare(Vec2(46, 10), 20, 5, '*', getName(), true);
+
+
+        int x = 6;
+        int y = 5;
+        int commandCount = commandMap.size();
+      
+        canvas->drawSquare(Vec2(x - 2, 2), 28, 3 * commandCount - 2, '*', "", true);
+
+
+        canvas->drawText(Vec2(x + 3, 3), "Available Commands:");
+
+
+        for (const auto& commands : commandMap) {
+
+            std::string commandName = commands.first;
+
+            canvas->drawText(Vec2(x + 9, y), commandName);
+
+               y += 2;
+        }
+
+
+     /*
+     
+     canvas->drawText(Vec2(x, 5), "shop - Open shop");
+        canvas->drawText(Vec2(x, 7), "exit - Exit game");
+        canvas->drawText(Vec2(x, 9), "clear - Clear canvas");
+        canvas->drawText(Vec2(x, 11), "info - Display game info");
+        canvas->drawText(Vec2(x, 13), "help - Display help menu");
+     
+     */
+        
 	}
 
 	void ShopGame::GameState::addCommand(const std::string& command, const std::function<void(Game*)> consumer) {
@@ -34,12 +71,35 @@
         return game;
     }
 
+    std::string ShopGame::GameState::getName() {
+        return stateName;
+    }
 
+    //GLOBAL COMMANDS(Shared across all gamestates) always call this
 	void ShopGame::GameState::registerCommands() {
+        GameRenderer::TextCanvas* canvas = getGame()->getCanvas();
         addCommand("menu", [this](Game* g) {
              GameState* menu = new MenuState(g);
 
                g->setGameState(menu);
+            });
+        addCommand("back", [this](Game* g) {
+            GameState* menu = new MenuState(g);
+
+            if (g->getPreviousState() != nullptr) {
+                g->setGameState(g->getPreviousState());
+            }
+            });
+        addCommand("exit", [this](Game* g) {
+            std::cout << "Closing game..." << std::endl;
+            g->getCanvas()->drawSquare(Vec2(46, 10), 20, 5, '*', "Game Closed", true);
+
+            g->setRunning(false); // Set running flag to false to exit the game loop
+            });
+        addCommand("clear", [canvas](Game* g) {
+            std::cout << "Clearing canvas..." << std::endl;
+            canvas->clear(); // Clear the canvas
+            canvas->drawSquare(Vec2(46, 10), 20, 5, '*', "Cleared Canvas", true);
             });
 	}
 
@@ -52,12 +112,15 @@
 
 	//MENU STATE
 
-    ShopGame::MenuState::MenuState(Game* game) : ShopGame::GameState(game) {
+    ShopGame::MenuState::MenuState(Game* game) : ShopGame::GameState(game, "Game Menu") {
         // Update logic for the menu state
     }
 	void ShopGame::MenuState::update(Game* game) {
 		// Update logic for the menu state
 	}
+    void ShopGame::MenuState::init(Game* game) {
+       GameState::init(game);
+    }
 	void ShopGame::MenuState::registerCommands()  {
         GameState::registerCommands();
 
@@ -67,20 +130,6 @@
             g->setGameState(new ShopState(g));
          
             });
-
-        addCommand("exit", [canvas](Game* g) {
-            std::cout << "Closing game..." << std::endl;
-            canvas->drawSquare(Vec2(46, 10), 20, 5, '*', "Game Closed", true);
-
-            g->setRunning(false); // Set running flag to false to exit the game loop
-            });
-
-        addCommand("clear", [canvas](Game* g) {
-            std::cout << "Clearing canvas..." << std::endl;
-            canvas->clear(); // Clear the canvas
-            canvas->drawSquare(Vec2(46, 10), 20, 5, '*', "Cleared Canvas", true);
-            });
-
         addCommand("help", [canvas](Game* g) {
             canvas->drawSquare(Vec2(46, 10), 20, 5, '*', "Help Menu", false);
             canvas->drawSquare(Vec2(48, 12), 16, 3, '*', "Commands:", false);
@@ -126,12 +175,16 @@
 
     //SHOP STATE
 
-    ShopGame::ShopState::ShopState(Game* game) : ShopGame::GameState(game) {
+    ShopGame::ShopState::ShopState(Game* game) : ShopGame::GameState(game, "Shop Menu") {
         // Update logic for the menu state
     }
 
     void ShopGame::ShopState::update(Game* game) {
         // Implement update logic for the shop state
+    }
+
+    void ShopGame::ShopState::init(Game* game) {
+        GameState::init(game);
     }
 
     void ShopGame::ShopState::render(GameRenderer::TextCanvas* canvas) {
@@ -147,6 +200,11 @@
             canvas->drawSquare(Vec2(46, 10), 20, 5, '*', "Buy Item", true);
             });
 
+        addCommand("inventory", [canvas](Game* g) {
+            g->setGameState(new InventoryState(g));
+            });
+
+
         addCommand("sell", [canvas](Game* g) {
             canvas->drawSquare(Vec2(46, 10), 20, 5, '*', "Sell Item", true);
             });
@@ -155,7 +213,7 @@
 
             const auto& itemMap = ItemRegistry::getInstance()->getItemMap();
 
-            // Define the dimensions and layout of the item shop display
+        
             Vec2 shopTopLeft(16, 3);
             int maxWidth = 6; // Maximum items per row
             int itemWidth = 18;

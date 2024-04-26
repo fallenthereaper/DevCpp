@@ -14,12 +14,13 @@
 namespace ShopGame {
 
     class Game;
+    class Inventory;
 
     class GameState {
    
 
     public:
-        GameState(ShopGame::Game* game);
+        GameState(ShopGame::Game* game, std::string name);
         ~GameState() = default;
         void handleInput(Game* game, const std::string& input);
         virtual void update(ShopGame::Game* game) = 0;
@@ -27,9 +28,11 @@ namespace ShopGame {
         void init(ShopGame::Game* game);
         void addCommand(const std::string& command, const std::function<void(ShopGame::Game*)> function);
         ShopGame::Game* getGame();
+        std::string getName();
         virtual void render(GameRenderer::TextCanvas* canvas) = 0;
 
         private:
+         std::string stateName;
          ShopGame::Game* game;
          std::unordered_map<std::string, std::function<void(ShopGame::Game*)>> commandMap;
     };
@@ -39,6 +42,7 @@ namespace ShopGame {
         MenuState(Game* game);
         void registerCommands() override;
         void update(Game* game) override;
+        void init(Game* game);
         void render(GameRenderer::TextCanvas* canvas) override;
     };
 
@@ -47,7 +51,20 @@ namespace ShopGame {
         ShopState(Game* game);
         void registerCommands() override;
         void update(Game* game) override;
+        void init(Game* game);
         void render(GameRenderer::TextCanvas* canvas) override;
+    };
+
+    class InventoryState : public GameState {
+    private:
+        Inventory* inventory;
+    public:
+        InventoryState(Game* game);
+        void registerCommands() override;
+        void update(Game* game) override;
+        void init(Game* game);
+        void render(GameRenderer::TextCanvas* canvas) override;
+        Inventory* getInventory();
     };
 
 } // namespace ShopGam
