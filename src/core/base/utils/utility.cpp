@@ -14,6 +14,44 @@
         }
     }
 
+    void Utility::bootGameEngine() {
+        Blaze2D::GameEngine* instance = Blaze2D::GameEngine::getInstance();
+
+        instance->init();
+
+
+        while (instance->isRunning()) {
+            instance->handleEvents();
+            instance->tick();
+            instance->render();
+        }
+
+        instance->clean();
+    }
+
+    static bool const Utility::validParentheses(const std::string& input) {
+        std::stack<char> stack;
+        std::unordered_map<char, char> pair;
+
+        pair.emplace('(', ')');
+        pair.emplace('{', '}');
+        pair.emplace('[', ']');
+
+        for (char c : input) {
+            if (pair.find(c) != pair.end()) { //Contains key
+                stack.push(c);
+            }
+            else if (pair.find(stack.top()) != pair.end() && pair[stack.top()] == c) {
+                stack.pop();
+            }
+            else {
+                // Ignore non-parentheses characters
+            }
+        }
+
+        return stack.empty();
+    }
+
    static bool const Utility::validParenthesis(const std::string& input) {
         int openedCount = 0;
 

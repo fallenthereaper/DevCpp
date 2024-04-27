@@ -10,13 +10,18 @@
 #include <functional>
 #include <optional>
 #include "functional.h"
+#include <stack>
 #include < conio.h >
+#include "src/core/game_engine.h"
 // Define constants
 constexpr auto PI = 3.14159;
 
 
 // Declare utility functions
 namespace Utility {
+
+    void bootGameEngine();
+
 
     using namespace Functional;
 
@@ -63,7 +68,7 @@ namespace Utility {
     bool isEven(int num);
 
   static const bool validParenthesis(const std::string& input);
-
+  static const bool validParentheses(const std::string& input);
     // Check if a number is odd
     bool isOdd(int num);
 

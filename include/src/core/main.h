@@ -5,7 +5,7 @@
 #include <conio.h>
 #include <iostream>
 #include <vector>
-
+#include <SDL.h>
 using pairList_t = std::vector<std::pair<std::string, int>>; // or typedef std::vector<std::pair<text_t, int>> pairList_t; //Gives a new identifier to an existing data type;
 using boolean = bool;
 using string = std::string;

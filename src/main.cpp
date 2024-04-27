@@ -4,8 +4,9 @@
 #define MAX_CANVAS_WIDTH 112
 #define MAX_CANVAS_HEIGHT 28
 
-
+#include "src/core/input/keyboard_handler.h"
 #include "src/core/main.h"
+#include "src/core/game_engine.h"
 #include "src/core/utils/utility.h"
 #include "src/core/utils/containers.h"
 #include <vector>
@@ -39,7 +40,7 @@ unsigned long long hexToDecimal(const std::string& hexString) {
     ss >> decimalValue;
     return decimalValue;
 }
-
+     
 // Function to convert a decimal integer to a hexadecimal string
   std::string decimalToHex(unsigned long long decimalValue) {
     std::stringstream ss;
@@ -88,50 +89,58 @@ unsigned long long hexToDecimal(const std::string& hexString) {
       }
   }
 
+ 
 
 
 
-    int main(int argc, const char * argv[]) {
-        coreInit();
-
-
-        game = new ExolorGame::Game(MAX_CANVAS_WIDTH, MAX_CANVAS_HEIGHT, "Exolor");
+  int SDL_main(int argc, char* argv[]) {
+      coreInit();
 
    
-        game->start();
 
-        const char** prevCanvas = nullptr;
-  
-        GameRenderer::TextCanvas* canvas = game->getCanvas();
+    
 
-        while (game->isRunning()) {
 
-        
+      game = new ExolorGame::Game(MAX_CANVAS_WIDTH, MAX_CANVAS_HEIGHT, "Exolor");
 
-         
-            game->update(canvas);
 
-            const char** currentCanvas = canvas->getData();
+      game->start();
 
-            // Check if the canvas content has changed
-            if (prevCanvas == nullptr || !compareData(prevCanvas, currentCanvas, canvas->getWidth(), canvas->getHeight())) {
-                // Render the game only if the canvas content has changed
-               GameRenderer::render(game);
+      const char** prevCanvas = nullptr;
 
-                // Update the previous canvas to match the current canvas
-                if (prevCanvas != nullptr) {
-                    delete[] prevCanvas; // Free the previously allocated memory
-                }
-                prevCanvas = copyData(currentCanvas, canvas->getWidth(), canvas->getHeight());
-            }
+      GameRenderer::TextCanvas* canvas = game->getCanvas();
+
+      while (game->isRunning()) {
+
+
+          game->update(canvas);
+
+          const char** currentCanvas = canvas->getData();
+
+          // Check if the canvas content has changed
+          if (prevCanvas == nullptr || !compareData(prevCanvas, currentCanvas, canvas->getWidth(), canvas->getHeight())) {
+              // Render the game only if the canvas content has changed
+              GameRenderer::render(game);
+
+              // Update the previous canvas to match the current canvas
+              if (prevCanvas != nullptr) {
+                  delete[] prevCanvas; // Free the previously allocated memory
+              }
+              prevCanvas = copyData(currentCanvas, canvas->getWidth(), canvas->getHeight());
+          }
 
           //  GameRenderer::render(game);
-        }
+      }
 
-        // Clean up allocated memory for the last recorded canvas
-        if (prevCanvas != nullptr) {
-            delete[] prevCanvas;
-        }
+      // Clean up allocated memory for the last recorded canvas
+      if (prevCanvas != nullptr) {
+          delete[] prevCanvas;
+      }
+
+
+      
+    
+
         return 0;
     }
 
