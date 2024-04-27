@@ -14,19 +14,24 @@
         }
     }
 
-    void Utility::bootGameEngine() {
-        Blaze2D::GameEngine* instance = Blaze2D::GameEngine::getInstance();
-
-        instance->init();
 
 
-        while (instance->isRunning()) {
-            instance->handleEvents();
-            instance->tick();
-            instance->render();
-        }
+    void Utility::bootGameEngine(const std::string& windowTitle, int screenHeight, int screenWidth) {
+     
+        std::thread gameLoop([=]() {
+            Blaze2D::GameEngine* instance = Blaze2D::GameEngine::getInstance();
+            if (instance->init(windowTitle, screenWidth, screenHeight)) {
+                while (instance->isRunning()) {
+                    instance->handleEvents();
+                    instance->tick();
+                    instance->render();
+                }
 
-        instance->clean();
+                instance->clean();
+            }
+            });
+        gameLoop.join();
+    
     }
 
     static bool const Utility::validParentheses(const std::string& input) {
@@ -41,7 +46,7 @@
             if (pair.find(c) != pair.end()) { //Contains key
                 stack.push(c);
             }
-            else if (pair.find(stack.top()) != pair.end() && pair[stack.top()] == c) {
+            else if (pair.find(stack.top()) != pair.end() && pair[stack.top()] == c) { //if a stack top value is present and it's value is equal to the current char
                 stack.pop();
             }
             else {

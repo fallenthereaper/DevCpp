@@ -1,8 +1,13 @@
 #pragma once
 
 #include <SDL.h>
+#include <iostream>
+#include <chrono>
+
+
 
 namespace Blaze2D {
+    class IGame;
     struct Vec3 {
         float x, y, z;
     };
@@ -14,8 +19,18 @@ namespace Blaze2D {
             return instance = (instance != nullptr ? instance : new GameEngine());
         }
 
+        float calculateDeltaTime() {
+            static Uint32 lastTime = SDL_GetTicks();
+            Uint32 currentTime = SDL_GetTicks();
+            float deltaTime = (currentTime - lastTime) / 1000.0f;
+            lastTime = currentTime;
+            return deltaTime;
+        }
+
+       void run(std::unique_ptr<IGame> game);
+
         // Initialize the game engine
-        bool init();
+        bool init(const std::string& windowTitle, int screenHeight, int screenWidth);
         // Clean up resources
         void clean();
         // Quit the game engine
@@ -27,7 +42,7 @@ namespace Blaze2D {
         // Handle SDL events
         void handleEvents();
 
-       void drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, Uint8 r, Uint8 g, Uint8 b);
+        void drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, Uint8 r, Uint8 g, Uint8 b);
         void drawPixel(int x, int y, Uint8 r, Uint8 g, Uint8 b);
         void renderGrid();
         void renderCube(float angle);
@@ -49,9 +64,11 @@ namespace Blaze2D {
         static GameEngine* instance;
         SDL_Window* m_window;
         SDL_Renderer* m_renderer;
+        std::string title;
         bool m_isRunning;
         int m_screenWidth;
         int m_screenHeight;
+        float  m_fpsCounter, m_lastSecondTime, m_lastTickTime, m_fps;
     };
 
 } // namespace Blaze2D

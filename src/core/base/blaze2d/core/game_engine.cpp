@@ -1,5 +1,6 @@
 #include "src/core/game_engine.h"
-
+#include "src/core/igame.h"
+#include <string>
 #define SCREEN_WIDTH 500;
 #define SCREEN_HEIGHT 500;
 
@@ -8,22 +9,49 @@ namespace Blaze2D {
     GameEngine* GameEngine::instance = nullptr;
 
     GameEngine::GameEngine()
-        : m_window(nullptr), m_renderer(nullptr), m_isRunning(false), m_screenWidth(0), m_screenHeight(0) {}
+        : m_window(nullptr), m_renderer(nullptr), m_isRunning(false), m_screenWidth(0), m_screenHeight(0), m_fpsCounter(0), m_lastSecondTime(0), m_lastTickTime(0), m_fps(0), title("") {}
 
 
+    void GameEngine::run(std::unique_ptr<IGame> game) {
+        m_isRunning = true;
 
+        game->init();
+
+        while (m_isRunning) {
+            SDL_Event event;
+            while (SDL_PollEvent(&event)) {
+                if (event.type == SDL_QUIT) {
+                    quit();
+                }
+                game->handleEvents(event);
+            }
+
+            game->update(calculateDeltaTime()); // Fixed time step update (60 FPS equivalent)
+            game->render();
+        }
+
+        game->clean();
+        clean();
+    }
   
 
-    bool GameEngine::init() {
+    bool GameEngine::init(const std::string& windowTitle, int screenHeight, int screenWidth) {
+       // clean();
 
+        m_screenHeight = screenHeight;
+        m_screenWidth = screenWidth;
+        title = windowTitle; 
         
+
+
+     
        
         if (SDL_Init(SDL_INIT_VIDEO) != 0) {
             SDL_Log("SDL initialization failed: %s", SDL_GetError());
             return false;
         }
 
-        m_window = SDL_CreateWindow("Blaze2D Engine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 640, SDL_WINDOW_SHOWN);
+        m_window = SDL_CreateWindow(("Blaze2D Engine | " + windowTitle).c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screenWidth, screenHeight, SDL_WINDOW_SHOWN);
 
 
         if (!m_window) {
@@ -49,7 +77,30 @@ namespace Blaze2D {
 
 
     void GameEngine::tick() {
-       
+        SDL_Delay(0.16);
+        Uint32 currentTime = SDL_GetTicks();  // Get current time in milliseconds since SDL initialization
+        Uint32 deltaTime = currentTime - m_lastTickTime;  // Calculate time elapsed since last frame
+        m_lastTickTime = currentTime;  // Update the last tick time to current time
+
+        // Increment the FPS counter for each frame
+        ++m_fpsCounter;
+
+        // Update FPS display every second (1000 milliseconds)
+        if (currentTime - m_lastSecondTime >= 1000) {
+            // Calculate FPS as the number of frames rendered in the last second
+            m_fps = m_fpsCounter;
+
+            // Reset the FPS counter for the next second
+            m_fpsCounter = 0;
+
+            // Update the last second time to the current time
+            m_lastSecondTime = currentTime;
+
+            // Update the window title to display the current FPS
+            std::string windowTitle = "Blaze2D Engine | " + std::string(title) + std::string(" | FPS: ") + std::to_string((int)m_fps);
+            
+            SDL_SetWindowTitle(m_window, windowTitle.c_str());
+        }
     }
 
     void GameEngine::drawPixel(int x, int y, Uint8 r, Uint8 g, Uint8 b) {
@@ -159,9 +210,12 @@ namespace Blaze2D {
         SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255); // Clear with black color
         SDL_RenderClear(m_renderer);
 
-        int numRows = 128; // Number of rows
-        int numCols = 128; // Number of columns
-        int blockSize = 640 / numRows; // Size of each block (assuming square blocks)
+        int numRows = 8; // Number of rows
+        int numCols = 8; // Number of columns
+        int blockSize = m_screenWidth / numRows; // Size of each block (assuming square blocks)
+
+
+
 
         // Render grid of black and white squares (checkerboard pattern)
         for (int row = 0; row < numRows; ++row) {
@@ -187,6 +241,8 @@ namespace Blaze2D {
         SDL_DestroyRenderer(m_renderer);
         SDL_DestroyWindow(m_window);
         SDL_Quit();
+        quit();
+    
     }
 
     void GameEngine::quit() {

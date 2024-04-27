@@ -1,6 +1,8 @@
 
 #include "src/core/shop/game_state.h"
 #include "src/core/shop/game.h"
+#include < chrono >
+#include <windows.h>
 
 ExolorGame::MenuState::MenuState(Game* game) : ExolorGame::GameState(game, "Game Menu") {
     // Update logic for the menu state
@@ -20,6 +22,29 @@ void ExolorGame::MenuState::initCommands() {
         g->setGameState(new ShopState(g));
 
         });
+    addCommand("snake_game", [canvas](Game* g, InputParameter& param) {
+        std::cout << "Starting Blaze2D..." << std::endl;
+    
+        Utility::bootGameEngine("Snake Game", 640, 640);
+
+        });
+
+    addCommand("tictac_game", [canvas](Game* g, InputParameter& param) {
+        std::cout << "Starting Blaze2D..." << std::endl;
+
+        Utility::bootGameEngine("TicTac Game", 500, 500);
+
+        });
+
+    addCommand("rpg_game", [canvas](Game* g, InputParameter& param) {
+        std::cout << "Starting Blaze2D..." << std::endl;
+
+        Utility::bootGameEngine("RPG Game", 500, 500);
+
+        });
+
+
+
     addCommand("help", [canvas](Game* g, InputParameter param) {
         canvas->drawSquare(Vec2(46, 10), 20, 5, '*', "Help Menu", false);
         canvas->drawSquare(Vec2(48, 12), 16, 3, '*', "Commands:", false);

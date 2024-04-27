@@ -51,9 +51,9 @@ void ExolorGame::InventoryState::initCommands() {
 
         displayItemList(canvas, itemMap, "Inventory", shopTopLeft, maxWidth, itemWidth, itemHeight, maxItemCount);
         });
-
+ 
     addCommand("select", [this](Game* g, const InputParameter& param) {
-        Utility::bootGameEngine();
+   
         if (param.size() == 1) {
             std::string itemName = param[0];
             Item* selectedItem = nullptr;

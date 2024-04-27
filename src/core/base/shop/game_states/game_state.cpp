@@ -10,6 +10,37 @@ class ShopState;
 	//GAME STATE
 	ExolorGame::GameState::GameState(Game* pgame, std::string name) : game(pgame), stateName(name) {}
 
+
+    void ExolorGame::GameState::nextPage() {
+        if (currentPage < totalPages) {
+            currentPage++;
+        
+        }
+        else {
+            std::cout << "No next page available.\n";
+        }
+    }
+
+    void ExolorGame::GameState::prevPage() {
+        if (currentPage > 1) {
+            currentPage--;
+          
+        }
+        else {
+            std::cout << "No previous page available.\n";
+        }
+    }
+
+    void ExolorGame::GameState::setCurrentPage(int page) {
+        if (page >= 1 && page <= totalPages) {
+            currentPage = page;
+      
+        }
+        else {
+            std::cout << "Invalid page number.\n";
+        }
+    }
+
 	void ExolorGame::GameState::handleInput(ExolorGame::Game* game, const std::string& input) {
         auto parsedCommand = Utility::parseCommand(input); // Parse the input command
 
@@ -50,12 +81,15 @@ class ShopState;
 
         canvas->drawText(Vec2(x + 3, 3), "Available Commands:");
 
+        int txtX = x - 2;
 
         for (const auto& commands : commandMap) {
 
             std::string commandName = commands.first;
 
-            canvas->drawText(Vec2(x + 9, y), commandName);
+            int xPos = (28 - static_cast<int>(commandName.length())) / 2;
+
+            canvas->drawText(Vec2(txtX + xPos , y), commandName);
 
                y += 2;
         }
@@ -90,6 +124,8 @@ class ShopState;
             }
             });
         addCommand("exit", [this](Game* g, InputParameter& param) {
+            Blaze2D::GameEngine::getInstance()->quit();
+
             std::cout << "Closing game..." << std::endl;
             g->getCanvas()->drawSquare(Vec2(46, 10), 20, 5, '*', "Game Closed", true);
 

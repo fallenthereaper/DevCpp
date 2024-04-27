@@ -1,18 +1,21 @@
 
-#include "src/core/bank/bank_account.h";
+
 #include "inventory.h";
 
 namespace ExolorGame {
+    class BankAccount;
 
     class Character {
 
     private:
-        std::string& name;
+        std::string name;
         BankAccount* bank;
         std::shared_ptr<Inventory> inventory;
 
     public:
-        Character(const std::string& characterName, BankAccount& playerBank);
+        Character(std::string characterName, BankAccount* playerBank);
+
+        Character(std::string characterName);
 
         const std::string& getName();
 

@@ -19,6 +19,8 @@
 #include "src/core/shop/registry/items.h";
 #include "src/core/shop/game.h";
 #include "src/core/Game_renderer.h";
+
+
 using namespace std;
 using namespace Utility;
 using namespace Utility::Mth;
@@ -89,26 +91,67 @@ unsigned long long hexToDecimal(const std::string& hexString) {
       }
   }
 
- 
 
+  atomic<bool> isRunning = true;
+
+  // Function to handle game updates
+  void serverThread() {
+
+      while (game->isRunning()) {
+          // Perform game updates
+          GameRenderer::TextCanvas* canvas = game->getCanvas();
+          game->update(canvas);
+
+          // Sleep for a short time to control update rate
+          this_thread::sleep_for(chrono::milliseconds(0));
+      }
+  }
+
+  // Function to handle rendering
+  void renderThread() {
+      const char** prevCanvas = nullptr;
+   
+      while (game->isRunning()) {
+          GameRenderer::TextCanvas* canvas = game->getCanvas();
+          const char** currentCanvas = canvas->getData();
+
+          // Check if the canvas content has changed
+          if (prevCanvas == nullptr || !compareData(prevCanvas, currentCanvas, canvas->getWidth(), canvas->getHeight())) {
+              // Render the game only if the canvas content has changed
+              GameRenderer::render(game);
+
+              // Update the previous canvas to match the current canvas
+              if (prevCanvas != nullptr) {
+                  deleteData(prevCanvas, canvas->getHeight());
+              }
+              prevCanvas = copyData(currentCanvas, canvas->getWidth(), canvas->getHeight());
+          }
+
+          // Sleep for a short time to control rendering rate
+          this_thread::sleep_for(chrono::milliseconds(0));
+      }
+
+      // Clean up allocated memory for the last recorded canvas
+      if (prevCanvas != nullptr) {
+          deleteData(prevCanvas, game->getCanvas()->getHeight());
+      }
+  }
 
 
   int SDL_main(int argc, char* argv[]) {
+      // Initialize game
       coreInit();
-
-   
-
-    
-
-
       game = new ExolorGame::Game(MAX_CANVAS_WIDTH, MAX_CANVAS_HEIGHT, "Exolor");
-
-
       game->start();
+
+      // Create threads
+     // std::thread updateThread(serverThread);
+    // std::thread renderThread(renderThread);
 
       const char** prevCanvas = nullptr;
 
       GameRenderer::TextCanvas* canvas = game->getCanvas();
+      
 
       while (game->isRunning()) {
 
@@ -136,11 +179,8 @@ unsigned long long hexToDecimal(const std::string& hexString) {
       if (prevCanvas != nullptr) {
           delete[] prevCanvas;
       }
+  
+     
 
-
-      
-    
-
-        return 0;
     }
 

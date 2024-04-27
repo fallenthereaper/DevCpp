@@ -12,6 +12,8 @@ set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 file(GLOB_RECURSE SOURCES "${SRC_DIR}/*.cpp")
 file(GLOB_RECURSE HEADERS "${INCLUDE_DIR}/*.h" "${INCLUDE_DIR}/*.hpp")
 
+
+
 # Find SDL2
 find_package(SDL2 REQUIRED)
 
@@ -22,7 +24,6 @@ endif()
 
 # Add executable with all source files
 add_executable(main ${SOURCES} ${HEADERS})
-
 
 # Include directories
 target_include_directories(main PRIVATE "${INCLUDE_DIR}" ${SDL2_INCLUDE_DIRS})

@@ -10,7 +10,9 @@
 #include "src/core/utils/utility.h"
 #include <vector>
 
+
 namespace ExolorGame {
+    class Character;
     class GameState;
     class Game {
     public:
@@ -31,11 +33,25 @@ namespace ExolorGame {
         GameState* getGameState();
         GameState* getPreviousState();
 
+        void setCharacter(std::shared_ptr<Character> character);
+
+        std::shared_ptr<Character> getCharacter();
+
+        void addCharacter(Character* character);
+        void initCharacters();
+
+
+        std::vector<std::shared_ptr<Character>> getCharacters() {
+            return characters;
+        }
+
     private:
         GameState* prevState;
         GameState* currentState;
         bool running;
         std::string gameName;
+        std::shared_ptr<Character> character;
+        std::vector<std::shared_ptr<Character>> characters;
         GameRenderer::TextCanvas* canvas;
         std::unordered_map<std::string, std::function<void(Game*)>> commandMap;
         void handleInput(const std::string& input);

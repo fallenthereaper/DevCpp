@@ -7,6 +7,7 @@
 #include <vector>
 #include <algorithm>
 #include <cmath>
+#include <thread>
 #include <functional>
 #include <optional>
 #include "functional.h"
@@ -20,7 +21,7 @@ constexpr auto PI = 3.14159;
 // Declare utility functions
 namespace Utility {
 
-    void bootGameEngine();
+    void bootGameEngine(const std::string& windowTitle, int screenHeight, int screenWidth);
 
 
     using namespace Functional;
