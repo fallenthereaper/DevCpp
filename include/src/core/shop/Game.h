@@ -13,7 +13,7 @@
 
 namespace ExolorGame {
     class Character;
-    class GameState;
+    class GameMenu;
     class Game {
     public:
         Game();
@@ -29,29 +29,29 @@ namespace ExolorGame {
         void addCommand(const std::string& command, const std::function<void(Game*)> function);
         void processInput(const std::string& input);
         std::string getName();
-        void setGameState(GameState* state);
-        GameState* getGameState();
-        GameState* getPreviousState();
+        void setGameState(GameMenu* state);
+        GameMenu* getGameState();
+        GameMenu* getPreviousState();
 
-        void setCharacter(std::shared_ptr<Character> character);
+        void setCharacter(Character* character);
 
-        std::shared_ptr<Character> getCharacter();
+        Character* getCharacter();
 
         void addCharacter(Character* character);
         void initCharacters();
 
 
-        std::vector<std::shared_ptr<Character>> getCharacters() {
+        std::vector<Character*> getCharacters() {
             return characters;
         }
 
     private:
-        GameState* prevState;
-        GameState* currentState;
+        GameMenu* prevState;
+        GameMenu* currentState;
         bool running;
         std::string gameName;
-        std::shared_ptr<Character> character;
-        std::vector<std::shared_ptr<Character>> characters;
+        Character* character;
+        std::vector<Character*> characters;
         GameRenderer::TextCanvas* canvas;
         std::unordered_map<std::string, std::function<void(Game*)>> commandMap;
         void handleInput(const std::string& input);

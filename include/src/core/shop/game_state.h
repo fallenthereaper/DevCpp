@@ -24,17 +24,17 @@ namespace ExolorGame {
 
     using InputMap = std::unordered_map<std::string, InputFunction>;
 
-    class GameState {
+    class GameMenu {
    
 
     public:
-        GameState(ExolorGame::Game* game, std::string name);
-        ~GameState() = default;
+        GameMenu(ExolorGame::Game* game, std::string name);
+        ~GameMenu() = default;
         void handleInput(Game* game, const std::string& input);
         virtual void update(ExolorGame::Game* game) = 0;
         virtual void initCommands() = 0;
-        void init(ExolorGame::Game* game);
-        void addCommand(const std::string& command, const InputFunction function);
+       virtual void init(ExolorGame::Game* game);
+ void addCommand(const std::string& command, const InputFunction function);
         ExolorGame::Game* getGame();
         std::string getName();
         virtual void render(GameRenderer::TextCanvas* canvas) = 0;
@@ -52,59 +52,59 @@ namespace ExolorGame {
          InputMap commandMap; //FOR PARAMETERS
     };
 
-    class MenuState : public GameState {
+    class MenuState : public GameMenu {
     public:
         MenuState(Game* game);
         void initCommands() override;
         void update(Game* game) override;
-        void init(Game* game);
+        void init(Game* game) override;
         void render(GameRenderer::TextCanvas* canvas) override;
     };
 
-    class ShopState : public GameState {
+    class ShopState : public GameMenu {
     public:
         ShopState(Game* game);
         void initCommands() override;
         void update(Game* game) override;
-        void init(Game* game);
+        void init(Game* game) override;
         void render(GameRenderer::TextCanvas* canvas) override;
     };
 
-    class InventoryState : public GameState {
+    class InventoryState : public GameMenu {
     private:
         Inventory* inventory;
     public:
         InventoryState(Game* game);
         void initCommands() override;
         void update(Game* game) override;
-        void init(Game* game);
+        void init(Game* game) override;
         void render(GameRenderer::TextCanvas* canvas) override;
         Inventory* getInventory();
     };
 
-    class SelectedItemState : public GameState {
+    class SelectedItemState : public GameMenu {
     private:
         InventoryState* parentState;
     public:
         SelectedItemState(InventoryState* parentState);
         void initCommands() override;
         void update(Game* game) override;
-        void init(Game* game);
+        void init(Game* game) override;
         void render(GameRenderer::TextCanvas* canvas) override;
       
     };
 
     class Character;
 
-    class CharacterSelectState : public GameState {
+    class CharacterSelectState : public GameMenu {
     protected:
-        std::vector<std::shared_ptr<Character>> characters;
+        std::vector<ExolorGame::Character*> characters;
         int selectedCharacterIndex; // Index of currently selected character
     public:
         CharacterSelectState(Game* game);
         void initCommands() override;
         void update(Game* game) override;
-        void init(Game* game);
+        void init(Game* game) override;
         void render(GameRenderer::TextCanvas* canvas) override;
         void selectCharacter(int index);
         void addCharacter(const Character& character);

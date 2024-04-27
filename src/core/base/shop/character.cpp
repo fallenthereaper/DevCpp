@@ -1,5 +1,5 @@
 #include "src/core/shop/character.h"
-#include "src/core/bank/bank_account.h";
+
 
     // Constructor with bank account
     ExolorGame::Character::Character(std::string characterName, BankAccount* playerBank)
@@ -7,7 +7,7 @@
     }
 
     // Constructor without bank account
-    ExolorGame::Character::Character(std::string characterName) : Character(characterName, nullptr) {
+    ExolorGame::Character::Character(std::string characterName, int balance, int accountId) : Character(characterName, new BankAccount(characterName, balance,accountId )) {
 
     }
         
@@ -21,7 +21,7 @@
         return inventory;
     }
 
-    ExolorGame::BankAccount* ExolorGame::Character::getBankAccount() {
+    BankAccount* ExolorGame::Character::getBankAccount() {
         return bank;
     }
 

@@ -1,17 +1,18 @@
-
+#include "src/core/shop/character.h"
 #include "src/core/shop/game_state.h"
 #include "src/core/shop/game.h"
 #include <sstream>
-
+#include <iomanip> 
+#include <iostream>
 class InventoryState;
 class MenuState;
 class ShopState;
 
 	//GAME STATE
-	ExolorGame::GameState::GameState(Game* pgame, std::string name) : game(pgame), stateName(name) {}
+	ExolorGame::GameMenu::GameMenu(Game* pgame, std::string name) : game(pgame), stateName(name) {}
 
 
-    void ExolorGame::GameState::nextPage() {
+    void ExolorGame::GameMenu::nextPage() {
         if (currentPage < totalPages) {
             currentPage++;
         
@@ -21,7 +22,7 @@ class ShopState;
         }
     }
 
-    void ExolorGame::GameState::prevPage() {
+    void ExolorGame::GameMenu::prevPage() {
         if (currentPage > 1) {
             currentPage--;
           
@@ -31,7 +32,7 @@ class ShopState;
         }
     }
 
-    void ExolorGame::GameState::setCurrentPage(int page) {
+    void ExolorGame::GameMenu::setCurrentPage(int page) {
         if (page >= 1 && page <= totalPages) {
             currentPage = page;
       
@@ -41,7 +42,7 @@ class ShopState;
         }
     }
 
-	void ExolorGame::GameState::handleInput(ExolorGame::Game* game, const std::string& input) {
+	void ExolorGame::GameMenu::handleInput(ExolorGame::Game* game, const std::string& input) {
         auto parsedCommand = Utility::parseCommand(input); // Parse the input command
 
         std::string commandWord = parsedCommand.first;
@@ -61,12 +62,25 @@ class ShopState;
         }
 	};
 
-	void ExolorGame::GameState::update(Game* game) {
+	void ExolorGame::GameMenu::update(Game* game) {
 
 	};
 
-	void ExolorGame::GameState::init(Game* game) {
+	void ExolorGame::GameMenu::init(Game* game) {
         GameRenderer::TextCanvas* canvas = game->getCanvas();
+
+        if (game->getCharacter()) { //Only if it has a selected character
+            ExolorGame::Character* character = game->getCharacter();
+
+            std::string name = character->getName();
+            BankAccount* bankAccount = character->getBankAccount();
+            // Format the bank balance to display a limited number of decimal places
+            std::stringstream balanceStream;
+            balanceStream << "Balance: $" << std::fixed << std::setprecision(2) << bankAccount->getBalance();
+            std::string description = balanceStream.str();
+            canvas->drawText(Vec2(99, 2), name);
+            canvas->drawText(Vec2(70, 8), description);
+        }
 
 
        // game->getCanvas()->drawSquare(Vec2(46, 10), 20, 5, '*', getName(), true);
@@ -96,23 +110,23 @@ class ShopState;
         
 	}
 
-	void ExolorGame::GameState::addCommand(const std::string& command, const InputFunction consumer) {
+	void ExolorGame::GameMenu::addCommand(const std::string& command, const InputFunction consumer) {
 		commandMap.emplace(command, consumer);
 	}
 
-    ExolorGame::Game* ExolorGame::GameState::getGame() {
+    ExolorGame::Game* ExolorGame::GameMenu::getGame() {
         return game;
     }
 
-    std::string ExolorGame::GameState::getName() {
+    std::string ExolorGame::GameMenu::getName() {
         return stateName;
     }
 
     //GLOBAL COMMANDS(Shared across all gamestates) always call this
-	void ExolorGame::GameState::initCommands() {
+	void ExolorGame::GameMenu::initCommands() {
         GameRenderer::TextCanvas* canvas = getGame()->getCanvas();
         addCommand("menu", [this](Game* g, InputParameter& param) {
-             GameState* menu = new MenuState(g);
+             GameMenu* menu = new MenuState(g);
 
                g->setGameState(menu);
             });
@@ -139,7 +153,7 @@ class ShopState;
 	}
 
 
-	void ExolorGame::GameState::render(GameRenderer::TextCanvas* canvas) {
+	void ExolorGame::GameMenu::render(GameRenderer::TextCanvas* canvas) {
 
 	}
 

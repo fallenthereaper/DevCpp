@@ -1,9 +1,9 @@
 
-
+#include "src/core/bank/bank_account.h";
 #include "inventory.h";
 
 namespace ExolorGame {
-    class BankAccount;
+ 
 
     class Character {
 
@@ -15,7 +15,7 @@ namespace ExolorGame {
     public:
         Character(std::string characterName, BankAccount* playerBank);
 
-        Character(std::string characterName);
+        Character(std::string characterName, int balance, int accountId);
 
         const std::string& getName();
 

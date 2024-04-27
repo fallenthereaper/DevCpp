@@ -4,7 +4,7 @@
 #include "src/core/shop/inventory.h"
 #include "src/core/utils/utility.h" // Include utility for parsing commands
 
-ExolorGame::InventoryState::InventoryState(Game* game) : ExolorGame::GameState(game, "Inventory Menu"), inventory(new ExolorGame::Inventory(18)) {
+ExolorGame::InventoryState::InventoryState(Game* game) : ExolorGame::GameMenu(game, "Inventory Menu"), inventory(new ExolorGame::Inventory(18)) {
     
 }
 
@@ -13,7 +13,7 @@ void ExolorGame::InventoryState::update(Game* game) {
 }
 
 void ExolorGame::InventoryState::init(Game* game) {
-    GameState::init(game);
+    GameMenu::init(game);
 }
 
 void ExolorGame::InventoryState::render(GameRenderer::TextCanvas* canvas) {
@@ -25,7 +25,7 @@ ExolorGame::Inventory* ExolorGame::InventoryState::getInventory() {
 }
 
 void ExolorGame::InventoryState::initCommands() {
-    GameState::initCommands();
+    GameMenu::initCommands();
 
     GameRenderer::TextCanvas* canvas = getGame()->getCanvas();
 

@@ -4,17 +4,17 @@
 #include < chrono >
 #include <windows.h>
 
-ExolorGame::MenuState::MenuState(Game* game) : ExolorGame::GameState(game, "Game Menu") {
+ExolorGame::MenuState::MenuState(Game* game) : ExolorGame::GameMenu(game, "Game Menu") {
     // Update logic for the menu state
 }
 void ExolorGame::MenuState::update(Game* game) {
     // Update logic for the menu state
 }
 void ExolorGame::MenuState::init(Game* game) {
-    GameState::init(game);
+    GameMenu::init(game);
 }
 void ExolorGame::MenuState::initCommands() {
-    GameState::initCommands();
+    GameMenu::initCommands();
 
     GameRenderer::TextCanvas* canvas = getGame()->getCanvas();
 

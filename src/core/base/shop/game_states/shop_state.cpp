@@ -2,7 +2,7 @@
 #include "src/core/shop/game_state.h"
 #include "src/core/shop/game.h"
 
-ExolorGame::ShopState::ShopState(Game* game) : ExolorGame::GameState(game, "Shop Menu") {
+ExolorGame::ShopState::ShopState(Game* game) : ExolorGame::GameMenu(game, "Shop Menu") {
     // Update logic for the menu state
 }
 
@@ -11,7 +11,7 @@ void ExolorGame::ShopState::update(Game* game) {
 }
 
 void ExolorGame::ShopState::init(Game* game) {
-    GameState::init(game);
+    GameMenu::init(game);
 }
 
 void ExolorGame::ShopState::render(GameRenderer::TextCanvas* canvas) {
@@ -19,7 +19,7 @@ void ExolorGame::ShopState::render(GameRenderer::TextCanvas* canvas) {
 }
 
 void ExolorGame::ShopState::initCommands() {
-    GameState::initCommands();
+    GameMenu::initCommands();
 
     GameRenderer::TextCanvas* canvas = getGame()->getCanvas();
 

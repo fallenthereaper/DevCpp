@@ -3,6 +3,7 @@
 #include "src/core/shop/character.h"
 class MenuState;
 class CharacterSelectState;
+class BankAccount;
 
 ExolorGame::Game::Game() : running(true), gameName("Default"), canvas(new GameRenderer::TextCanvas(0, 0)), currentState(nullptr), prevState(nullptr) {
     initCharacters();
@@ -113,7 +114,14 @@ void ExolorGame::Game::update(GameRenderer::TextCanvas* canvas) {
     std::cout << "Enter a command: ";
     std::cin >> input;
 
+
+
     processInput(input);
+
+    if (currentState) {
+        currentState->update(this);
+    }
+
    
 }
 
@@ -147,7 +155,7 @@ GameRenderer::TextCanvas* ExolorGame::Game::getCanvas() {
     return canvas;
 }
 
-void ExolorGame::Game::setGameState(GameState* state) {
+void ExolorGame::Game::setGameState(GameMenu* state) {
     prevState = currentState;
 
 
@@ -168,35 +176,35 @@ void ExolorGame::Game::setGameState(GameState* state) {
 
 }
 
-void ExolorGame::Game::setCharacter(std::shared_ptr<Character> character) {
+void ExolorGame::Game::setCharacter(ExolorGame::Character* character) {
 
     this->character = character;
 }
 void ExolorGame::Game::addCharacter(ExolorGame::Character* character) {
 
-    characters.push_back(std::make_shared<Character>(character));
+    characters.push_back(character);
 
   
 }
 void ExolorGame::Game::initCharacters() {
-    addCharacter(new Character("Hero"));
-    addCharacter(new Character("Villain"));
-    addCharacter(new Character("Sidekick"));
-    addCharacter(new Character("Mentor"));
+    addCharacter(new Character("Hero", 5000, 0));
+    addCharacter(new Character("Villain", 6500, 1));
+    addCharacter(new Character("Sidekick", 4500, 2));
+    addCharacter(new Character("Mentor", 50000, 3));
   
 }
 
-std::shared_ptr<ExolorGame::Character> ExolorGame::Game::getCharacter() {
+ExolorGame::Character* ExolorGame::Game::getCharacter() {
 
     return character;
 }
 
 
-ExolorGame::GameState* ExolorGame::Game::getGameState() {
+ExolorGame::GameMenu* ExolorGame::Game::getGameState() {
     return currentState;
 }
 
-ExolorGame::GameState* ExolorGame::Game::getPreviousState() {
+ExolorGame::GameMenu* ExolorGame::Game::getPreviousState() {
     return prevState;
 }
 

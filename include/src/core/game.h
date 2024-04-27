@@ -145,7 +145,7 @@ class MenuState;
         return canvas;
     }
 
-    void ExolorGame::Game::setGameState(GameState* state) {
+    void ExolorGame::Game::setGameState(GameMenu* state) {
         prevState = currentState;
 
        
@@ -166,11 +166,11 @@ class MenuState;
        
     }
 
-    ExolorGame::GameState* ExolorGame::Game::getGameState() {
+    ExolorGame::GameMenu* ExolorGame::Game::getGameState() {
         return currentState;
     }
 
-    ExolorGame::GameState* ExolorGame::Game::getPreviousState() {
+    ExolorGame::GameMenu* ExolorGame::Game::getPreviousState() {
         return prevState;
     }
 
