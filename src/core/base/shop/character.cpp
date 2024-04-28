@@ -3,7 +3,7 @@
 
     // Constructor with bank account
     ExolorGame::Character::Character(std::string characterName, BankAccount* playerBank)
-        : name(characterName), bank(playerBank), inventory(new Inventory(18)) {
+        : name(characterName), bank(playerBank), inventory(new Inventory(20)) {
     }
 
     // Constructor without bank account

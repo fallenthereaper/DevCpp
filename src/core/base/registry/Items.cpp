@@ -33,7 +33,7 @@ namespace ExolorGame {
        static const ItemSupplier TORCH = registerItemBuilder("torch", 10.0f);
        static const ItemSupplier BOW = registerItemBuilder("bow", 20.0f);
        static const ItemSupplier SHIELD = registerItemBuilder("shield", 15.0f);
-       static const ItemSupplier DIAMOND = registerItemBuilder("diamond", 100.0f);
+       static const ItemSupplier DIAMOND = registerItemBuilder("diamond", 250.0f);
        static const ItemSupplier BREAD = registerItemBuilder("bread", 2.0f);
        static const ItemSupplier ARMOR_SET = registerItemBuilder("armor_set", 40.0f);
        static const ItemSupplier HOE = registerItemBuilder("hoe", 15.0f);

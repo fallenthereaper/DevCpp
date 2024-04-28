@@ -72,18 +72,17 @@ void ExolorGame::displayItemList(GameRenderer::TextCanvas* canvas, const std::un
 void ExolorGame::renderItems(GameRenderer::TextCanvas* canvas, const std::vector<ItemStack*>& itemList, const std::string& displayTitle, const Vec2& topLeft, int maxWidth, int itemWidth, int itemHeight, int maxItemCount) {
     int itemCount = std::min(static_cast<int>(itemList.size()), maxItemCount);
 
-    // Calculate the number of rows needed based on the item count
-    int numRows = (itemCount + (maxWidth - 1)) / maxWidth;
-    int numCols = (itemCount + numRows - 1) / numRows;
+    // Calculate the number of rows and columns based on the maximum item count and dimensions
+    int numRows = (itemCount + maxWidth - 1) / maxWidth;
+    int numCols = std::min(maxWidth, itemCount);
 
     // Draw the title of the item list
-    canvas->drawSquare(topLeft + Vec2{ 2, -1 }, itemWidth * numRows + 3, itemHeight, '*', displayTitle, true);
+   // canvas->drawSquare(topLeft + Vec2{ 2, -1 }, numCols * itemWidth + 3, itemHeight, '*', displayTitle, true);
 
     int row = topLeft.y + 2; // Start rendering items below the title
     int col = topLeft.x + 2;
 
-    int itemIndex = 0;
-    for (const auto& itemStack : itemList) {
+    for (int itemIndex = 0; itemIndex < itemCount; ++itemIndex) {
         if (itemIndex >= maxItemCount) {
             break; // Stop rendering if maximum item count is reached
         }
@@ -91,23 +90,31 @@ void ExolorGame::renderItems(GameRenderer::TextCanvas* canvas, const std::vector
         // Check if we need to move to the next row
         if (col + itemWidth > topLeft.x + numCols * itemWidth) {
             col = topLeft.x + 2; // Reset column position to start a new row
-            row += itemHeight; // Move to the next row
+            row += itemHeight;   // Move to the next row
         }
 
-        // Get the item name from the item pair
-        std::string itemName = itemStack->getItem()->getName();
+        // Get the item stack at the current index
+        ItemStack* itemStack = itemList[itemIndex];
 
-        // Render the item at the current position
-        canvas->drawSquare(Vec2(col, row + 1), itemWidth, itemHeight, '*', itemName, true);
+        // Render the item slot
+        canvas->drawSquare(Vec2(col, row), itemWidth, itemHeight, '*', "", true); // Render empty slot
+
+        // If item stack is not nullptr (slot is occupied), render item name and count inside the slot
+        if (itemStack != nullptr) {
+            std::string itemName = itemStack->getItem()->getName();
+            int itemCount = itemStack->getCount();
+
+            // Construct the string to display inside the item slot
+            std::string itemDisplay = itemName + " x" + std::to_string(itemCount);
+
+            // Render the item name and count inside the slot
+            canvas->drawSquare(Vec2(col, row), itemWidth, itemHeight, '*', itemDisplay, true);
+        }
 
         // Move to the next column position
         col += itemWidth + 1;
-
-        ++itemIndex;
-
     }
 }
-
 void ExolorGame::Game::registerCommands() {
     GameRenderer::TextCanvas* canvas = this->getCanvas();
 

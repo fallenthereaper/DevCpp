@@ -69,12 +69,12 @@ void ExolorGame::ShopState::initCommands() {
 
             // Add purchased items to the character's inventory
             if (bankAccount->withdraw(totalCost)) {
-                if (inventory->insertItem(new ItemStack( selectedItem, count))) { //todo remove from the shop
+               inventory->insertItem(new ItemStack( selectedItem, count)) ;//todo remove from the shop
                     std::ostringstream msg;
                     msg << "Successfully bought " << count << " " << itemName << " for " << totalCost << " gold.";
                     errorMessage = msg.str();
 
-                }
+                
               
               //  std::cout << "Successfully bought " << count << " " << itemName << " for " << totalCost << " gold." << std::endl;
             }
@@ -86,6 +86,7 @@ void ExolorGame::ShopState::initCommands() {
 
     addCommand("inventory", [canvas](Game* g, InputParameter param) {
         g->setGameState(new InventoryState(g));
+        g->getGameState()->handleInput(g, "show");
         });
     addCommand("show", [canvas](Game* g, InputParameter param) {
 

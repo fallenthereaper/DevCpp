@@ -2,9 +2,10 @@
 
 namespace ExolorGame {
 
-
+    //g
     Inventory::Inventory(int pSize) : size(pSize) {
         slots = std::vector<ItemStack*>(pSize, nullptr);
+       // slots.reserve(pSize);
     }
 
     // Destructor implementation
@@ -18,6 +19,7 @@ namespace ExolorGame {
             return false; // Do nothing if itemStack is nullptr
         }
 
+
         Item* item = itemStack->getItem();
         int count = itemStack->getCount();
 
@@ -25,6 +27,7 @@ namespace ExolorGame {
             delete itemStack; // Delete the invalid itemStack
             return false;
         }
+      
 
         // Try to stack the item with existing stacks in the inventory
         bool addedToStack = false;
@@ -51,19 +54,22 @@ namespace ExolorGame {
         }
 
         // If there are remaining items to be added, create new stacks if possible
-        while (count > 0) {
+        while (count > 0 && hasEmptySlot()) { //FIXES unorganized stack, emprtry sçopt
+            int index = findEmptySlot();
             ItemStack* newStack = new ItemStack(item, 0); // Create a new item stack
             int maxStackSize = newStack->getMaxStackSize();
             int addAmount = std::min(count, maxStackSize);
 
             newStack->setCount(addAmount);
-            slots.push_back(newStack);
+            slots[index] = newStack;
 
             count -= addAmount;
+            return true;
         }
 
         delete itemStack; // Delete the original itemStack after processing
         notifyListeners(); // Notify listeners upon change
+        return false;
     }
 
     // Remove an item stack from the inventory (and delete it)
@@ -116,11 +122,12 @@ namespace ExolorGame {
     }
 
     ItemStack* Inventory::findItemStack(Item* item) const {
-        auto it = std::find_if(slots.begin(), slots.end(), [item](ItemStack* stack) {
-            return stack && stack->getItem() == item;
-            });
-
-        return (it != slots.end()) ? *it : nullptr;
+        for (ItemStack* stack : slots) {
+            if (stack && stack->getItem() == item) {
+                return stack; // Return the item stack if it matches the specified item
+            }
+        }
+        return nullptr; // Item stack not found for the specified item
     }
 
     // Add a specific quantity of an item to the inventory
