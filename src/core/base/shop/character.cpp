@@ -3,7 +3,7 @@
 
     // Constructor with bank account
     ExolorGame::Character::Character(std::string characterName, BankAccount* playerBank)
-        : name(characterName), bank(playerBank), inventory(std::make_shared<Inventory>(18)) {
+        : name(characterName), bank(playerBank), inventory(new Inventory(18)) {
     }
 
     // Constructor without bank account
@@ -17,7 +17,7 @@
         return name;
     }
 
-    std::shared_ptr<ExolorGame::Inventory> ExolorGame::Character::getInventory() {
+    ExolorGame::Inventory* ExolorGame::Character::getInventory() {
         return inventory;
     }
 

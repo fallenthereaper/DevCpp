@@ -13,8 +13,56 @@ namespace ExolorGame {
     }
 
     // Add an item stack to the inventory
-    void Inventory::insertItem(ItemStack* itemStack) {
-        slots.push_back(itemStack);
+    bool Inventory::insertItem(ItemStack* itemStack) {
+        if (!itemStack) {
+            return false; // Do nothing if itemStack is nullptr
+        }
+
+        Item* item = itemStack->getItem();
+        int count = itemStack->getCount();
+
+        if (!item || count <= 0) {
+            delete itemStack; // Delete the invalid itemStack
+            return false;
+        }
+
+        // Try to stack the item with existing stacks in the inventory
+        bool addedToStack = false;
+
+        for (ItemStack* stack : slots) {
+            if (stack && stack->getItem() == item) {
+                int maxStackSize = stack->getMaxStackSize();
+                int currentCount = stack->getCount();
+
+                if (currentCount < maxStackSize) {
+                    // Calculate how much more can be added to this stack
+                    int spaceLeft = maxStackSize - currentCount;
+                    int addAmount = std::min(count, spaceLeft);
+
+                    stack->setCount(currentCount + addAmount);
+                    count -= addAmount;
+
+                    if (count <= 0) {
+                        addedToStack = true;
+                        break; // All items have been added to existing stack
+                    }
+                }
+            }
+        }
+
+        // If there are remaining items to be added, create new stacks if possible
+        while (count > 0) {
+            ItemStack* newStack = new ItemStack(item, 0); // Create a new item stack
+            int maxStackSize = newStack->getMaxStackSize();
+            int addAmount = std::min(count, maxStackSize);
+
+            newStack->setCount(addAmount);
+            slots.push_back(newStack);
+
+            count -= addAmount;
+        }
+
+        delete itemStack; // Delete the original itemStack after processing
         notifyListeners(); // Notify listeners upon change
     }
 
@@ -65,6 +113,14 @@ namespace ExolorGame {
             return stack != nullptr && stack->getItem() == item;
             });
         return (it != slots.end()) ? std::distance(slots.begin(), it) : -1;
+    }
+
+    ItemStack* Inventory::findItemStack(Item* item) const {
+        auto it = std::find_if(slots.begin(), slots.end(), [item](ItemStack* stack) {
+            return stack && stack->getItem() == item;
+            });
+
+        return (it != slots.end()) ? *it : nullptr;
     }
 
     // Add a specific quantity of an item to the inventory
@@ -142,6 +198,20 @@ namespace ExolorGame {
 
     void Inventory::addChangeListener(const std::function<void(Inventory*)>& listener) {
         changeListeners.push_back(listener);
+    }
+    int Inventory::getItemCount(Item* item) const {
+        int totalCount = 0;
+
+        for (ItemStack* stack : slots) {
+            if (stack != nullptr && stack->getItem() == item) {
+                totalCount += stack->getCount();
+            }
+        }
+
+        return totalCount;
+    }
+    std::vector<ItemStack*> Inventory::getSlots() {
+        return slots;
     }
 
     void Inventory::notifyListeners() {

@@ -15,6 +15,11 @@
     }
 
 
+    template<class Base, typename T>
+    bool Utility::instanceof(const T* ptr) {
+        return std::dynamic_cast<const Base*>(ptr) != nullptr;
+    }
+
 
     void Utility::bootGameEngine(const std::string& windowTitle, int screenHeight, int screenWidth) {
      
@@ -103,6 +108,7 @@
         return result;
     }
 
+   
     // filter: Returns a new container containing only the elements that satisfy the given predicate.
     template<typename T>
     std::vector<T> Utility::filter(const std::vector<T>& container, predicate<T> predicate) {

@@ -10,7 +10,7 @@ namespace ExolorGame {
     private:
         std::string name;
         BankAccount* bank;
-        std::shared_ptr<Inventory> inventory;
+        Inventory* inventory;
 
     public:
         Character(std::string characterName, BankAccount* playerBank);
@@ -19,7 +19,7 @@ namespace ExolorGame {
 
         const std::string& getName();
 
-        std::shared_ptr<Inventory> getInventory();
+        Inventory* getInventory();
 
         BankAccount* getBankAccount();
 

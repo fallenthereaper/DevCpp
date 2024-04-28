@@ -20,6 +20,7 @@ void ExolorGame::MenuState::initCommands() {
 
     addCommand("shop", [canvas](Game* g, InputParameter param) {
         g->setGameState(new ShopState(g));
+        g->getGameState()->handleInput(g, "show");
 
         });
     addCommand("snake_game", [canvas](Game* g, InputParameter& param) {
@@ -87,25 +88,5 @@ void ExolorGame::MenuState::render(GameRenderer::TextCanvas* canvas) {
 
     GameMenu::render(canvas);
 
-    int x = 6;
-    int y = 5;
-    int commandCount = commandMap.size();
-
-    canvas->drawSquare(Vec2(x - 2, 2), 28, 3 * commandCount - 3, '*', "", true);
-
-
-    canvas->drawText(Vec2(x + 3, 3), "Available Commands:");
-
-    int txtX = x - 2;
-
-    for (const auto& commands : commandMap) {
-
-        std::string commandName = commands.first;
-
-        int xPos = (28 - static_cast<int>(commandName.length())) / 2;
-
-        canvas->drawText(Vec2(txtX + xPos, y), commandName);
-
-        y += 2;
-    }
+    
 }

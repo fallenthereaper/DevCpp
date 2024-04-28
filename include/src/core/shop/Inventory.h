@@ -15,8 +15,9 @@ namespace ExolorGame {
         Inventory(int pSize);
 
         // Add an item stack to the inventory
-        void insertItem(ItemStack* itemStack);
-
+        bool insertItem(ItemStack* itemStack);
+        // Find an ItemStack containing a specific item
+        ItemStack* findItemStack(Item* item) const;
         // Remove an item stack from the inventory (and delete it)
         void extractItem(ItemStack* itemStack);
 
@@ -53,11 +54,16 @@ namespace ExolorGame {
         void swapItems(int slot1, int slot2);
 
         void clear();
-
+        // Get the total number of stacks containing a specific item
+        int getItemCount(Item* item) const;
         // Add a change listener function
         void addChangeListener(const std::function<void(Inventory*)>& listener);
 
         void notifyListeners();
+
+        std::vector<ItemStack*> getSlots();
+
+
 
     private:
         int size;

@@ -19,6 +19,8 @@ namespace ExolorGame {
 
        int getMaxStackSize() const;
 
+       bool operator==(const ItemStack& other) const;
+
     private:
         Item* item;   // Pointer to the item type
         int count; // Quantity of this item in the stack

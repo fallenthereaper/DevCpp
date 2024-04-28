@@ -97,6 +97,7 @@ class QuitGameState;
              if (g->getCharacter() != nullptr) {
                  GameMenu* menu = new MenuState(g);
                  g->setGameState(menu);
+                 handleInput(g, "commands");
              }
                
             });
@@ -105,6 +106,8 @@ class QuitGameState;
 
             if (g->getPreviousState() != nullptr) {
                 g->setGameState(g->getPreviousState());
+
+
             }
             });
 

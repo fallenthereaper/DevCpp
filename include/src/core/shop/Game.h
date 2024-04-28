@@ -7,6 +7,7 @@
 #include <functional>
 #include "src/core/text_canvas.h"
 #include "src/core/shop/registry/item_registry.h"
+#include "src/core//shop/item_stack.h"
 #include "src/core/utils/utility.h"
 #include <vector>
 
@@ -56,6 +57,8 @@ namespace ExolorGame {
         std::unordered_map<std::string, std::function<void(Game*)>> commandMap;
         void handleInput(const std::string& input);
         void registerCommands();
+
+        friend void renderItems(GameRenderer::TextCanvas* canvas, const std::vector<ItemStack*>& itemList, const std::string& displayTitle, const Vec2& topLeft, int maxWidth, int itemWidth, int itemHeight, int maxItemCount);
 
         friend void displayItemList(GameRenderer::TextCanvas* canvas, const std::unordered_map<std::string, ItemRegistry::ItemFactory>& itemList, const std::string& displayTitle, const Vec2& topLeft, int maxWidth, int itemWidth, int itemHeight, int maxItemCount);
     };

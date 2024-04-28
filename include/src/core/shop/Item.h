@@ -30,6 +30,10 @@ namespace ExolorGame {
        const std::string getName() const;
 
        const std::string getDescription() const;
+       bool operator==(const Item& other) const {
+           // Compare based on item name and price
+           return (name == other.name && price == other.price);
+       }
 
        const double getPrice() const;
 

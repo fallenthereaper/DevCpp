@@ -15,6 +15,8 @@
 
 namespace ExolorGame {
 
+    enum class GameStateType {BASE = 0, MENU, SHOP, INVENTORY, CHARACTER_SELECT, QUIT_GAME};
+
     class Game;
     class Inventory;
 

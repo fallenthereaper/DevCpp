@@ -21,6 +21,9 @@ constexpr auto PI = 3.14159;
 // Declare utility functions
 namespace Utility {
 
+    template<class Base, typename T>
+    static bool instanceof(const T* ptr);
+
     void bootGameEngine(const std::string& windowTitle, int screenHeight, int screenWidth);
 
 

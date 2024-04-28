@@ -1,6 +1,7 @@
 #include "src/core/shop/game.h"
 #include "src/core/shop/game_state.h"
 #include "src/core/shop/character.h"
+#include <cmath>
 class MenuState;
 class CharacterSelectState;
 class BankAccount;
@@ -55,7 +56,7 @@ void ExolorGame::displayItemList(GameRenderer::TextCanvas* canvas, const std::un
         }
 
         // Get the item name from the item pair
-        std::string itemName = itemPair.first; 
+        std::string itemName = itemPair.first;
 
         // Render the item at the current position
         canvas->drawSquare(Vec2(col, row + 1), itemWidth, itemHeight, '*', itemName, true);
@@ -64,6 +65,46 @@ void ExolorGame::displayItemList(GameRenderer::TextCanvas* canvas, const std::un
         col += itemWidth + 1;
 
         ++itemIndex;
+    }
+}
+
+
+void ExolorGame::renderItems(GameRenderer::TextCanvas* canvas, const std::vector<ItemStack*>& itemList, const std::string& displayTitle, const Vec2& topLeft, int maxWidth, int itemWidth, int itemHeight, int maxItemCount) {
+    int itemCount = std::min(static_cast<int>(itemList.size()), maxItemCount);
+
+    // Calculate the number of rows needed based on the item count
+    int numRows = (itemCount + (maxWidth - 1)) / maxWidth;
+    int numCols = (itemCount + numRows - 1) / numRows;
+
+    // Draw the title of the item list
+    canvas->drawSquare(topLeft + Vec2{ 2, -1 }, itemWidth * numRows + 3, itemHeight, '*', displayTitle, true);
+
+    int row = topLeft.y + 2; // Start rendering items below the title
+    int col = topLeft.x + 2;
+
+    int itemIndex = 0;
+    for (const auto& itemStack : itemList) {
+        if (itemIndex >= maxItemCount) {
+            break; // Stop rendering if maximum item count is reached
+        }
+
+        // Check if we need to move to the next row
+        if (col + itemWidth > topLeft.x + numCols * itemWidth) {
+            col = topLeft.x + 2; // Reset column position to start a new row
+            row += itemHeight; // Move to the next row
+        }
+
+        // Get the item name from the item pair
+        std::string itemName = itemStack->getItem()->getName();
+
+        // Render the item at the current position
+        canvas->drawSquare(Vec2(col, row + 1), itemWidth, itemHeight, '*', itemName, true);
+
+        // Move to the next column position
+        col += itemWidth + 1;
+
+        ++itemIndex;
+
     }
 }
 
@@ -177,6 +218,7 @@ void ExolorGame::Game::setGameState(GameMenu* state) {
             std::cout << "Switching GameState.. " << state->getName() << std::endl;
             currentState->initCommands(); // Register commands for the new state
             currentState->init(this); // Initialize the new state
+           
         }
     }
 

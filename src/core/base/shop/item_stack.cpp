@@ -38,6 +38,10 @@ namespace ExolorGame {
         return 16;
     }
 
+    bool ItemStack::operator==(const ItemStack& other) const {
+        return (item == other.item && count == other.count);
+    }
+
 
 
 } // namespace ShopGame
