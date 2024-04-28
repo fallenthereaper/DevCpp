@@ -10,7 +10,7 @@ ExolorGame::Game::Game() : running(true), gameName("Default"), canvas(new GameRe
     registerCommands();
 }
 
-ExolorGame::Game::Game(int canvasWidth, int canvasHeight, std::string name) : canvas(new GameRenderer::TextCanvas(canvasWidth, canvasHeight)), running(true), gameName(name), currentState(nullptr), prevState(nullptr) {
+ExolorGame::Game::Game(int canvasWidth, int canvasHeight, std::string name) : canvas(new GameRenderer::TextCanvas(canvasWidth, canvasHeight)), running(true), gameName(name), currentState(nullptr), prevState(nullptr), character(nullptr) {
     initCharacters();
     registerCommands();
 }
@@ -55,7 +55,7 @@ void ExolorGame::displayItemList(GameRenderer::TextCanvas* canvas, const std::un
         }
 
         // Get the item name from the item pair
-        std::string itemName = itemPair.first;
+        std::string itemName = itemPair.first; 
 
         // Render the item at the current position
         canvas->drawSquare(Vec2(col, row + 1), itemWidth, itemHeight, '*', itemName, true);
@@ -72,13 +72,18 @@ void ExolorGame::Game::registerCommands() {
 
 
 
+    if (getCharacter() == nullptr) { //Horrendous logic but will do for now
+        addCommand("start", [this, canvas](Game* g) {
+            if (getCharacter() == nullptr) {
+            //     std::cout << "Starting game..." << std::endl;
+            canvas->drawSquare(Vec2(0, 0), 112, 28, '*', "", true);
+            g->setGameState(new CharacterSelectState(g));
+            std::cout << "[Game Started]" << std::endl;
+        }
+            });
 
-    addCommand("start", [canvas](Game* g) {
-        //     std::cout << "Starting game..." << std::endl;
-        canvas->drawSquare(Vec2(0, 0), 112, 28, '*', "", true);
-        g->setGameState(new CharacterSelectState(g));
-        std::cout << "[Game Started]" << std::endl;
-        });
+    }
+   
 
 
 }
@@ -119,6 +124,7 @@ void ExolorGame::Game::update(GameRenderer::TextCanvas* canvas) {
     processInput(input);
 
     if (currentState) {
+        currentState->render(canvas);
         currentState->update(this);
     }
 
@@ -189,8 +195,9 @@ void ExolorGame::Game::addCharacter(ExolorGame::Character* character) {
 void ExolorGame::Game::initCharacters() {
     addCharacter(new Character("Hero", 5000, 0));
     addCharacter(new Character("Villain", 6500, 1));
-    addCharacter(new Character("Sidekick", 4500, 2));
     addCharacter(new Character("Mentor", 50000, 3));
+    addCharacter(new Character("Sidekick", 4500, 2));
+  
   
 }
 

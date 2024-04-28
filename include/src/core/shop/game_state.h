@@ -46,7 +46,7 @@ namespace ExolorGame {
         int currentPage;
         int totalPages;
 
-        private:
+        protected:
          std::string stateName;
          ExolorGame::Game* game;
          InputMap commandMap; //FOR PARAMETERS
@@ -64,6 +64,15 @@ namespace ExolorGame {
     class ShopState : public GameMenu {
     public:
         ShopState(Game* game);
+        void initCommands() override;
+        void update(Game* game) override;
+        void init(Game* game) override;
+        void render(GameRenderer::TextCanvas* canvas) override;
+    };
+
+    class QuitGameState : public GameMenu {
+    public:
+        QuitGameState(Game* game);
         void initCommands() override;
         void update(Game* game) override;
         void init(Game* game) override;

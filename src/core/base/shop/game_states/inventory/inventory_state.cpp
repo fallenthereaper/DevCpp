@@ -17,7 +17,7 @@ void ExolorGame::InventoryState::init(Game* game) {
 }
 
 void ExolorGame::InventoryState::render(GameRenderer::TextCanvas* canvas) {
-   
+    GameMenu::render(canvas);
 }
 
 ExolorGame::Inventory* ExolorGame::InventoryState::getInventory() {

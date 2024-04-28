@@ -17,18 +17,18 @@ namespace GameRenderer {
 
     // Renders the game state
     void GameRenderer::render(ExolorGame::Game* game) {
-         //clearScreen();
+         clearScreen();
 
           // Calculate FPS
         static auto lastTime = std::chrono::high_resolution_clock::now();
         auto currentTime = std::chrono::high_resolution_clock::now();
         double deltaTime = std::chrono::duration<double, std::milli>(currentTime - lastTime).count();
         lastTime = currentTime;
-        double fps = 1000.0 / deltaTime; // Calculate frames per second
+        double fps = 1000.0 / deltaTime; 
 
-        // Smooth the FPS display by updating less frequently
+        
         static double smoothedFps = 0.1;
-        const double smoothingFactor = 0.1; // Adjust smoothing factor as needed
+        const double smoothingFactor = 0.1; 
         smoothedFps = (smoothingFactor * fps) + ((1.0 - smoothingFactor) * smoothedFps);
 
         game->render();

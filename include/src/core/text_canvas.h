@@ -18,32 +18,23 @@ namespace GameRenderer {
 
         // Clear the canvas by setting all cells to empty (' ')
         void clear();
-
         // Set a character at a specified position on the canvas
         void setChar(const Vec2& pos, char ch);
-
         // Draw a line on the canvas from start to end with specified character
         void drawLine(const Vec2& start, const Vec2& end, char ch);
-
         void drawSquare(const Vec2& topLeft, int width, int height, char ch, const std::string& buttonText = "", bool hollow = false);
-
         void drawCircle(const Vec2& center, int radius, char ch, bool hollow = false);
-
         void drawText(const Vec2& pos, const std::string& text);
-
         // Set a character at a specified position on the canvas
         void setChar(int x, int y, char ch);
-
         // Draw a line on the canvas from start to end with specified character
         void drawLine(int startX, int startY, int endX, int endY, char ch);
-
         void drawSquare(int x, int y, int width, int height, char ch, const std::string& buttonText = "", bool hollow = false);
-
         void drawCircle(int centerX, int centerY, int radius, char ch, bool hollow = false);
-
         void drawText(int x, int y, const std::string& text);
-
         void render() const;
+        void push();
+        void pop();
 
         int getWidth() const;
 
@@ -52,13 +43,15 @@ namespace GameRenderer {
         const char** getData() const;
 
     private:
+        void copyCanvas(char** dest, char** src) const;
         // Check if a given position is within the canvas bounds
         bool isValidPosition(const Vec2& pos) const;
 
     private:
         int width;          // Width of the canvas
         int height;         // Height of the canvas
-        char** canvas;      // 2D array to represent the canvas
+        char** canvas;
+        std::stack<char**> stateStack;  // Stack to store rendering states
     };
 
 }

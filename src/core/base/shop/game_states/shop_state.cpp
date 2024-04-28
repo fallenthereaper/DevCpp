@@ -7,7 +7,7 @@ ExolorGame::ShopState::ShopState(Game* game) : ExolorGame::GameMenu(game, "Shop 
 }
 
 void ExolorGame::ShopState::update(Game* game) {
-    // Implement update logic for the shop state
+    GameMenu::update(game);
 }
 
 void ExolorGame::ShopState::init(Game* game) {
@@ -15,7 +15,9 @@ void ExolorGame::ShopState::init(Game* game) {
 }
 
 void ExolorGame::ShopState::render(GameRenderer::TextCanvas* canvas) {
-    // Implement rendering logic for the shop state
+    GameMenu::render(canvas);
+
+
 }
 
 void ExolorGame::ShopState::initCommands() {
@@ -36,6 +38,8 @@ void ExolorGame::ShopState::initCommands() {
         canvas->drawSquare(Vec2(46, 10), 20, 5, '*', "Sell Item", true);
         });
     addCommand("show", [canvas](Game* g, InputParameter param) {
+
+        canvas->clear();
     
 
         const auto& itemMap = ItemRegistry::getInstance()->getItemMap();

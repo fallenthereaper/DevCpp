@@ -8,7 +8,7 @@ ExolorGame::MenuState::MenuState(Game* game) : ExolorGame::GameMenu(game, "Game 
     // Update logic for the menu state
 }
 void ExolorGame::MenuState::update(Game* game) {
-    // Update logic for the menu state
+    GameMenu::update(game);
 }
 void ExolorGame::MenuState::init(Game* game) {
     GameMenu::init(game);
@@ -83,5 +83,29 @@ void ExolorGame::MenuState::initCommands() {
 
 
 void ExolorGame::MenuState::render(GameRenderer::TextCanvas* canvas) {
-    // Render the menu state on the canvas
+
+
+    GameMenu::render(canvas);
+
+    int x = 6;
+    int y = 5;
+    int commandCount = commandMap.size();
+
+    canvas->drawSquare(Vec2(x - 2, 2), 28, 3 * commandCount - 3, '*', "", true);
+
+
+    canvas->drawText(Vec2(x + 3, 3), "Available Commands:");
+
+    int txtX = x - 2;
+
+    for (const auto& commands : commandMap) {
+
+        std::string commandName = commands.first;
+
+        int xPos = (28 - static_cast<int>(commandName.length())) / 2;
+
+        canvas->drawText(Vec2(txtX + xPos, y), commandName);
+
+        y += 2;
+    }
 }

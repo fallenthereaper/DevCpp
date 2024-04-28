@@ -13,18 +13,18 @@
         totalPages = (characters.size() + 2) / 3;
         }
 
-
-    int findIndex(const std::vector<std::string>& vec, const std::string& target) {
-        auto it = std::find(vec.begin(), vec.end(), target);
-        if (it != vec.end()) {
-            return std::distance(vec.begin(), it); // Calculate the index
+    template<class T>
+    int findIndex(const std::vector<T>& vec, std::function<bool(T)> pred) {
+        for (size_t i = 0; i < vec.size(); ++i) {
+            if (pred(vec[i])) {
+                return i; // Return the index if the element is found
+            }
         }
-        return -1; // String not found
+        return -1; // Return -1 if the element is not found
     }
 
     void ExolorGame::CharacterSelectState::init(Game* g) {
-       // ExolorGame::GameState::init(g);
-        g->getCanvas()->drawText(Vec2(50, 1), getName());
+         ExolorGame::GameMenu::init(g);
     }
 
         void ExolorGame::CharacterSelectState::initCommands()  {
@@ -38,10 +38,17 @@
                 });
 
             addCommand("select", [this](Game* game, const InputParameter& param) {
+
+                
+
+              
                 if (param.size() == 1) {
+                    auto pred = [=](Character* c) -> bool {
+                        return c->getName() == param[0];
+                        };
          
-                    int index = findIndex(param, param[0]);
-               
+                    int index = findIndex<Character*>(characters, pred);
+
                     selectCharacter(index);
                     game->setGameState(new MenuState(game));
                 }
@@ -49,9 +56,12 @@
         }
 
         void ExolorGame::CharacterSelectState::update(Game* game)  {
-            GameRenderer::TextCanvas* canvas = game->getCanvas();
+            GameMenu::update(game);
+        }
 
-       
+        void ExolorGame::CharacterSelectState::render(GameRenderer::TextCanvas* canvas)  {
+     
+            GameMenu::render(canvas);
 
             int start = (currentPage - 1) * 3;
             int end = std::min(start + 3, static_cast<int>(characters.size()));
@@ -76,24 +86,19 @@
                 balanceStream << "Bank Balance: $" << std::fixed << std::setprecision(2) << bankAccount->getBalance();
                 std::string description = balanceStream.str();
 
-                
+
 
                 // Calculate the position to center the text within the box
                 float textX = xPos + (30.0f - name.length()) / 2.0f; // Center horizontally
                 float textY = yPos + 3.0f; // Position vertically within the box
 
                 // Draw the character's name
-                canvas->drawText(Vec2( textX, textY ), name);
+                canvas->drawText(Vec2(textX, textY), name);
 
                 // Draw the character's description
-                canvas->drawText(Vec2(xPos + 2.0f, yPos + 6.0f ), description);
+                canvas->drawText(Vec2(xPos + 2.0f, yPos + 6.0f), description);
 
             }
-        }
-
-        void ExolorGame::CharacterSelectState::render(GameRenderer::TextCanvas* canvas)  {
-     
-  
         }
 
         void ExolorGame::CharacterSelectState::selectCharacter(int index) {

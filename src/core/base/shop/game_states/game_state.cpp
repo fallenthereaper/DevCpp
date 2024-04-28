@@ -4,9 +4,12 @@
 #include <sstream>
 #include <iomanip> 
 #include <iostream>
+
+
 class InventoryState;
 class MenuState;
 class ShopState;
+class QuitGameState;
 
 	//GAME STATE
 	ExolorGame::GameMenu::GameMenu(Game* pgame, std::string name) : game(pgame), stateName(name) {}
@@ -49,7 +52,7 @@ class ShopState;
         std::vector<std::string> parameters = parsedCommand.second;
 
 
-        std::cout << "DEBUG Command Word: " + commandWord << std::endl;
+        std::cout << "[DEBUG] Command Word: " + commandWord << std::endl;
 
         auto it = commandMap.find(commandWord);
         if (it != commandMap.end()) {
@@ -64,50 +67,12 @@ class ShopState;
 
 	void ExolorGame::GameMenu::update(Game* game) {
 
+
+       
 	};
 
 	void ExolorGame::GameMenu::init(Game* game) {
         GameRenderer::TextCanvas* canvas = game->getCanvas();
-
-        if (game->getCharacter()) { //Only if it has a selected character
-            ExolorGame::Character* character = game->getCharacter();
-
-            std::string name = character->getName();
-            BankAccount* bankAccount = character->getBankAccount();
-            // Format the bank balance to display a limited number of decimal places
-            std::stringstream balanceStream;
-            balanceStream << "Balance: $" << std::fixed << std::setprecision(2) << bankAccount->getBalance();
-            std::string description = balanceStream.str();
-            canvas->drawText(Vec2(99, 2), name);
-            canvas->drawText(Vec2(70, 8), description);
-        }
-
-
-       // game->getCanvas()->drawSquare(Vec2(46, 10), 20, 5, '*', getName(), true);
-        canvas->drawText(Vec2(50, 1), getName()); //draw state title
-
-        int x = 6;
-        int y = 5;
-        int commandCount = commandMap.size();
-      
-        canvas->drawSquare(Vec2(x - 2, 2), 28, 3 * commandCount - 3, '*', "", true);
-
-
-        canvas->drawText(Vec2(x + 3, 3), "Available Commands:");
-
-        int txtX = x - 2;
-
-        for (const auto& commands : commandMap) {
-
-            std::string commandName = commands.first;
-
-            int xPos = (28 - static_cast<int>(commandName.length())) / 2;
-
-            canvas->drawText(Vec2(txtX + xPos , y), commandName);
-
-               y += 2;
-        }
-        
 	}
 
 	void ExolorGame::GameMenu::addCommand(const std::string& command, const InputFunction consumer) {
@@ -124,11 +89,16 @@ class ShopState;
 
     //GLOBAL COMMANDS(Shared across all gamestates) always call this
 	void ExolorGame::GameMenu::initCommands() {
+        bool commandFlag = false;
+
         GameRenderer::TextCanvas* canvas = getGame()->getCanvas();
         addCommand("menu", [this](Game* g, InputParameter& param) {
-             GameMenu* menu = new MenuState(g);
-
-               g->setGameState(menu);
+           
+             if (g->getCharacter() != nullptr) {
+                 GameMenu* menu = new MenuState(g);
+                 g->setGameState(menu);
+             }
+               
             });
         addCommand("back", [this](Game* g, InputParameter& param) {
            
@@ -137,13 +107,40 @@ class ShopState;
                 g->setGameState(g->getPreviousState());
             }
             });
-        addCommand("exit", [this](Game* g, InputParameter& param) {
-            Blaze2D::GameEngine::getInstance()->quit();
 
-            std::cout << "Closing game..." << std::endl;
-            g->getCanvas()->drawSquare(Vec2(46, 10), 20, 5, '*', "Game Closed", true);
+        addCommand("commands", [canvas, this](Game* g, InputParameter& param) {
 
-            g->setRunning(false); // Set running flag to false to exit the game loop
+            // game->getCanvas()->drawSquare(Vec2(46, 10), 20, 5, '*', getName(), true);
+         
+
+            int x = 6;
+            int y = 5;
+            int commandCount = commandMap.size();
+
+            canvas->drawSquare(Vec2(x - 2, 2), 28, 3 * commandCount - 3, '*', "", true);
+
+
+            canvas->drawText(Vec2(x + 3, 3), "Available Commands:");
+
+            int txtX = x - 2;
+
+            for (const auto& commands : commandMap) {
+
+                std::string commandName = commands.first;
+
+                int xPos = (28 - static_cast<int>(commandName.length())) / 2;
+
+                canvas->drawText(Vec2(txtX + xPos, y), commandName);
+
+                y += 2;
+            }
+           
+            });
+        addCommand("quit", [this](Game* g, InputParameter& param) {
+            QuitGameState* menu = new QuitGameState(g);
+
+            g->setGameState(menu);
+            delete menu;
             });
         addCommand("clear", [canvas](Game* g, InputParameter& param) {
             std::cout << "Clearing canvas..." << std::endl;
@@ -154,7 +151,30 @@ class ShopState;
 
 
 	void ExolorGame::GameMenu::render(GameRenderer::TextCanvas* canvas) {
+ 
+        std::string title = getName();
+        int titleX = (canvas->getWidth() - title.length()) / 2;
 
+    
+        canvas->drawText(Vec2(titleX, 1), getName()); //draw state title
+    
+        if (game->getCharacter() != nullptr) { //Only if it has a selected character
+            ExolorGame::Character* character = game->getCharacter();
+
+            std::string name = character->getName();
+            std::stringstream nameStream; 
+            nameStream << "Character: " << name;
+            BankAccount* bankAccount = character->getBankAccount();
+            // Format the bank balance to display a limited number of decimal places
+            std::stringstream balanceStream;
+            balanceStream << "Balance: $" << std::fixed << std::setprecision(2) << bankAccount->getBalance();
+            std::string description = balanceStream.str();
+            int xOffset = 22;
+            canvas->drawText(Vec2(((canvas->getWidth() - nameStream.str().length()) / 2) + xOffset + 2, 1), nameStream.str());
+            canvas->drawText(Vec2(((canvas->getWidth() - description.length()) / 2) + xOffset + 21, 1), description);
+        }
+      
+        
 	}
 
   

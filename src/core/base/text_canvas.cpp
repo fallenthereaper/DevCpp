@@ -5,13 +5,12 @@ namespace GameRenderer {
 
     TextCanvas::TextCanvas(int width, int height) : width(width), height(height) {
         // Allocate memory for the canvas
-        canvas = new char* [height * width];
+         // Allocate memory for the canvas
+        canvas = new char* [height];
         for (int i = 0; i < height; ++i) {
             canvas[i] = new char[width];
             // Initialize canvas with spaces
-            for (int j = 0; j < width; ++j) {
-                canvas[i][j] = ' ';
-            }
+            std::fill(canvas[i], canvas[i] + width, ' ');
         }
     }
 
@@ -33,6 +32,16 @@ namespace GameRenderer {
             delete[] canvas[i];
         }
         delete[] canvas;
+
+        // Clear the state stack
+        while (!stateStack.empty()) {
+            char** state = stateStack.top();
+            stateStack.pop();
+            for (int i = 0; i < height; ++i) {
+                delete[] state[i];
+            }
+            delete[] state;
+        }
     }
 
     void TextCanvas::clear() {
@@ -41,6 +50,32 @@ namespace GameRenderer {
             for (int j = 0; j < width; ++j) {
                 canvas[i][j] = ' ';
             }
+        }
+    }
+
+
+    void TextCanvas::push() {
+        char** currentState = new char* [height];
+        for (int i = 0; i < height; ++i) {
+            currentState[i] = new char[width];
+            std::copy(canvas[i], canvas[i] + width, currentState[i]);
+        }
+        stateStack.push(currentState);
+    }
+    void TextCanvas::copyCanvas(char** dest, char** src) const {
+        std::copy(src, src + width, dest);
+    }
+    void TextCanvas::pop() {
+        if (!stateStack.empty()) {
+            char** prevState = stateStack.top();
+            stateStack.pop();
+
+            // Restore the previous state
+            for (int i = 0; i < height; ++i) {
+                std::copy(prevState[i], prevState[i] + width, canvas[i]);
+                delete[] prevState[i];
+            }
+            delete[] prevState;
         }
     }
 
