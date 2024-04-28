@@ -61,7 +61,7 @@ class QuitGameState;
         else {
             
             std::cout << "Command not recognized. Try again." << std::endl;
-            game->setGameState(game->getPreviousState());
+           // game->setGameState(game->getPreviousState());
         }
 	};
 
@@ -73,6 +73,7 @@ class QuitGameState;
 
 	void ExolorGame::GameMenu::init(Game* game) {
         GameRenderer::TextCanvas* canvas = game->getCanvas();
+        
 	}
 
 	void ExolorGame::GameMenu::addCommand(const std::string& command, const InputFunction consumer) {

@@ -17,7 +17,7 @@ namespace ExolorGame {
         // Add an item stack to the inventory
         bool insertItem(ItemStack* itemStack);
         // Find an ItemStack containing a specific item
-        ItemStack* findItemStack(Item* item) const;
+        ItemStack* findItemStack(const Item& item) const;
         // Remove an item stack from the inventory (and delete it)
         void extractItem(ItemStack* itemStack);
 

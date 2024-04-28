@@ -51,6 +51,7 @@
 
                     selectCharacter(index);
                     game->setGameState(new MenuState(game));
+                    game->getGameState()->handleInput(game, "commands");
                 }
                 });
         }

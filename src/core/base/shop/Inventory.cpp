@@ -64,7 +64,7 @@ namespace ExolorGame {
             slots[index] = newStack;
 
             count -= addAmount;
-            return true;
+     
         }
 
         delete itemStack; // Delete the original itemStack after processing
@@ -121,13 +121,14 @@ namespace ExolorGame {
         return (it != slots.end()) ? std::distance(slots.begin(), it) : -1;
     }
 
-    ItemStack* Inventory::findItemStack(Item* item) const {
+    ItemStack* Inventory::findItemStack(const Item& item) const {
+        ItemStack* selectedStack = nullptr;
         for (ItemStack* stack : slots) {
-            if (stack && stack->getItem() == item) {
-                return stack; // Return the item stack if it matches the specified item
+            if ((stack != nullptr) && stack->getItem() == &item) {
+                selectedStack = stack;
             }
         }
-        return nullptr; // Item stack not found for the specified item
+        return selectedStack; // Item stack not found for the specified item
     }
 
     // Add a specific quantity of an item to the inventory

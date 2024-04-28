@@ -78,7 +78,7 @@ void ExolorGame::InventoryState::initCommands() {
     addCommand("sell", [canvas](Game* g, InputParameter& param) {
         std::string errorMessage;
 
-        canvas->drawSquare(Vec2(46, 10), 20, 5, '*', "Sell Item", true);
+      //  canvas->drawSquare(Vec2(46, 10), 20, 5, '*', "Sell Item", true);
 
         if (g->getCharacter() == nullptr) {
             errorMessage = "No character available to sell items.";
@@ -149,7 +149,7 @@ void ExolorGame::InventoryState::initCommands() {
 
         if (itemToSell == nullptr) {
             errorMessage = "Item '" + itemName + "' not found in the inventory.";
-            canvas->drawSquare(Vec2((canvas->getWidth() - errorMessage.length()) / 2, 10), errorMessage.length() + 2, 5, '*', errorMessage, true);
+        canvas->drawSquare(Vec2((canvas->getWidth() - errorMessage.length()) / 2, 10), errorMessage.length() + 2, 5, '*', errorMessage, true);
             return;
         }
 
@@ -175,7 +175,9 @@ void ExolorGame::InventoryState::initCommands() {
         std::ostringstream msg;
         msg << "Sold " << count << " " << itemName << " for " << totalSalePrice << " gold.";
         errorMessage = msg.str();
-        canvas->drawSquare(Vec2((canvas->getWidth() - errorMessage.length()) / 2, 10), errorMessage.length() + 2, 5, '*', errorMessage, true);
+     //   canvas->drawSquare(Vec2((canvas->getWidth() - errorMessage.length()) / 2, 10), errorMessage.length() + 2, 5, '*', errorMessage, true);
+
+        g->getGameState()->handleInput(g, "show");
         });
     addCommand("show", [canvas](Game* g, InputParameter& param) {
         std::cout << "Opening Inventory..." << std::endl;
@@ -214,7 +216,7 @@ void ExolorGame::InventoryState::initCommands() {
             }
         
 
-        // Calculate the total width of the inventory display
+    
         int itemWidth = 18;
         int itemSpacing = 1; // Spacing between items
         int maxItemsPerRow = 6; // Maximum items per row
@@ -254,6 +256,8 @@ void ExolorGame::InventoryState::initCommands() {
 
         std::string itemName = param[0];
 
+        Item* itemToShow = nullptr;
+
         // Find the item in the inventory
         Item* selectedItem = ItemRegistry::getInstance()->getItem(itemName);
         if (selectedItem == nullptr) {
@@ -261,19 +265,30 @@ void ExolorGame::InventoryState::initCommands() {
             canvas->drawSquare(Vec2((canvas->getWidth() - errorMessage.length()) / 2, 10), errorMessage.length() + 2, 5, '*', errorMessage, true);
             return;
         }
+      
 
-        // Find the item stack for the selected item
-        ItemStack* itemStack = inventory->findItemStack(selectedItem);
-        if (itemStack == nullptr) {
-            errorMessage = "Item '" + itemName + "' not found in the inventory.";
-            canvas->drawSquare(Vec2((canvas->getWidth() - errorMessage.length()) / 2, 10), errorMessage.length() + 2, 5, '*', errorMessage, true);
-         
+        for (ItemStack* stack : inventory->getSlots()) {
+            if (stack && stack->getItem() && stack->getItem()->getName() == itemName) {
+                itemToShow = stack->getItem();
+                break;
+            }
         }
 
+        if (itemToShow == nullptr) {
+            errorMessage = "Item '" + itemName + "' not found in the inventory.";
+            canvas->drawSquare(Vec2((canvas->getWidth() - errorMessage.length()) / 2, 10), errorMessage.length() + 2, 5, '*', errorMessage, true);
+            return;
+        }
+
+
+        int totalCount = inventory->getItemCount(itemToShow);
+        int itemPrice = itemToShow->getPrice();
+        int totalPrice = itemPrice * totalCount;
+        std::string displayName = itemToShow->getName();
+        std::string itemDescription = itemToShow->getDescription();
         // Clear canvas before rendering
      
 
-        if (itemStack) {
             // Calculate the position to center the square and text
             int squareWidth = 40; // Adjust as needed
             int squareHeight = 15; // Adjust as needed
@@ -284,20 +299,16 @@ void ExolorGame::InventoryState::initCommands() {
 
             // Render text inside the square
             canvas->drawText(Vec2(squareTopLeft.x + 2, squareTopLeft.y + 2), "Selected Item"); // Title
-            canvas->drawText(Vec2(squareTopLeft.x + 2, squareTopLeft.y + 5), "Name: " + selectedItem->getName());
-            canvas->drawText(Vec2(squareTopLeft.x + 2, squareTopLeft.y + 7), "Description: " + selectedItem->getDescription());
+            canvas->drawText(Vec2(squareTopLeft.x + 2, squareTopLeft.y + 5), "Name: " + itemName);
+            canvas->drawText(Vec2(squareTopLeft.x + 2, squareTopLeft.y + 7), "Description: " + itemDescription);
 
-            // Get total count and price information
-            int totalCount = itemStack->getCount();
-            int itemPrice = selectedItem->getPrice();
-            int totalPrice = totalCount * itemPrice;
+          
 
             canvas->drawText(Vec2(squareTopLeft.x + 2, squareTopLeft.y + 9), "Total Count: " + std::to_string(totalCount));
             canvas->drawText(Vec2(squareTopLeft.x + 2, squareTopLeft.y + 11), "Price per Item: " + std::to_string(itemPrice));
             canvas->drawText(Vec2(squareTopLeft.x + 2, squareTopLeft.y + 13), "Total Price: " + std::to_string(totalPrice));
 
          
-        }
   
         });
      }

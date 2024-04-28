@@ -4,7 +4,7 @@
 #include "src/core/shop/game.h"
 #include "src/core/shop/character.h"
 ExolorGame::ShopState::ShopState(Game* game) : ExolorGame::GameMenu(game, "Shop Menu") {
-    // Update logic for the menu state
+   
 }
 
 void ExolorGame::ShopState::update(Game* game) {
@@ -52,6 +52,7 @@ void ExolorGame::ShopState::initCommands() {
             if (selectedItem == nullptr) {
                 errorMessage = "Invalid Item";
              //   std::cout << "Invalid Item" << std::endl;
+                canvas->drawSquare(Vec2((canvas->getWidth() - errorMessage.length()) / 2, 10), errorMessage.length() + 2, 5, '*', errorMessage, true);
                 return;
             }
 
@@ -63,7 +64,9 @@ void ExolorGame::ShopState::initCommands() {
                 msg << "Insufficient funds to buy " << count << " " << itemName << ".";
 
                 errorMessage = msg.str();
+                canvas->drawSquare(Vec2((canvas->getWidth() - errorMessage.length()) / 2, 10), errorMessage.length() + 2, 5, '*', errorMessage, true);
               //  std::cout << "Insufficient funds to buy " << count << " " << itemName << "." << std::endl;
+                return;
       
             }
 
@@ -74,13 +77,15 @@ void ExolorGame::ShopState::initCommands() {
                     msg << "Successfully bought " << count << " " << itemName << " for " << totalCost << " gold.";
                     errorMessage = msg.str();
 
-                
-              
+                    canvas->drawSquare(Vec2((canvas->getWidth() - errorMessage.length()) / 2, 10), errorMessage.length() + 2, 5, '*', errorMessage, true);
+             
               //  std::cout << "Successfully bought " << count << " " << itemName << " for " << totalCost << " gold." << std::endl;
             }
 
 
             canvas->drawSquare(Vec2(( canvas->getWidth()- errorMessage.length() ) / 2, 10), errorMessage.length() + 2, 5, '*', errorMessage, true);
+      
+            g->getGameState()->handleInput(g, "show");
         }
         });
 
