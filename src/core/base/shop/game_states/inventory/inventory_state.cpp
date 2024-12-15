@@ -70,6 +70,8 @@ void handleSuccessMessage(GameRenderer::TextCanvas *canvas, const std::string &s
     displayErrorMessage(canvas, successMessage);
 }
 
+
+
 void ExolorGame::InventoryState::initCommands() {
     GameMenu::initCommands();
 
@@ -240,7 +242,7 @@ void ExolorGame::InventoryState::initCommands() {
 
 
 
-        renderItems(canvas, items, "Inventory", centerPosition, maxItemsPerRow, itemWidth, 3, items.size());
+        ExolorGame::renderItems(canvas, items, "Inventory", centerPosition, maxItemsPerRow, itemWidth, 3, items.size());
     });
 
     addCommand("select", [this, canvas](Game *g, const InputParameter &param) {

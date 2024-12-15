@@ -108,7 +108,7 @@ void ExolorGame::ShopState::initCommands() {
         int itemHeight = 3;
         int maxItemCount = 30; // Maximum items to display
 
-        displayItemList(canvas, itemMap, "Item Shop", shopTopLeft, maxWidth, itemWidth, itemHeight, maxItemCount);
+        ExolorGame::displayItemList(canvas, itemMap, "Item Shop", shopTopLeft, maxWidth, itemWidth, itemHeight, maxItemCount);
         });
 
 
