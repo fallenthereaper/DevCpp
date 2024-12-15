@@ -86,6 +86,10 @@ namespace GameRenderer {
         }
     }
 
+    void TextCanvas::setChar(int x, int y, char ch) {
+        setChar({(float )x, (float )y}, ch);
+    }
+
     void TextCanvas::drawLine(const Vec2& start, const Vec2& end, char ch) {
         Vec2 delta = end - start;
         int steps = std::max(std::abs(delta.x), std::abs(delta.y));
@@ -132,6 +136,30 @@ namespace GameRenderer {
         }
     }
 
+    void TextCanvas::drawGrid(const Vec2& size, const std::string& text) {
+        // Horizontal divider based on canvas size
+        std::string horizontalDivider = std::string((3 * 3) + 3 + 1, '-');
+
+        // Draw the top horizontal divider
+        drawText({0, 0}, horizontalDivider);
+
+        for (int i = 0; i < 3; ++i) {
+            // Draw the left border for each row
+            setChar(0, i + 1, '|');
+
+            for (int j = 0; j < 3; ++j) {
+                // Add grid content inside the grid cells
+                setChar((j * 3) + 2, i + 1, canvas[i][j]);
+                setChar((j * 3) + 4, i + 1, '|');
+            }
+
+            // Draw the horizontal divider after each row
+            drawText({0, ((float) i + 2)}, horizontalDivider);
+        }
+    }
+    void TextCanvas::drawText(int x, int y, const std::string& text) {
+        drawText({(float)x, (float) y}, text);
+    }
     void TextCanvas::drawText(const Vec2& pos, const std::string& text) {
         for (size_t i = 0; i < text.length(); ++i) {
             setChar(Vec2(pos.x + i, pos.y), text[i]);

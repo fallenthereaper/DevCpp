@@ -84,7 +84,7 @@ void ExolorGame::ShopState::initCommands() {
             }
 
 
-            canvas->drawSquare(Vec2(( canvas->getWidth()- errorMessage.length() ) / 2, 10), errorMessage.length() + 2, 5, '*', errorMessage, true);
+            canvas->drawSquare(Vec2((canvas->getWidth()- errorMessage.length() ) / 2, 10), errorMessage.length() + 2, 5, '*', errorMessage, true);
       
             g->getGameState()->handleInput(g, "show");
         }
@@ -97,10 +97,7 @@ void ExolorGame::ShopState::initCommands() {
     addCommand("show", [canvas](Game* g, InputParameter param) {
 
         canvas->clear();
-    
-
         const auto& itemMap = ItemRegistry::getInstance()->getItemMap();
-
 
         Vec2 shopTopLeft(16, 3);
         int maxWidth = 6; // Maximum items per row
@@ -110,6 +107,5 @@ void ExolorGame::ShopState::initCommands() {
 
         ExolorGame::displayItemList(canvas, itemMap, "Item Shop", shopTopLeft, maxWidth, itemWidth, itemHeight, maxItemCount);
         });
-
 
 }

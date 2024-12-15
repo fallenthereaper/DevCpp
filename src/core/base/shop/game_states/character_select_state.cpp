@@ -37,6 +37,12 @@
                 prevPage();
                 });
 
+            addCommand("d", [this](Game* g,  InputParameter& param) {
+                g->getGameState()->handleInput(g, "select;Main");
+
+                g->getGameState()->handleInput(g, "tictac_game");
+            });
+
             addCommand("select", [this](Game* game,  InputParameter& param) {
 
                 

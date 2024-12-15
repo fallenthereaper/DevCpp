@@ -1,7 +1,7 @@
 
 
 #include "src/core/tictac_game.h"
-
+#include "src/core/text_canvas.h"
 const int BOARD_SIZE = 9;
 char board[BOARD_SIZE][BOARD_SIZE];
 
@@ -199,54 +199,39 @@ using namespace std;
     }
 
 
-    void TicTacGame::startUp() {
+    void TicTacGame::startUp(GameRenderer::TextCanvas* canvas) {
+        GameGrid gameGrid(3, 3, canvas);
+        char currentPlayer = 'X';
 
-        GameGrid *gameGrid = new GameGrid(3, 3);
+        gameGrid.draw();
+        while (true) {
 
+            if (gameGrid.isGridFull() || gameGrid.evaluate() != INT_MIN) break;
 
-
-        // Game loop
-        while (gameGrid->evaluate() == INT_MIN) {
-            // Display the board
-            gameGrid->draw();
-
-            // Human player's turn
             int row, col;
-            std::cout << "Enter your move (row and column, e.g., 1 2): ";
-            std::cin >> row >> col;
-
-            if (row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE || !gameGrid->placeSymbol(row, col, 'X')) {
-                std::cout << "Invalid move! Try again.\n";
-                continue;
+            if (currentPlayer == 'X') {
+               // canvas->drawText(0, 0,"Player X, enter your move (row and column): " );
+                std::cout << "Player X, enter your move (row and column): ";
+                std::cin >> row >> col;
+                if (!gameGrid.placeSymbol(row, col, 'X')) {
+                    canvas->drawText(0, 0,"Invalid move! Try again.\n" );
+                 //   std::cout << "Invalid move! Try again.\n";
+                    continue;
+                }
+            } else {
+                //canvas->drawText(0, 0,"AI is making a move...\n");
+              std::cout << "AI is making a move...\n";
+                // Implement AI logic (e.g., minimax)
+                // Example: AI randomly places 'O' for simplicity
+                gameGrid.placeSymbol(rand() % 3, rand() % 3, 'O');
             }
-
-            // Check if the game is over after human player's move
-            if (gameGrid->evaluate() != INT_MIN) {
-                break;
-            }
-
-            // AI's turn
-            std::cout << "AI's turn...\n";
-            // gameGrid.makeAIMove();
-
-            // Check if the game is over after AI's move
-            //if (gameGrid.gameOver()) {
-            //    break;
-            // }
+            currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
         }
 
-        // Display the final board
-        gameGrid->draw();
 
-        // Evaluate the final game state
-        int gameResult = gameGrid->evaluate();
-        if (gameResult == 1) {
-            std::cout << "AI wins!\n";
-        } else if (gameResult == -1) {
-            std::cout << "Human wins!\n";
-        } else {
-            std::cout << "It's a draw!\n";
-        }
+        int result = gameGrid.evaluate();
+        if (result == 1) std::cout << "AI wins!\n";
+        else if (result == -1) std::cout << "Player X wins!\n";
+        else std::cout << "It's a draw!\n";
 
-        delete gameGrid;
     }

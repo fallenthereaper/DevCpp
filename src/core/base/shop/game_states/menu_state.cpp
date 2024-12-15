@@ -1,6 +1,7 @@
 
 #include "src/core/shop/game_state.h"
 #include "src/core/shop/game.h"
+#include "core/tictac_game.h"
 #include <windows.h>
 
 ExolorGame::MenuState::MenuState(Game* game) : ExolorGame::GameMenu(game, "Game Menu") {
@@ -32,8 +33,8 @@ void ExolorGame::MenuState::initCommands() {
     addCommand("tictac_game", [canvas](Game* g, InputParameter& param) {
         std::cout << "Starting Blaze2D..." << std::endl;
 
-        Utility::bootGameEngine("TicTac Game", 500, 500);
-
+   //     Utility::bootGameEngine("TicTac Game", 500, 500);
+        TicTacGame::startUp(canvas);
         });
 
     addCommand("rpg_game", [canvas](Game* g, InputParameter& param) {

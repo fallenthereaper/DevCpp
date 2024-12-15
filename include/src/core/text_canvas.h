@@ -25,6 +25,8 @@ namespace GameRenderer {
         void drawSquare(const Vec2& topLeft, int width, int height, char ch, const std::string& buttonText = "", bool hollow = false);
         void drawCircle(const Vec2& center, int radius, char ch, bool hollow = false);
         void drawText(const Vec2& pos, const std::string& text);
+
+        void drawGrid(const Vec2& size = {0, 0}, const std::string& text = "");
         // Set a character at a specified position on the canvas
         void setChar(int x, int y, char ch);
         // Draw a line on the canvas from start to end with specified character
