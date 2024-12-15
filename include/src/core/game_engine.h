@@ -1,9 +1,8 @@
 #pragma once
 
-#include <SDL.h>
 #include <iostream>
 #include <chrono>
-
+#include <memory>
 
 
 namespace Blaze2D {
@@ -20,11 +19,12 @@ namespace Blaze2D {
         }
 
         float calculateDeltaTime() {
-            static Uint32 lastTime = SDL_GetTicks();
-            Uint32 currentTime = SDL_GetTicks();
-            float deltaTime = (currentTime - lastTime) / 1000.0f;
-            lastTime = currentTime;
-            return deltaTime;
+          //  static Uint32 lastTime = SDL_GetTicks();
+          //  Uint32 currentTime = SDL_GetTicks();
+          //  float deltaTime = (currentTime - lastTime) / 1000.0f;
+          //  lastTime = currentTime;
+          //  return deltaTime;
+          return 0;
         }
 
        void run(std::unique_ptr<IGame> game);
@@ -42,11 +42,11 @@ namespace Blaze2D {
         // Handle SDL events
         void handleEvents();
 
-        void drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, Uint8 r, Uint8 g, Uint8 b);
-        void drawPixel(int x, int y, Uint8 r, Uint8 g, Uint8 b);
+        void drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, int r, int g, int b);
+      //  void drawPixel(int x, int y, Uint8 r, Uint8 g, Uint8 b);
         void renderGrid();
         void renderCube(float angle);
-        SDL_Point project(const Vec3& point, float fov, float aspectRatio);
+      //  SDL_Point project(const Vec3& point, float fov, float aspectRatio);
         // Render the game
         void render();
 
@@ -62,8 +62,8 @@ namespace Blaze2D {
         GameEngine(); // Private constructor for singleton
         ~GameEngine(); // Private destructor
         static GameEngine* instance;
-        SDL_Window* m_window;
-        SDL_Renderer* m_renderer;
+       // SDL_Window* m_window;
+       // SDL_Renderer* m_renderer;
         std::string title;
         bool m_isRunning;
         int m_screenWidth;

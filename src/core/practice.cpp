@@ -1,4 +1,7 @@
 #include "practice.h";
+
+#include <string>
+
 #include "src/core/main.h";
 
 using namespace std;
@@ -50,6 +53,7 @@ namespace Practice {
 
 
         int score = 0;
+
 
 
 

@@ -13,6 +13,7 @@ void ExolorGame::ShopState::update(Game* game) {
 
 void ExolorGame::ShopState::init(Game* game) {
     GameMenu::init(game);
+
 }
 
 void ExolorGame::ShopState::render(GameRenderer::TextCanvas* canvas) {

@@ -29,22 +29,22 @@
 
         void ExolorGame::CharacterSelectState::initCommands()  {
             ExolorGame::GameMenu::initCommands();
-            addCommand("next", [this](Game* game, const InputParameter& param) {
+            addCommand("next", [this](Game* game,  InputParameter& param) {
                 nextPage();
                 });
 
-            addCommand("prev", [this](Game* game, const InputParameter& param) {
+            addCommand("prev", [this](Game* game,  InputParameter& param) {
                 prevPage();
                 });
 
-            addCommand("select", [this](Game* game, const InputParameter& param) {
+            addCommand("select", [this](Game* game,  InputParameter& param) {
 
                 
 
               
                 if (param.size() == 1) {
                     auto pred = [=](Character* c) -> bool {
-                        return c->getName() == param[0];
+                        return (*c).getName() == param[0];
                         };
          
                     int index = findIndex<Character*>(characters, pred);

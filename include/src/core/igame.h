@@ -1,4 +1,4 @@
-#include <SDL.h>
+
 
 namespace Blaze2D {
 
@@ -7,7 +7,7 @@ namespace Blaze2D {
         virtual ~IGame() {}
 
         virtual bool init() = 0;
-        virtual void handleEvents(SDL_Event& event) = 0;
+      //  virtual void handleEvents(SDL_Event& event) = 0;
         virtual void update(float deltaTime) = 0;
         virtual void render() = 0;
         virtual void clean() = 0;

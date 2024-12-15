@@ -1,19 +1,13 @@
 
-#include "src/core/main.h";
 
-#include <climits>
-
-#include "src/core/tictac_game.h";
-
+#include "src/core/tictac_game.h"
 
 const int BOARD_SIZE = 9;
 char board[BOARD_SIZE][BOARD_SIZE];
 
 using namespace std;
 
-namespace TicTacGame {
-
-   const string repeatString(const string& str, int count) {
+    const string repeatString(const string &str, int count) {
         string result;
         for (int i = 0; i < count; ++i) {
             result += str;
@@ -41,7 +35,7 @@ namespace TicTacGame {
     }
 
 
-    bool checkWin(const char& symbol) {
+    bool checkWin(const char &symbol) {
         // Check rows and columns
         for (int i = 0; i < BOARD_SIZE; ++i) {
             bool rowWin = true;
@@ -55,7 +49,6 @@ namespace TicTacGame {
                     colWin = false;
                 }
             }
-
 
 
             if (rowWin || colWin) {
@@ -92,14 +85,11 @@ namespace TicTacGame {
     int evaluateBoard() {
         if (checkWin('O')) {
             return 1; // AI wins
-        }
-        else if (checkWin('X')) {
+        } else if (checkWin('X')) {
             return -1; // Human wins
-        }
-        else if (isBoardFull()) {
+        } else if (isBoardFull()) {
             return 0; // Draw
-        }
-        else {
+        } else {
             return INT_MIN; // Game still ongoing
         }
     }
@@ -135,7 +125,6 @@ namespace TicTacGame {
         return true; // Draw
     }
 
-   
 
     // Minimax function for AI's move
     int minimax(int depth, bool isMaximizing) {
@@ -160,7 +149,7 @@ namespace TicTacGame {
             }
             return bestScore;
         }
-        // Minimizer's turn (Human)
+            // Minimizer's turn (Human)
         else {
             int bestScore = INT_MAX;
             for (int i = 0; i < BOARD_SIZE; ++i) {
@@ -210,10 +199,9 @@ namespace TicTacGame {
     }
 
 
+    void TicTacGame::startUp() {
 
-   const void TicTacGame::startUp() {
-
-       GameGrid* gameGrid = new GameGrid(3, 3);
+        GameGrid *gameGrid = new GameGrid(3, 3);
 
 
 
@@ -239,12 +227,12 @@ namespace TicTacGame {
 
             // AI's turn
             std::cout << "AI's turn...\n";
-           // gameGrid.makeAIMove();
+            // gameGrid.makeAIMove();
 
             // Check if the game is over after AI's move
             //if (gameGrid.gameOver()) {
             //    break;
-           // }
+            // }
         }
 
         // Display the final board
@@ -254,17 +242,11 @@ namespace TicTacGame {
         int gameResult = gameGrid->evaluate();
         if (gameResult == 1) {
             std::cout << "AI wins!\n";
-        }
-        else if (gameResult == -1) {
+        } else if (gameResult == -1) {
             std::cout << "Human wins!\n";
-        }
-        else {
+        } else {
             std::cout << "It's a draw!\n";
         }
 
         delete gameGrid;
-    
-       
-
     }
-}

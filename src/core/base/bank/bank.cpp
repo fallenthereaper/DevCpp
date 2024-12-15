@@ -5,7 +5,7 @@ class BankAccount;
 int Bank::nextAccountNumber = 1000; // Initialize static member
 
 // Constructor definition
-Bank::Bank(const std::string& name) : bankName(name) {}
+Bank::Bank(const std::string &name) : bankName(name) {}
 
 // Destructor definition
 Bank::~Bank() {
@@ -14,23 +14,23 @@ Bank::~Bank() {
 }
 
 // Member function to add a new bank account
-void Bank::addAccount(const std::string& ownerName, double initialBalance = 0) {
+void Bank::addAccount(const std::string &ownerName, double initialBalance = 0) {
     int accountNumber = nextAccountNumber++;
     auto newAccount = std::make_shared<BankAccount>(ownerName, initialBalance, accountNumber);
     accounts.push_back(newAccount);
-   // std::cout << "New account created for " << ownerName << " with account number " << accountNumber << "\n";
-  //  std::cout << std::endl;
+    // std::cout << "New account created for " << ownerName << " with account number " << accountNumber << "\n";
+    //  std::cout << std::endl;
 }
 
-void Bank::addAccount(const BankAccount& bankAccount) {
+void Bank::addAccount(const BankAccount &bankAccount) {
     this->addAccount(bankAccount.getOwnerName(), bankAccount.getBalance());
 }
 
-const bool Bank::transfer(const BankAccount& srcBankAccount, const BankAccount& toBankAccount, double amount) {
+const bool Bank::transfer(const BankAccount &srcBankAccount, const BankAccount &toBankAccount, double amount) {
     return transfer(srcBankAccount.getAccountId(), toBankAccount.getAccountId(), amount);
 }
 
-const bool Bank::transfer(const BankAccount& srcBankAccount, const BankAccount& toBankAccount) {
+const bool Bank::transfer(const BankAccount &srcBankAccount, const BankAccount &toBankAccount) {
     return transfer(srcBankAccount.getAccountId(), toBankAccount.getAccountId(), toBankAccount.getBalance());
 }
 
@@ -48,44 +48,46 @@ const bool Bank::transfer(int fromAccountNumber, int toAccountNumber, double amo
                 // Generate unique filename based on timestamp and account IDs
                 std::time_t currentTime = std::time(nullptr);
                 std::string timestamp = std::to_string(currentTime);
-                std::string filename = "C:/Users/salva/source/repos/_cmake/main/resources/transfers/transfer_" + std::to_string(fromAccountNumber) + "_to_" + std::to_string(toAccountNumber) + "_" + timestamp + ".txt";
+                std::string filename = "C:/Users/salva/source/repos/_cmake/main/resources/transfers/transfer_" +
+                                       std::to_string(fromAccountNumber) + "_to_" + std::to_string(toAccountNumber) +
+                                       "_" + timestamp + ".txt";
 
                 // Open file for writing transfer details
                 std::ofstream outFile(filename);
                 if (outFile.is_open()) {
                     outFile << "Transfer Details\n";
-                    outFile << "From Account (ID: " << fromAccountNumber << ") - Owner: " << fromAccount->getOwnerName() << "\n";
-                    outFile << "To Account (ID: " << toAccountNumber << ") - Owner: " << toAccount->getOwnerName() << "\n";
+                    outFile << "From Account (ID: " << fromAccountNumber << ") - Owner: " << fromAccount->getOwnerName()
+                            << "\n";
+                    outFile << "To Account (ID: " << toAccountNumber << ") - Owner: " << toAccount->getOwnerName()
+                            << "\n";
                     outFile << "Amount Transferred: $" << std::fixed << std::setprecision(2) << amount << "\n";
                     outFile << "Transfer successful.\n";
                     outFile.close();
                     std::cout << "Transfer details written to file: " << filename << "\n";
-                }
-                else {
+                } else {
                     std::cerr << "Error: Unable to open file for writing transfer details.\n";
                 }
-            }
-            else {
+            } else {
                 // Amount is not above $1000, print transfer details to console only
-       
+
                 std::cout << "Transfer Details\n";
                 std::cout << "---------------------------\n";
-                std::cout << "From Account (ID: " << fromAccountNumber << ") - Owner: " << fromAccount->getOwnerName() << "\n";
-                std::cout << "To Account (ID: " << toAccountNumber << ") - Owner: " << toAccount->getOwnerName() << "\n";
+                std::cout << "From Account (ID: " << fromAccountNumber << ") - Owner: " << fromAccount->getOwnerName()
+                          << "\n";
+                std::cout << "To Account (ID: " << toAccountNumber << ") - Owner: " << toAccount->getOwnerName()
+                          << "\n";
                 std::cout << "Amount Transferred: $" << std::fixed << std::setprecision(2) << amount << "\n";
                 std::cout << "Transfer successful.\n";
                 std::cout << "---------------------------\n";
             }
 
             return true;
-        }
-        else {
+        } else {
             // Insufficient funds in the source account
             std::cerr << "Transfer failed. Insufficient funds in the source account.\n";
             return false;
         }
-    }
-    else {
+    } else {
         // Invalid account numbers
         std::cerr << "Invalid account numbers. Transfer aborted.\n";
         return false;
@@ -95,10 +97,10 @@ const bool Bank::transfer(int fromAccountNumber, int toAccountNumber, double amo
 // Member function to display all accounts and their balances
 void Bank::displayAllAccounts() const {
     std::cout << "Bank Accounts for " << bankName << ":\n";
-    for (const auto& account : accounts) {
+    for (const auto &account: accounts) {
         std::cout << "Account Number: " << account->getAccountId()
-            << ", Owner: " << account->getOwnerName()
-            << ", Balance: $" << std::fixed << std::setprecision(2) << account->getBalance() << "\n";
+                  << ", Owner: " << account->getOwnerName()
+                  << ", Balance: $" << std::fixed << std::setprecision(2) << account->getBalance() << "\n";
     }
     std::cout << std::endl;
 }
@@ -115,7 +117,7 @@ void Bank::generateReport() const {
     // Display detailed information for each account
     std::cout << "Account Information:\n";
     std::cout << "-------------------------------------\n";
-    for (const auto& account : accounts) {
+    for (const auto &account: accounts) {
 
         std::cout << "Account Number: " << account->getAccountId() << "\n";
         std::cout << "Owner: " << account->getOwnerName() << "\n";
@@ -131,14 +133,15 @@ void Bank::generateReport() const {
 
     Utility::endl();
 }
-const std::string& Bank::getBankName()  {
+
+const std::string &Bank::getBankName() {
 
     return this->bankName;
 
 }
 
-BankAccount& Bank::getAccount(int accountNumber)  {
-    for (const auto& account : accounts) {
+BankAccount &Bank::getAccount(int accountNumber) {
+    for (const auto &account: accounts) {
         if (account->getAccountId() == accountNumber) {
             return *account;
         }
@@ -148,7 +151,7 @@ BankAccount& Bank::getAccount(int accountNumber)  {
 
 // Private helper function to find an account by account number
 std::shared_ptr<BankAccount> Bank::findAccount(int accountNumber) const {
-    for (const auto& account : accounts) {
+    for (const auto &account: accounts) {
         if (account->getAccountId() == accountNumber) {
             return account;
         }

@@ -1,6 +1,7 @@
 #include "src/core/game_engine.h"
 #include "src/core/igame.h"
 #include <string>
+
 #define SCREEN_WIDTH 500;
 #define SCREEN_HEIGHT 500;
 
@@ -9,7 +10,7 @@ namespace Blaze2D {
     GameEngine* GameEngine::instance = nullptr;
 
     GameEngine::GameEngine()
-        : m_window(nullptr), m_renderer(nullptr), m_isRunning(false), m_screenWidth(0), m_screenHeight(0), m_fpsCounter(0), m_lastSecondTime(0), m_lastTickTime(0), m_fps(0), title("") {}
+        : m_isRunning(false), m_screenWidth(0), m_screenHeight(0), m_fpsCounter(0), m_lastSecondTime(0), m_lastTickTime(0), m_fps(0), title("") {}
 
 
     void GameEngine::run(std::unique_ptr<IGame> game) {
@@ -18,14 +19,14 @@ namespace Blaze2D {
         game->init();
 
         while (m_isRunning) {
-            SDL_Event event;
-            while (SDL_PollEvent(&event)) {
-                if (event.type == SDL_QUIT) {
-                    quit();
-                }
-                game->handleEvents(event);
-            }
-
+          //  SDL_Event event;
+          //  while (SDL_PollEvent(&event)) {
+          //      if (event.type == SDL_QUIT) {
+          //          quit();
+          //      }
+          //      game->handleEvents(event);
+          //  }
+//
             game->update(calculateDeltaTime()); // Fixed time step update (60 FPS equivalent)
             game->render();
         }
@@ -45,7 +46,7 @@ namespace Blaze2D {
 
 
      
-       
+       /*
         if (SDL_Init(SDL_INIT_VIDEO) != 0) {
             SDL_Log("SDL initialization failed: %s", SDL_GetError());
             return false;
@@ -69,6 +70,7 @@ namespace Blaze2D {
         }
 
         ;
+        */
       
   
         return m_isRunning = true;
@@ -77,6 +79,7 @@ namespace Blaze2D {
 
 
     void GameEngine::tick() {
+        /*
         SDL_Delay(0.16);
         Uint32 currentTime = SDL_GetTicks();  // Get current time in milliseconds since SDL initialization
         Uint32 deltaTime = currentTime - m_lastTickTime;  // Calculate time elapsed since last frame
@@ -101,15 +104,17 @@ namespace Blaze2D {
             
             SDL_SetWindowTitle(m_window, windowTitle.c_str());
         }
+         */
     }
 
-    void GameEngine::drawPixel(int x, int y, Uint8 r, Uint8 g, Uint8 b) {
-        SDL_SetRenderDrawColor(m_renderer, r, g, b, 255);
-        SDL_RenderDrawPoint(m_renderer, x, y);
-    }
+   // void GameEngine::drawPixel(int x, int y, int r, int g, int b) {
+   //     SDL_SetRenderDrawColor(m_renderer, r, g, b, 255);
+   //     SDL_RenderDrawPoint(m_renderer, x, y);
+   // }
 
 
     void GameEngine::handleEvents() {
+        /*
         SDL_Event event;
         SDL_PollEvent(&event);
 
@@ -119,22 +124,26 @@ namespace Blaze2D {
                 break;
         
         }
+         */
        
 
 
     }
 
-    void GameEngine::drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, Uint8 r, Uint8 g, Uint8 b) {
+    void GameEngine::drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, int r, int g, int b) {
         // Set the render draw color
+        /*
         SDL_SetRenderDrawColor(m_renderer, r, g, b, 255);
 
         // Draw lines connecting the vertices to form the triangle
         SDL_RenderDrawLine(m_renderer, x1, y1, x2, y2);
         SDL_RenderDrawLine(m_renderer, x2, y2, x3, y3);
         SDL_RenderDrawLine(m_renderer, x3, y3, x1, y1);
+         */
     }
 
     void GameEngine::renderGrid() {
+        /*
         SDL_SetRenderDrawColor(m_renderer, 255, 255, 255, 255); // Set draw color to white
 
         // Calculate cell width and height based on screen size and grid dimensions
@@ -152,16 +161,18 @@ namespace Blaze2D {
             int y = row * cellHeight;
             SDL_RenderDrawLine(m_renderer, 0, y, 800, y);
         }
+         */
     }
 
    
 
+    /*
     // Function to project 3D coordinates onto 2D screen
     SDL_Point GameEngine::project(const Vec3& point, float fov, float aspectRatio) {
         float x = point.x / (-point.z * tan(fov / 2));
         float y = point.y / (-point.z * tan(fov / 2) / aspectRatio);
         return { static_cast<int>(x + 800 / 2), static_cast<int>(y + 600 / 2) };
-    }
+    }*/
 
     void GameEngine::renderCube(float angle) {
         // Define cube vertices
@@ -175,6 +186,7 @@ namespace Blaze2D {
             {4, 5}, {5, 6}, {6, 7}, {7, 4}, // Back face
             {0, 4}, {1, 5}, {2, 6}, {3, 7}  // Connecting edges
         };
+        /*
 
         // Calculate rotation matrix
         float s = sin(angle);
@@ -204,9 +216,11 @@ namespace Blaze2D {
             // Render edge
             SDL_RenderDrawLine(m_renderer, screenStart.x, screenStart.y, screenEnd.x, screenEnd.y);
         }
+         */
     }
 
     void GameEngine::render() {
+        /*
         SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255); // Clear with black color
         SDL_RenderClear(m_renderer);
 
@@ -235,14 +249,16 @@ namespace Blaze2D {
         }
 
         SDL_RenderPresent(m_renderer); // Present rendered content
+         */
     }
 
     void GameEngine::clean() {
+        /*
         SDL_DestroyRenderer(m_renderer);
         SDL_DestroyWindow(m_window);
         SDL_Quit();
         quit();
-    
+    */
     }
 
     void GameEngine::quit() {

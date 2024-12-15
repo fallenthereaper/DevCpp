@@ -10,7 +10,7 @@ namespace Blaze2D {
 
         virtual bool init() override;
 
-        virtual void handleEvents(SDL_Event& event) override;
+      //  virtual void handleEvents(SDL_Event& event) override;
 
         virtual void update(float deltaTime) override;
 

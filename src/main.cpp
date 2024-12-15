@@ -3,22 +3,11 @@
 
 #define MAX_CANVAS_WIDTH 112
 #define MAX_CANVAS_HEIGHT 28
-
-#include "src/core/input/keyboard_handler.h"
-#include "src/core/main.h"
-#include "src/core/game_engine.h"
-#include "src/core/utils/utility.h"
-#include "src/core/utils/containers.h"
 #include <vector>
-#include "src/core/bank/bank.h"
-#include "src/core/bank/bank_account.h"
-#include "src/core//tictac_game.h"
 #include <sstream>
-#include <iomanip>
-#include "src/core/shop/registry/item_registry.h"
-#include "src/core/shop/registry/items.h";
-#include "src/core/shop/game.h";
-#include "src/core/Game_renderer.h";
+#include "src/core/shop/registry/items.h"
+#include "src/core/shop/game.h"
+#include "src/core/Game_renderer.h"
 
 
 using namespace std;
@@ -67,7 +56,7 @@ unsigned long long hexToDecimal(const std::string& hexString) {
               }
           }
       }
-      return true; // Canvases are identical
+      return true; // the two comparing canvas are coincident
   }
 
   // Function to copy canvas data
@@ -92,7 +81,7 @@ unsigned long long hexToDecimal(const std::string& hexString) {
   }
 
 
-  atomic<bool> isRunning = true;
+  bool isRunning = true;
 
   // Function to handle game updates
   void serverThread() {
@@ -138,7 +127,7 @@ unsigned long long hexToDecimal(const std::string& hexString) {
   }
 
 
-  int SDL_main(int argc, char* argv[]) {
+  int main(int argc, char* argv[]) {
       // Initialize game
       coreInit();
       game = new ExolorGame::Game(MAX_CANVAS_WIDTH, MAX_CANVAS_HEIGHT, "Exolor");
@@ -179,8 +168,5 @@ unsigned long long hexToDecimal(const std::string& hexString) {
       if (prevCanvas != nullptr) {
           delete[] prevCanvas;
       }
-  
-     
-
     }
 

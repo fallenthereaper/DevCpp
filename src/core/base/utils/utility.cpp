@@ -1,6 +1,7 @@
 
 
-#include "src/core/utils/utility.h";
+
+#include "src/core/utils/utility.h"
 
 // Declare utility functions
 
@@ -15,10 +16,12 @@
     }
 
 
+    /*
     template<class Base, typename T>
     bool Utility::instanceof(const T* ptr) {
         return std::dynamic_cast<const Base*>(ptr) != nullptr;
     }
+     */
 
 
     void Utility::bootGameEngine(const std::string& windowTitle, int screenHeight, int screenWidth) {

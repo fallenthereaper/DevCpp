@@ -162,7 +162,7 @@ class QuitGameState;
     
         canvas->drawText(Vec2(titleX, 1), getName()); //draw state title
     
-        if (game->getCharacter() != nullptr) { //Only if it has a selected character
+        if (game->getCharacter()) { //only if it has a selected character
             ExolorGame::Character* character = game->getCharacter();
 
             std::string name = character->getName();

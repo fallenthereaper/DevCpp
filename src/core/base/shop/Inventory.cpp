@@ -1,5 +1,7 @@
 #include "src/core/shop/inventory.h"
 
+class ItemStack;
+
 namespace ExolorGame {
 
     //g

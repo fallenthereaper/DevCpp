@@ -1,12 +1,9 @@
-#pragma once
-
 #include "src/core/shop/registry/items.h"
-#include "src/core/shop/item.h"
 
-namespace ExolorGame {
-    using ItemSupplier = std::function<Item* ()>;
 
-   const auto registry = ItemRegistry::getInstance();
+    using ItemSupplier = std::function<ExolorGame::Item* ()>;
+
+   const auto registry = ExolorGame::ItemRegistry::getInstance();
 
 
  
@@ -19,10 +16,7 @@ namespace ExolorGame {
 
 
    
-   static ItemSupplier ExolorGame::registerItemBuilder(const std::string& name, float price, const std::string& description) {
-       auto registry = ItemRegistry::getInstance();
-       return registry->registerItem(name, [name, price, description]() -> Item* { return new Item(name, price, description); });
-   }
+
 
    void ExolorGame::registerItems() {
        const ItemSupplier APPLE = registerItemBuilder("apple", 5.0f);
@@ -48,7 +42,3 @@ namespace ExolorGame {
        static const ItemSupplier GOLD_HOE = registerItemBuilder("gold_hoe", 15.0f);
        static const ItemSupplier GOLD_AXE = registerItemBuilder("gold_axe", 15.0f);
    }
-
-    
-
-} // namespace ShopGame

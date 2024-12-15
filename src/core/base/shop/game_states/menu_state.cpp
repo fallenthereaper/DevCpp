@@ -1,7 +1,6 @@
 
 #include "src/core/shop/game_state.h"
 #include "src/core/shop/game.h"
-#include < chrono >
 #include <windows.h>
 
 ExolorGame::MenuState::MenuState(Game* game) : ExolorGame::GameMenu(game, "Game Menu") {

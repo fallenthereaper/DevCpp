@@ -4,7 +4,6 @@
 #include <iostream>
 #include "src/core/utils/containers.h"
 
-
 namespace ExolorGame {
 
     class Inventory {
@@ -62,7 +61,6 @@ namespace ExolorGame {
         void notifyListeners();
 
         std::vector<ItemStack*> getSlots();
-
 
 
     private:

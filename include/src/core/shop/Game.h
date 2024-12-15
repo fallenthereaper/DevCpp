@@ -15,6 +15,7 @@
 namespace ExolorGame {
     class Character;
     class GameMenu;
+
     class Game {
     public:
         Game();
@@ -46,6 +47,9 @@ namespace ExolorGame {
             return characters;
         }
 
+        friend void renderItems(GameRenderer::TextCanvas* canvas, const std::vector<ItemStack*>& itemList, const std::string& displayTitle, const Vec2& topLeft, int maxWidth, int itemWidth, int itemHeight, int maxItemCount);
+        friend void displayItemList(GameRenderer::TextCanvas* canvas, const std::unordered_map<std::string, ItemRegistry::ItemFactory>& itemList, const std::string& displayTitle, const Vec2& topLeft, int maxWidth, int itemWidth, int itemHeight, int maxItemCount);
+
     private:
         GameMenu* prevState;
         GameMenu* currentState;
@@ -58,9 +62,7 @@ namespace ExolorGame {
         void handleInput(const std::string& input);
         void registerCommands();
 
-        friend void renderItems(GameRenderer::TextCanvas* canvas, const std::vector<ItemStack*>& itemList, const std::string& displayTitle, const Vec2& topLeft, int maxWidth, int itemWidth, int itemHeight, int maxItemCount);
 
-        friend void displayItemList(GameRenderer::TextCanvas* canvas, const std::unordered_map<std::string, ItemRegistry::ItemFactory>& itemList, const std::string& displayTitle, const Vec2& topLeft, int maxWidth, int itemWidth, int itemHeight, int maxItemCount);
     };
 
 } // namespace ShopGame

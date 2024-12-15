@@ -1,6 +1,6 @@
 
-#include "src/core/bank/bank_account.h";
-#include "inventory.h";
+#include "src/core/bank/bank_account.h"
+#include "inventory.h"
 
 namespace ExolorGame {
  

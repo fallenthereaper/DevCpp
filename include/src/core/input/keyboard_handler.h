@@ -1,19 +1,18 @@
 #pragma once
 
-#include <SDL.h>
 #include <array>
 
 class KeyboardHandler {
 public:
     KeyboardHandler();
 
-    void update(SDL_Event& e);
+    void update(int& e);
 
-    bool isKeyDown(SDL_Scancode key) const;
+    bool isKeyDown(int key) const;
 
-    bool isKeyReleased(SDL_Scancode key) const;
+    bool isKeyReleased(int key) const;
 
 private:
-    std::array<bool, SDL_NUM_SCANCODES> m_keys;
-    SDL_Scancode m_recentlyReleased;
+    std::array<bool, 12> m_keys;
+    int m_recentlyReleased;
 };

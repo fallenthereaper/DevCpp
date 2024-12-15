@@ -1,0 +1,3 @@
+C:/Users/salva/Documents/GitHub/DevCpp/cmake-build-debug/CMakeFiles/DevCpp.dir
+C:/Users/salva/Documents/GitHub/DevCpp/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/salva/Documents/GitHub/DevCpp/cmake-build-debug/CMakeFiles/rebuild_cache.dir

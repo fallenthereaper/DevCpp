@@ -9,6 +9,7 @@
 #include <cmath>
 #include <functional>
 #include <optional>
+#include <numeric>
 
 
 namespace Utility {
@@ -262,10 +263,10 @@ namespace Utility {
              * @return A composed function that first applies this function and then applies the 'after' function.
              */
             template<typename V>
-            ValueProcessor<I, V> andThen(const ValueProcessor<R, V>& after) const {
-                return ValueProcessor<I, V>[&](const I& i) {
+            auto andThen(const ValueProcessor<R, V>& after) -> ValueProcessor<I, V>  const {
+                return ValueProcessor<I, V>([&](const I& i) {
                     return after.compute(this->compute(i));
-                    };
+                    });
             }
 
             /**
